@@ -8,7 +8,7 @@
         android:layout_width="248dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:drawableBottom="@drawable/ic_add_24dp"
+        android:drawableBottom="@drawable/ic_add_64dp"
         android:gravity="center"
         android:textSize="16sp"
         android:visibility="gone"

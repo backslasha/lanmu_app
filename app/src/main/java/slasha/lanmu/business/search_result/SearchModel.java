@@ -1,4 +1,4 @@
-package slasha.lanmu.search_result;
+package slasha.lanmu.business.search_result;
 
 
 import com.google.gson.Gson;
@@ -12,7 +12,7 @@ import slasha.lanmu.application.LanmuApplication;
 import slasha.lanmu.bean.BookPost;
 import slasha.lanmu.bean.BookPosts;
 
-public class SearchModel implements SearchContract.SearchModel<BookPost> {
+public class SearchModel implements SearchContract.SearchModel {
 
     @Override
     public List<BookPost> offer(String keyword) {

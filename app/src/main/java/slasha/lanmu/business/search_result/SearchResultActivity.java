@@ -1,4 +1,4 @@
-package slasha.lanmu.search_result;
+package slasha.lanmu.business.search_result;
 
 import android.content.Context;
 import android.content.Intent;
@@ -22,6 +22,7 @@ import slasha.lanmu.application.LanmuApplication;
 import slasha.lanmu.bean.Book;
 import slasha.lanmu.bean.BookPost;
 import slasha.lanmu.bean.CreateInfo;
+import slasha.lanmu.business.create_post.CreatePostActivity;
 import slasha.lanmu.utils.CommonUtils;
 import slasha.lanmu.utils.ToastUtils;
 import yhb.chorus.common.adapter.SimpleAdapter;
@@ -162,8 +163,9 @@ public class SearchResultActivity extends AppCompatActivity implements SearchCon
     }
 
     private void jumpToCreatePost() {
-        // TODO: 2019/3/11
-        ToastUtils.showToast("jumpToCreatePost");
+        startActivity(
+                CreatePostActivity.newIntent(this)
+        );
     }
 
     private void jumpToPostDetail() {

@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     android:orientation="vertical"
-    tools:context=".business.search_result.SearchResultActivity">
+    tools:context=".business.create_post.CreatePostActivity"
+    tools:ignore="ContentDescription">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -22,21 +22,22 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <FrameLayout
+    <slasha.lanmu.business.create_post.widget.NoScrollViewPager
+        android:id="@+id/view_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_margin="6dp"
+        android:layout_weight="1">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    </slasha.lanmu.business.create_post.widget.NoScrollViewPager>
 
-        </android.support.v7.widget.RecyclerView>
-
-        <include
-            layout="@layout/include_create_book_post_guide" />
-
-    </FrameLayout>
-
-
+    <Button
+        android:id="@+id/btn_next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="16dp"
+        android:background="@color/colorPrimary"
+        android:text="@string/next"
+        android:textColor="@android:color/white" />
 </LinearLayout>

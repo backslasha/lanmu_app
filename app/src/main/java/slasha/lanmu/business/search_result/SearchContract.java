@@ -1,4 +1,4 @@
-package slasha.lanmu.search_result;
+package slasha.lanmu.business.search_result;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ public interface SearchContract {
         void performQuery(String keyword);
     }
 
-    interface SearchModel<T> extends BaseModel<T> {
+    interface SearchModel extends BaseModel<BookPost>{
 
     }
 }

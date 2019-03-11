@@ -1,4 +1,4 @@
-package slasha.lanmu.search_result;
+package slasha.lanmu.business.search_result;
 
 import java.util.List;
 
@@ -6,10 +6,10 @@ import slasha.lanmu.bean.BookPost;
 
 public class SearchPresenter implements SearchContract.SearchPresenter {
 
-    private SearchContract.SearchModel<BookPost> mSearchModel;
+    private SearchContract.SearchModel mSearchModel;
     private SearchContract.SearchView mSearchView;
 
-    SearchPresenter(SearchContract.SearchModel<BookPost> searchModel,
+    SearchPresenter(SearchContract.SearchModel searchModel,
                     SearchContract.SearchView searchView) {
         mSearchModel = searchModel;
         mSearchView = searchView;

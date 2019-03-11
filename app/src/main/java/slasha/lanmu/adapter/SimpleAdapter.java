@@ -3,12 +3,10 @@ package yhb.chorus.common.adapter;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import slasha.lanmu.search_result.SearchResultActivity;
 import yhb.chorus.common.adapter.base.SimpleHolder;
 
 

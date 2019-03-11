@@ -19,7 +19,7 @@ import android.view.MenuItem;
 
 import slasha.lanmu.R;
 import slasha.lanmu.Setting;
-import slasha.lanmu.search_result.SearchResultActivity;
+import slasha.lanmu.business.search_result.SearchResultActivity;
 import slasha.lanmu.utils.ToastUtils;
 
 public class MainActivity extends AppCompatActivity
@@ -103,17 +103,15 @@ public class MainActivity extends AppCompatActivity
             // 使用本地假数据
             Setting.Debug.sUseFakeData = true;
         } else if (id == R.id.nav_gallery) {
-
+            Setting.Debug.sUseFakeData = false;
         } else if (id == R.id.nav_slideshow) {
-
+            Setting.Debug.sUseFakeData = false;
         } else if (id == R.id.nav_manage) {
-
+            Setting.Debug.sUseFakeData = false;
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
 
-        } else {
-            Setting.Debug.sUseFakeData = false;
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
