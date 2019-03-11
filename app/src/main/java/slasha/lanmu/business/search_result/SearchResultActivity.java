@@ -18,6 +18,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import slasha.lanmu.R;
+import slasha.lanmu.SameStyleActivity;
 import slasha.lanmu.application.LanmuApplication;
 import slasha.lanmu.bean.Book;
 import slasha.lanmu.bean.BookPost;
@@ -28,7 +29,8 @@ import slasha.lanmu.utils.ToastUtils;
 import yhb.chorus.common.adapter.SimpleAdapter;
 import yhb.chorus.common.adapter.base.SimpleHolder;
 
-public class SearchResultActivity extends AppCompatActivity implements SearchContract.SearchView, View.OnClickListener {
+public class SearchResultActivity extends SameStyleActivity implements
+        SearchContract.SearchView, View.OnClickListener {
 
     private static final String EXTRA_SEARCH_KEYWORD = "search_keyword";
     private SearchContract.SearchPresenter mPresenter;
@@ -46,19 +48,6 @@ public class SearchResultActivity extends AppCompatActivity implements SearchCon
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_result);
-
-        // handle ui style
-        getWindow().setStatusBarColor(
-                getResources().getColor(R.color.colorPrimaryDark)
-        );
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar supportActionBar = getSupportActionBar();
-        if (supportActionBar != null) {
-            supportActionBar.setDisplayHomeAsUpEnabled(true);
-            supportActionBar.setDisplayShowHomeEnabled(true);
-        }
 
         // catch views
         mRecyclerView = findViewById(R.id.recycler_view);
@@ -69,6 +58,11 @@ public class SearchResultActivity extends AppCompatActivity implements SearchCon
         // handle intent
         handleIntent(getIntent());
 
+    }
+
+    @Override
+    protected int getContentViewResId() {
+        return R.layout.activity_search_result;
     }
 
     private void handleIntent(Intent intent) {

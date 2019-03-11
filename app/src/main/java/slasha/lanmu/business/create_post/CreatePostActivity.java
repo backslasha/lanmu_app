@@ -6,9 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,36 +15,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 import slasha.lanmu.R;
+import slasha.lanmu.SameStyleActivity;
 import slasha.lanmu.business.create_post.widget.BookInfoInputWidget;
 import slasha.lanmu.business.create_post.widget.CreatorInfoInputWidget;
 import slasha.lanmu.business.create_post.widget.NoScrollViewPager;
 
 // TODO: 2019/3/11 consider whether to refactor with fragment
-public class CreatePostActivity extends AppCompatActivity {
+public class CreatePostActivity extends SameStyleActivity {
+
+    private NoScrollViewPager mViewPager;
+    private Button mButton;
 
     public static Intent newIntent(Context context) {
         return new Intent(context, CreatePostActivity.class);
     }
 
-    private NoScrollViewPager mViewPager;
-    private Button mButton;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_post);
 
-        // handle ui style
-        getWindow().setStatusBarColor(
-                getResources().getColor(R.color.colorPrimaryDark)
-        );
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar supportActionBar = getSupportActionBar();
-        if (supportActionBar != null) {
-            supportActionBar.setDisplayHomeAsUpEnabled(true);
-            supportActionBar.setDisplayShowHomeEnabled(true);
-        }
         setTitle(R.string.create_post_first_step);
 
         // find views
@@ -100,6 +86,11 @@ public class CreatePostActivity extends AppCompatActivity {
             mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1, true);
         });
         mButton.setText(R.string.next);
+    }
+
+    @Override
+    protected int getContentViewResId() {
+        return R.layout.activity_create_post;
     }
 
     @Override
