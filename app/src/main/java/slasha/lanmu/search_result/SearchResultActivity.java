@@ -9,11 +9,15 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.ImageView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 import java.util.Locale;
 
 import slasha.lanmu.R;
+import slasha.lanmu.application.LanmuApplication;
 import slasha.lanmu.bean.Book;
 import slasha.lanmu.bean.BookPost;
 import slasha.lanmu.bean.CreateInfo;
@@ -114,8 +118,11 @@ public class SearchResultActivity extends AppCompatActivity implements SearchCon
                     if (book != null) {
                         holder.setText(R.id.tv_title, book.getName());
                         holder.setText(R.id.tv_author_name, book.getAuthor());
+                        Picasso.with(LanmuApplication.instance())
+                                .load(book.getCoverUrl())
+                                .into((ImageView) holder.getView(R.id.iv_cover));
                     }
-                    holder.setImage(R.id.iv_cover, R.drawable.cover_sample);
+
                     if (createInfo != null) {
                         holder.setText(R.id.tv_description, createInfo.getDescription());
                     }
@@ -123,9 +130,8 @@ public class SearchResultActivity extends AppCompatActivity implements SearchCon
             };
             mRecyclerView.setAdapter(mBookPostAdapter);
             mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        } else {
-            mBookPostAdapter.performDataSetChanged(bookPosts);
         }
+        mBookPostAdapter.performDataSetChanged(bookPosts);
     }
 
     private void showCreateBookPostGuide() {

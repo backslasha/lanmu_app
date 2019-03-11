@@ -3,25 +3,32 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:layout_marginStart="3dp"
     android:layout_marginTop="3dp"
     android:layout_marginEnd="6dp"
     android:layout_marginBottom="3dp"
+    android:clickable="true"
     android:elevation="@dimen/cardview_default_elevation"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
     app:cardCornerRadius="@dimen/cardview_default_radius"
     tools:ignore="ContentDescription">
 
     <RelativeLayout
         android:id="@+id/rl_search_result"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:padding="12dp">
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:paddingStart="6dp"
+        android:paddingTop="12dp"
+        android:paddingEnd="6dp"
+        android:paddingBottom="12dp">
 
         <ImageView
             android:id="@+id/iv_cover"
-            android:layout_width="109dp"
-            android:layout_height="153dp"
+            android:layout_width="120dp"
+            android:layout_height="168dp"
             android:layout_centerVertical="true"
             android:scaleType="fitXY"
             android:src="@drawable/cover_sample" />
@@ -29,8 +36,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@id/iv_cover"
-            android:layout_alignBottom="@id/iv_cover"
+            android:layout_centerVertical="true"
             android:layout_marginStart="12dp"
             android:layout_toEndOf="@+id/iv_cover"
             android:orientation="vertical">

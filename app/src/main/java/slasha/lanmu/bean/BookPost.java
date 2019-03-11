@@ -1,35 +1,30 @@
+
 package slasha.lanmu.bean;
 
 import java.util.List;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 public class BookPost {
-    private long id;
+
+    @SerializedName("id")
+    @Expose
+    private String id;
+    @SerializedName("book")
+    @Expose
     private Book book;
-    private List<Comment> comments;
+    @SerializedName("comments")
+    @Expose
+    private List<Comment> comments = null;
+    @SerializedName("createInfo")
+    @Expose
     private CreateInfo createInfo;
 
-    public BookPost(long id, Book book, List<Comment> comments, CreateInfo createInfo) {
-        this.id = id;
-        this.book = book;
-        this.comments = comments;
-        this.createInfo = createInfo;
-    }
-
-    @Override
-    public String toString() {
-        return "BookPost{" +
-                "id=" + id +
-                ", book=" + book +
-                ", comments=" + comments +
-                ", createInfo=" + createInfo +
-                '}';
-    }
-
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -56,4 +51,5 @@ public class BookPost {
     public void setCreateInfo(CreateInfo createInfo) {
         this.createInfo = createInfo;
     }
+
 }

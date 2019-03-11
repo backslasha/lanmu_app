@@ -1,0 +1,38 @@
+{
+  "bookPost": {
+    "id": "${id}",
+    "book": {
+      "name": "${name}",
+      "author": "${author}",
+      "publishDate": "${publishDate}",
+      "version": "${version}",
+      "languish": "${languish}",
+      "coverUrl": "${coverUrl}"
+    },
+    "comments": [
+      {
+        "from": {
+          "username": "${username}",
+          "password": "${password}",
+          "avatarUrl": "${avatarUrl}"
+        },
+        "to": {
+          "username": "${username}",
+          "password": "${password}",
+          "avatarUrl": "${avatarUrl}"
+        },
+        "content": "${content}",
+        "postId": "${postId}"
+      }
+    ],
+    "createInfo": {
+      "user": {
+        "username": "${username}",
+        "password": "${password}",
+        "avatarUrl": "${avatarUrl}"
+      },
+      "date": "${date}",
+      "description": "${description}"
+    }
+  }
+}

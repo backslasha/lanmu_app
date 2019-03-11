@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="slasha.lanmu">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".application.LanmuApplication"
         android:allowBackup="true"

@@ -1,24 +1,20 @@
+
 package slasha.lanmu.bean;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class CreateInfo {
+
+    @SerializedName("user")
+    @Expose
     private User user;
+    @SerializedName("date")
+    @Expose
     private String date;
+    @SerializedName("description")
+    @Expose
     private String description;
-
-    public CreateInfo(User user, String date, String description) {
-        this.user = user;
-        this.date = date;
-        this.description = description;
-    }
-
-    @Override
-    public String toString() {
-        return "CreateInfo{" +
-                "user=" + user +
-                ", date='" + date + '\'' +
-                ", description='" + description + '\'' +
-                '}';
-    }
 
     public User getUser() {
         return user;
@@ -43,4 +39,5 @@ public class CreateInfo {
     public void setDescription(String description) {
         this.description = description;
     }
+
 }

@@ -1,0 +1,256 @@
+{
+  "bookPosts": [
+    {
+      "id": "3115005078",
+      "book": {
+        "name": "${name}",
+        "author": "${author}",
+        "publishDate": "${publishDate}",
+        "version": "${version}",
+        "languish": "${languish}",
+        "coverUrl": "https://weread.qq.com/zh_CN/htmledition/images/function2_book_01_2x2761ce.jpg"
+      },
+      "comments": [
+        {
+          "from": {
+            "username": "${username}",
+            "password": "${password}",
+            "avatarUrl": "${avatarUrl}"
+          },
+          "to": {
+            "username": "${username}",
+            "password": "${password}",
+            "avatarUrl": "${avatarUrl}"
+          },
+          "content": "${content}",
+          "postId": "${postId}"
+        }
+      ],
+      "createInfo": {
+        "user": {
+          "username": "BackSlasha",
+          "password": "${password}",
+          "avatarUrl": "https://avatars2.githubusercontent.com/u/18377330?s=64&v=4"
+        },
+        "date": "2019/01/15",
+        "description": "现代人内心流失的东西，这家杂货店能帮你找回——僻静的街道旁有一家杂货店，只要写下烦恼投进卷帘门的投信口，第二天就会在店后的牛奶箱里得到回答。因男友身患绝症，年轻女孩静子在爱情与梦想间徘徊；克郎为了音乐梦想离家漂泊，却在现实中寸步难行；少年浩介面临家庭巨变，挣扎在亲情与未来的迷茫中……他们将困惑写成信投进杂货店，随即奇妙的事情竟不断发生。生命中的一次偶然交会，将如何演绎出截然不同的人生？如今回顾写作过程，我发现自己始终在思考一个问题：站在人生的岔路口，人究竟应该怎么做？我希望读者能在掩卷时喃喃自语：我从未读过这样的小说。——东野圭吾"
+      }
+    },
+    {
+      "id": "3115005079",
+      "book": {
+        "name": "${name}",
+        "author": "${author}",
+        "publishDate": "${publishDate}",
+        "version": "${version}",
+        "languish": "${languish}",
+        "coverUrl": "https://weread.qq.com/zh_CN/htmledition/images/function2_book_02_2x2761ce.jpg"
+      },
+      "comments": [
+        {
+          "from": {
+            "username": "${username}",
+            "password": "${password}",
+            "avatarUrl": "${avatarUrl}"
+          },
+          "to": {
+            "username": "${username}",
+            "password": "${password}",
+            "avatarUrl": "${avatarUrl}"
+          },
+          "content": "${content}",
+          "postId": "${postId}"
+        }
+      ],
+      "createInfo": {
+        "user": {
+          "username": "BackSlasha",
+          "password": "${password}",
+          "avatarUrl": "https://avatars2.githubusercontent.com/u/18377330?s=64&v=4"
+        },
+        "date": "2019/01/15",
+        "description": "现代人内心流失的东西，这家杂货店能帮你找回——僻静的街道旁有一家杂货店，只要写下烦恼投进卷帘门的投信口，第二天就会在店后的牛奶箱里得到回答。因男友身患绝症，年轻女孩静子在爱情与梦想间徘徊；克郎为了音乐梦想离家漂泊，却在现实中寸步难行；少年浩介面临家庭巨变，挣扎在亲情与未来的迷茫中……他们将困惑写成信投进杂货店，随即奇妙的事情竟不断发生。生命中的一次偶然交会，将如何演绎出截然不同的人生？如今回顾写作过程，我发现自己始终在思考一个问题：站在人生的岔路口，人究竟应该怎么做？我希望读者能在掩卷时喃喃自语：我从未读过这样的小说。——东野圭吾"
+      }
+    },
+    {
+      "id": "3115005080",
+      "book": {
+        "name": "${name}",
+        "author": "${author}",
+        "publishDate": "${publishDate}",
+        "version": "${version}",
+        "languish": "${languish}",
+        "coverUrl": "https://weread.qq.com/zh_CN/htmledition/images/function2_book_03_2x2761ce.jpg"
+      },
+      "comments": [
+        {
+          "from": {
+            "username": "${username}",
+            "password": "${password}",
+            "avatarUrl": "${avatarUrl}"
+          },
+          "to": {
+            "username": "${username}",
+            "password": "${password}",
+            "avatarUrl": "${avatarUrl}"
+          },
+          "content": "${content}",
+          "postId": "${postId}"
+        }
+      ],
+      "createInfo": {
+        "user": {
+          "username": "BackSlasha",
+          "password": "${password}",
+          "avatarUrl": "https://avatars2.githubusercontent.com/u/18377330?s=64&v=4"
+        },
+        "date": "2019/01/15",
+        "description": "现代人内心流失的东西，这家杂货店能帮你找回——僻静的街道旁有一家杂货店，只要写下烦恼投进卷帘门的投信口，第二天就会在店后的牛奶箱里得到回答。因男友身患绝症，年轻女孩静子在爱情与梦想间徘徊；克郎为了音乐梦想离家漂泊，却在现实中寸步难行；少年浩介面临家庭巨变，挣扎在亲情与未来的迷茫中……他们将困惑写成信投进杂货店，随即奇妙的事情竟不断发生。生命中的一次偶然交会，将如何演绎出截然不同的人生？如今回顾写作过程，我发现自己始终在思考一个问题：站在人生的岔路口，人究竟应该怎么做？我希望读者能在掩卷时喃喃自语：我从未读过这样的小说。——东野圭吾"
+      }
+    },
+    {
+      "id": "3115005081",
+      "book": {
+        "name": "${name}",
+        "author": "${author}",
+        "publishDate": "${publishDate}",
+        "version": "${version}",
+        "languish": "${languish}",
+        "coverUrl": "https://weread.qq.com/zh_CN/htmledition/images/function2_book_04_2x2761ce.jpg"
+      },
+      "comments": [
+        {
+          "from": {
+            "username": "${username}",
+            "password": "${password}",
+            "avatarUrl": "${avatarUrl}"
+          },
+          "to": {
+            "username": "${username}",
+            "password": "${password}",
+            "avatarUrl": "${avatarUrl}"
+          },
+          "content": "${content}",
+          "postId": "${postId}"
+        }
+      ],
+      "createInfo": {
+        "user": {
+          "username": "BackSlasha",
+          "password": "${password}",
+          "avatarUrl": "https://avatars2.githubusercontent.com/u/18377330?s=64&v=4"
+        },
+        "date": "2019/01/15",
+        "description": "现代人内心流失的东西，这家杂货店能帮你找回——僻静的街道旁有一家杂货店，只要写下烦恼投进卷帘门的投信口，第二天就会在店后的牛奶箱里得到回答。因男友身患绝症，年轻女孩静子在爱情与梦想间徘徊；克郎为了音乐梦想离家漂泊，却在现实中寸步难行；少年浩介面临家庭巨变，挣扎在亲情与未来的迷茫中……他们将困惑写成信投进杂货店，随即奇妙的事情竟不断发生。生命中的一次偶然交会，将如何演绎出截然不同的人生？如今回顾写作过程，我发现自己始终在思考一个问题：站在人生的岔路口，人究竟应该怎么做？我希望读者能在掩卷时喃喃自语：我从未读过这样的小说。——东野圭吾"
+      }
+    },
+    {
+      "id": "3115005082",
+      "book": {
+        "name": "${name}",
+        "author": "${author}",
+        "publishDate": "${publishDate}",
+        "version": "${version}",
+        "languish": "${languish}",
+        "coverUrl": "https://weread.qq.com/zh_CN/htmledition/images/function2_book_05_2x2761ce.jpg"
+      },
+      "comments": [
+        {
+          "from": {
+            "username": "${username}",
+            "password": "${password}",
+            "avatarUrl": "${avatarUrl}"
+          },
+          "to": {
+            "username": "${username}",
+            "password": "${password}",
+            "avatarUrl": "${avatarUrl}"
+          },
+          "content": "${content}",
+          "postId": "${postId}"
+        }
+      ],
+      "createInfo": {
+        "user": {
+          "username": "BackSlasha",
+          "password": "${password}",
+          "avatarUrl": "https://avatars2.githubusercontent.com/u/18377330?s=64&v=4"
+        },
+        "date": "2019/01/15",
+        "description": "现代人内心流失的东西，这家杂货店能帮你找回——僻静的街道旁有一家杂货店，只要写下烦恼投进卷帘门的投信口，第二天就会在店后的牛奶箱里得到回答。因男友身患绝症，年轻女孩静子在爱情与梦想间徘徊；克郎为了音乐梦想离家漂泊，却在现实中寸步难行；少年浩介面临家庭巨变，挣扎在亲情与未来的迷茫中……他们将困惑写成信投进杂货店，随即奇妙的事情竟不断发生。生命中的一次偶然交会，将如何演绎出截然不同的人生？如今回顾写作过程，我发现自己始终在思考一个问题：站在人生的岔路口，人究竟应该怎么做？我希望读者能在掩卷时喃喃自语：我从未读过这样的小说。——东野圭吾"
+      }
+    },
+    {
+      "id": "3115005083",
+      "book": {
+        "name": "${name}",
+        "author": "${author}",
+        "publishDate": "${publishDate}",
+        "version": "${version}",
+        "languish": "${languish}",
+        "coverUrl": "https://weread.qq.com/zh_CN/htmledition/images/function2_book_06_2x2761ce.jpg"
+      },
+      "comments": [
+        {
+          "from": {
+            "username": "${username}",
+            "password": "${password}",
+            "avatarUrl": "${avatarUrl}"
+          },
+          "to": {
+            "username": "${username}",
+            "password": "${password}",
+            "avatarUrl": "${avatarUrl}"
+          },
+          "content": "${content}",
+          "postId": "${postId}"
+        }
+      ],
+      "createInfo": {
+        "user": {
+          "username": "BackSlasha",
+          "password": "${password}",
+          "avatarUrl": "https://avatars2.githubusercontent.com/u/18377330?s=64&v=4"
+        },
+        "date": "2019/01/15",
+        "description": "现代人内心流失的东西，这家杂货店能帮你找回——僻静的街道旁有一家杂货店，只要写下烦恼投进卷帘门的投信口，第二天就会在店后的牛奶箱里得到回答。因男友身患绝症，年轻女孩静子在爱情与梦想间徘徊；克郎为了音乐梦想离家漂泊，却在现实中寸步难行；少年浩介面临家庭巨变，挣扎在亲情与未来的迷茫中……他们将困惑写成信投进杂货店，随即奇妙的事情竟不断发生。生命中的一次偶然交会，将如何演绎出截然不同的人生？如今回顾写作过程，我发现自己始终在思考一个问题：站在人生的岔路口，人究竟应该怎么做？我希望读者能在掩卷时喃喃自语：我从未读过这样的小说。——东野圭吾"
+      }
+    },
+    {
+      "id": "3115005084",
+      "book": {
+        "name": "${name}",
+        "author": "${author}",
+        "publishDate": "${publishDate}",
+        "version": "${version}",
+        "languish": "${languish}",
+        "coverUrl": "https://weread.qq.com/zh_CN/htmledition/images/function2_book_07_2x2761ce.jpg"
+      },
+      "comments": [
+        {
+          "from": {
+            "username": "${username}",
+            "password": "${password}",
+            "avatarUrl": "${avatarUrl}"
+          },
+          "to": {
+            "username": "${username}",
+            "password": "${password}",
+            "avatarUrl": "${avatarUrl}"
+          },
+          "content": "${content}",
+          "postId": "${postId}"
+        }
+      ],
+      "createInfo": {
+        "user": {
+          "username": "BackSlasha",
+          "password": "${password}",
+          "avatarUrl": "https://avatars2.githubusercontent.com/u/18377330?s=64&v=4"
+        },
+        "date": "2019/01/15",
+        "description": "现代人内心流失的东西，这家杂货店能帮你找回——僻静的街道旁有一家杂货店，只要写下烦恼投进卷帘门的投信口，第二天就会在店后的牛奶箱里得到回答。因男友身患绝症，年轻女孩静子在爱情与梦想间徘徊；克郎为了音乐梦想离家漂泊，却在现实中寸步难行；少年浩介面临家庭巨变，挣扎在亲情与未来的迷茫中……他们将困惑写成信投进杂货店，随即奇妙的事情竟不断发生。生命中的一次偶然交会，将如何演绎出截然不同的人生？如今回顾写作过程，我发现自己始终在思考一个问题：站在人生的岔路口，人究竟应该怎么做？我希望读者能在掩卷时喃喃自语：我从未读过这样的小说。——东野圭吾"
+      }
+    }
+  ]
+}

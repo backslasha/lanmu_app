@@ -1,30 +1,29 @@
+
 package slasha.lanmu.bean;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class Book {
+
+    @SerializedName("name")
+    @Expose
     private String name;
+    @SerializedName("author")
+    @Expose
     private String author;
+    @SerializedName("publishDate")
+    @Expose
     private String publishDate;
+    @SerializedName("version")
+    @Expose
     private String version;
+    @SerializedName("languish")
+    @Expose
     private String languish;
-
-    public Book(String name, String author, String publishDate, String version, String languish) {
-        this.name = name;
-        this.author = author;
-        this.publishDate = publishDate;
-        this.version = version;
-        this.languish = languish;
-    }
-
-    @Override
-    public String toString() {
-        return "Book{" +
-                "name='" + name + '\'' +
-                ", author='" + author + '\'' +
-                ", publishDate='" + publishDate + '\'' +
-                ", version='" + version + '\'' +
-                ", languish='" + languish + '\'' +
-                '}';
-    }
+    @SerializedName("coverUrl")
+    @Expose
+    private String coverUrl;
 
     public String getName() {
         return name;
@@ -65,4 +64,13 @@ public class Book {
     public void setLanguish(String languish) {
         this.languish = languish;
     }
+
+    public String getCoverUrl() {
+        return coverUrl;
+    }
+
+    public void setCoverUrl(String coverUrl) {
+        this.coverUrl = coverUrl;
+    }
+
 }
