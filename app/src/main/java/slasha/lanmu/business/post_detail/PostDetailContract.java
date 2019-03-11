@@ -7,8 +7,8 @@ import slasha.lanmu.bean.BookPost;
 
 public interface PostDetailContract {
 
-    interface SearchView extends BaseView<PostDetailPresenter> {
-
+    interface PostDetailView extends BaseView<PostDetailPresenter> {
+        void showDetail(BookPost bookPost);
     }
 
     interface PostDetailPresenter extends BasePresenter {

@@ -93,13 +93,4 @@ public class CreatePostActivity extends SameStyleActivity {
         return R.layout.activity_create_post;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }

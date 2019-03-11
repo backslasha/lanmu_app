@@ -3,11 +3,8 @@ package slasha.lanmu.business.search_result;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -24,6 +21,7 @@ import slasha.lanmu.bean.Book;
 import slasha.lanmu.bean.BookPost;
 import slasha.lanmu.bean.CreateInfo;
 import slasha.lanmu.business.create_post.CreatePostActivity;
+import slasha.lanmu.business.post_detail.PostDetailActivity;
 import slasha.lanmu.utils.CommonUtils;
 import slasha.lanmu.utils.ToastUtils;
 import yhb.chorus.common.adapter.SimpleAdapter;
@@ -78,16 +76,6 @@ public class SearchResultActivity extends SameStyleActivity implements
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public SearchContract.SearchPresenter myPresenter() {
         if (mPresenter == null) {
             mPresenter = new SearchPresenter(
@@ -127,7 +115,7 @@ public class SearchResultActivity extends SameStyleActivity implements
                         holder.setText(R.id.tv_description, createInfo.getDescription());
                     }
 
-                    holder.itemView.setOnClickListener(v -> jumpToPostDetail());
+                    holder.itemView.setOnClickListener(v -> jumpToPostDetail(bookPost));
                 }
 
             };
@@ -162,8 +150,9 @@ public class SearchResultActivity extends SameStyleActivity implements
         );
     }
 
-    private void jumpToPostDetail() {
-        // TODO: 2019/3/11
-        ToastUtils.showToast("jumpToPostDetail");
+    private void jumpToPostDetail(BookPost bookPost) {
+        startActivity(
+                PostDetailActivity.newIntent(this, bookPost)
+        );
     }
 }

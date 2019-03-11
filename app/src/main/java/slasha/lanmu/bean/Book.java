@@ -4,7 +4,9 @@ package slasha.lanmu.bean;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Book {
+import java.io.Serializable;
+
+public class Book implements Serializable {
 
     @SerializedName("name")
     @Expose
