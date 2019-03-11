@@ -1,5 +1,6 @@
 package slasha.lanmu.ui;
 
+import android.Manifest;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -16,13 +17,16 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import slasha.lanmu.R;
+import slasha.lanmu.search_result.SearchResultActivity;
+import slasha.lanmu.utils.ToastUtils;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static final String SEARCH_KEYWORD = "search_keyword";
+    private SearchView mSearchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,13 +67,13 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
-        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-        searchView.setIconifiedByDefault(false);
+        mSearchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        mSearchView.setIconifiedByDefault(false);
 
         // 指定 searchable Activity 信息, 这里就是自己
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         if (searchManager != null)
-            searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+            mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         return true;
     }
 
@@ -116,8 +120,17 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        startActivity(
-                SearchResultActivity.newIntent(this, intent.getStringExtra(SEARCH_KEYWORD))
-        );
+        if (intent == null) {
+            return;
+        }
+        if ("android.intent.action.SEARCH".equals(intent.getAction())) {
+            ToastUtils.showToast("intent.getAction():" + intent.getAction());
+            startActivity(
+                    SearchResultActivity.newIntent(
+                            this,
+                            String.valueOf(mSearchView.getQuery())
+                    )
+            );
+        }
     }
 }

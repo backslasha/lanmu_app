@@ -8,4 +8,5 @@
     <string name="action_settings">Settings</string>
     <string name="search_hint">search_hint</string>
     <string name="search_action_title">search_action_title</string>
+    <string name="search_result_page_title">搜索“%s”的结果：</string>
 </resources>
