@@ -1,4 +1,4 @@
-package slasha.lanmu;
+package slasha.lanmu.ui;
 
 import android.app.SearchManager;
 import android.content.Context;
@@ -17,10 +17,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import slasha.lanmu.utils.ToastUtils;
+import slasha.lanmu.R;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private static final String SEARCH_KEYWORD = "search_keyword";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +116,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        ToastUtils.showToast("you click search button!");
+        startActivity(
+                SearchResultActivity.newIntent(this, intent.getStringExtra(SEARCH_KEYWORD))
+        );
     }
 }
