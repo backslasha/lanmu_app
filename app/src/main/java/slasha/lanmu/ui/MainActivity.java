@@ -1,6 +1,5 @@
 package slasha.lanmu.ui;
 
-import android.Manifest;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -17,9 +16,9 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import slasha.lanmu.R;
+import slasha.lanmu.Setting;
 import slasha.lanmu.search_result.SearchResultActivity;
 import slasha.lanmu.utils.ToastUtils;
 
@@ -51,6 +50,7 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setCheckedItem(R.id.nav_gallery);
     }
 
     @Override
@@ -100,6 +100,8 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_camera) {
             // Handle the camera action
+            // 使用本地假数据
+            Setting.Debug.sUseFakeData = true;
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {
@@ -110,6 +112,8 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_send) {
 
+        } else {
+            Setting.Debug.sUseFakeData = false;
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

@@ -9,4 +9,5 @@
     <string name="search_hint">search_hint</string>
     <string name="search_action_title">search_action_title</string>
     <string name="search_result_page_title">搜索“%s”的结果：</string>
+    <string name="create_book_post_guide">书籍“%s”的相关的帖子还没有被创建过，点击创建。</string>
 </resources>

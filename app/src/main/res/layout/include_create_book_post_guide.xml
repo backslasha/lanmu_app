@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:parentTag="android.widget.FrameLayout">
+
+    <TextView
+        android:id="@+id/tv_create_book_post_guide"
+        android:layout_width="248dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:drawableBottom="@drawable/ic_add_24dp"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:visibility="gone"
+        tools:text="书籍“东野圭吾”的相关的帖子还没有被创建过，点击此处创建。" />
+
+</merge>

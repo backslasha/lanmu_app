@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.List;
 
+import slasha.lanmu.Setting;
 import slasha.lanmu.application.LanmuApplication;
 import slasha.lanmu.bean.BookPost;
 import slasha.lanmu.bean.BookPosts;
@@ -15,7 +16,12 @@ public class SearchModel implements SearchContract.SearchModel<BookPost> {
 
     @Override
     public List<BookPost> offer(String keyword) {
-        return offer_fake();
+        if (Setting.Debug.sUseFakeData) {
+            return offer_fake();
+        }
+
+        // TODO: 2019/3/11  
+        return null;
     }
 
     private List<BookPost> offer_fake() {
