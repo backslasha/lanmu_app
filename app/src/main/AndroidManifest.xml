@@ -14,6 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".business.profile.UserProfileActivity"></activity>
         <activity android:name=".business.post_detail.PostDetailActivity" />
         <activity
             android:name=".business.create_post.CreatePostActivity"

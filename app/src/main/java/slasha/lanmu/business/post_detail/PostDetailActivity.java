@@ -21,6 +21,7 @@ import slasha.lanmu.bean.BookPost;
 import slasha.lanmu.bean.Comment;
 import slasha.lanmu.bean.CreateInfo;
 import slasha.lanmu.bean.User;
+import slasha.lanmu.business.profile.UserProfileActivity;
 import slasha.lanmu.utils.CommonUtils;
 import slasha.lanmu.utils.ToastUtils;
 import yhb.chorus.common.adapter.SimpleAdapter;
@@ -129,8 +130,9 @@ public class PostDetailActivity extends SameStyleActivity implements PostDetailC
     }
 
     private void jumpToUserProfile(User user) {
-        // TODO: 2019/3/12 jump to user profile
-        ToastUtils.showToast("jump to user profile");
+        startActivity(
+                UserProfileActivity.newIntent(this, user)
+        );
     }
 
     @Override
