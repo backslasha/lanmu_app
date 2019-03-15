@@ -15,7 +15,7 @@ public interface PostDetailContract {
 
     }
 
-    interface PostDetailModel extends BaseModel<BookPost> {
+    interface PostDetailModel extends BaseModel {
 
     }
 }

@@ -14,9 +14,27 @@ public class User implements Serializable {
     @SerializedName("password")
     @Expose
     private String password;
+    @SerializedName("id")
+    @Expose
+    private long id;
     @SerializedName("avatarUrl")
     @Expose
     private String avatarUrl;
+
+    public User(String username, String password, long id, String avatarUrl) {
+        this.username = username;
+        this.password = password;
+        this.id = id;
+        this.avatarUrl = avatarUrl;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getUsername() {
         return username;

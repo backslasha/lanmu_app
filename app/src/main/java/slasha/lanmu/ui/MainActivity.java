@@ -18,7 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import slasha.lanmu.R;
-import slasha.lanmu.Setting;
+import slasha.lanmu.GlobalBuffer;
 import slasha.lanmu.business.search_result.SearchResultActivity;
 import slasha.lanmu.utils.ToastUtils;
 
@@ -101,13 +101,13 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_camera) {
             // Handle the camera action
             // 使用本地假数据
-            Setting.Debug.sUseFakeData = true;
+            GlobalBuffer.Debug.sUseFakeData = true;
         } else if (id == R.id.nav_gallery) {
-            Setting.Debug.sUseFakeData = false;
+            GlobalBuffer.Debug.sUseFakeData = false;
         } else if (id == R.id.nav_slideshow) {
-            Setting.Debug.sUseFakeData = false;
+            GlobalBuffer.Debug.sUseFakeData = false;
         } else if (id == R.id.nav_manage) {
-            Setting.Debug.sUseFakeData = false;
+            GlobalBuffer.Debug.sUseFakeData = false;
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {

@@ -98,9 +98,14 @@ public class SearchResultActivity extends SameStyleActivity implements
     private void showBookPostList(List<BookPost> bookPosts) {
         if (mBookPostAdapter == null) {
             mBookPostAdapter = new SimpleAdapter<BookPost>(
-                    SearchResultActivity.this, R.layout.item_book_post) {
+                    SearchResultActivity.this) {
                 @Override
-                public void convert(SimpleHolder holder, BookPost bookPost) {
+                protected int layoutResId(int viewType) {
+                    return R.layout.item_book_post;
+                }
+
+                @Override
+                public void bind(SimpleHolder holder, BookPost bookPost) {
                     Book book = bookPost.getBook();
                     CreateInfo createInfo = bookPost.getCreateInfo();
                     if (book != null) {

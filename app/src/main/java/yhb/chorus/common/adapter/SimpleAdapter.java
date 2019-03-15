@@ -1,6 +1,8 @@
 package yhb.chorus.common.adapter;
 
 import android.content.Context;
+import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
@@ -16,16 +18,14 @@ import yhb.chorus.common.adapter.base.SimpleHolder;
 
 public abstract class SimpleAdapter<Entity> extends RecyclerView.Adapter<SimpleHolder> {
 
-    protected int mLayoutId;
+    private Context mContext;
 
-    protected Context mContext;
+    private List<Entity> mEntities;
 
-    protected List<Entity> mEntities;
     private OnItemClickListener mOnItemClickListener;
 
-    protected SimpleAdapter(Context context, int layoutId) {
+    protected SimpleAdapter(Context context) {
         mContext = context;
-        mLayoutId = layoutId;
         try {
             //noinspection unchecked
             mEntities = ArrayList.class.newInstance();
@@ -34,14 +34,18 @@ public abstract class SimpleAdapter<Entity> extends RecyclerView.Adapter<SimpleH
         }
     }
 
+    @NonNull
     @Override
-    public SimpleHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
-        return SimpleHolder.createViewHolder(mContext, parent, mLayoutId);
+    public SimpleHolder onCreateViewHolder(@NonNull final ViewGroup parent, int viewType) {
+        return SimpleHolder.createViewHolder(mContext, parent, layoutResId(viewType));
     }
 
+    @LayoutRes
+    protected abstract int layoutResId(int viewType);
+
     @Override
-    public void onBindViewHolder(SimpleHolder holder, int position) {
-        convert(holder, mEntities.get(position));
+    public void onBindViewHolder(@NonNull SimpleHolder holder, int position) {
+        bind(holder, mEntities.get(position));
     }
 
     @Override
@@ -49,7 +53,7 @@ public abstract class SimpleAdapter<Entity> extends RecyclerView.Adapter<SimpleH
         return mEntities.size();
     }
 
-    public abstract void convert(SimpleHolder holder, Entity entity);
+    protected abstract void bind(SimpleHolder holder, Entity entity);
 
     public void performDataSetChanged(List<Entity> entities) {
         if (entities == null) {
@@ -90,9 +94,9 @@ public abstract class SimpleAdapter<Entity> extends RecyclerView.Adapter<SimpleH
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.mOnItemClickListener = onItemClickListener;
-}
+    }
 
-interface OnItemClickListener {
-    void onItemClick(int position);
-}
+    interface OnItemClickListener {
+        void onItemClick(int position);
+    }
 }

@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 /**
  * Created by yhb on 17-12-16.
  */
@@ -20,11 +22,11 @@ public class SimpleHolder extends RecyclerView.ViewHolder {
     private View mConvertView;
     private Context mContext;
 
-    public SimpleHolder(Context context, View itemView) {
+    private SimpleHolder(Context context, View itemView) {
         super(itemView);
         mContext = context;
         mConvertView = itemView;
-        mViews = new SparseArray<View>();
+        mViews = new SparseArray<>();
     }
 
 
@@ -39,30 +41,48 @@ public class SimpleHolder extends RecyclerView.ViewHolder {
 
     /**
      * 通过viewId获取控件
-     *
-     * @param viewId
-     * @return
      */
-    public <T extends View> T getView(int viewId) {
+    public View getView(int viewId) {
         View view = mViews.get(viewId);
         if (view == null) {
             view = mConvertView.findViewById(viewId);
             mViews.put(viewId, view);
         }
-        return (T) view;
+        return view;
     }
 
     public void setText(@IdRes int idRes, String content) {
-        TextView textView = getView(idRes);
+        TextView textView = (TextView) getView(idRes);
         if (textView != null) {
             textView.setText(content);
         }
     }
 
     public void setImage(@IdRes int idRes, @DrawableRes int drawableRes) {
-        ImageView imageView = getView(idRes);
+        ImageView imageView = (ImageView) getView(idRes);
         if (imageView != null) {
             imageView.setImageResource(drawableRes);
+        }
+    }
+
+    public void setImage(@IdRes int idRes, String url) {
+        Picasso.with(mContext)
+                .load(url)
+                .into((ImageView) getView(idRes));
+    }
+
+    public void setOnClickListener(@IdRes int idRes, View.OnClickListener onClickListener) {
+        View view = getView(idRes);
+        if (view != null) {
+            view.setOnClickListener(onClickListener);
+        }
+    }
+
+    public void setOnLongClickListener(@IdRes int idRes,
+                                       View.OnLongClickListener onLongClickListener) {
+        View view = getView(idRes);
+        if (view != null) {
+            view.setOnLongClickListener(onLongClickListener);
         }
     }
 }

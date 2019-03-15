@@ -101,9 +101,14 @@ public class PostDetailActivity extends SameStyleActivity implements PostDetailC
         } else {
             if (mAdapter == null) {
                 mAdapter = new SimpleAdapter<Comment>(
-                        PostDetailActivity.this, R.layout.item_comment) {
+                        PostDetailActivity.this) {
                     @Override
-                    public void convert(SimpleHolder holder, Comment comment) {
+                    protected int layoutResId(int viewType) {
+                        return R.layout.item_comment;
+                    }
+
+                    @Override
+                    public void bind(SimpleHolder holder, Comment comment) {
                         Picasso.with(LanmuApplication.instance())
                                 .load(comment.getFrom().getAvatarUrl())
                                 .into((ImageView) holder.getView(R.id.iv_avatar));

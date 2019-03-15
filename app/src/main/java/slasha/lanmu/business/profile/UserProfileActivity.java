@@ -11,6 +11,7 @@ import java.io.Serializable;
 import slasha.lanmu.R;
 import slasha.lanmu.SameStyleActivity;
 import slasha.lanmu.bean.User;
+import slasha.lanmu.business.chat.ChatActivity;
 import slasha.lanmu.utils.ToastUtils;
 
 public class UserProfileActivity extends SameStyleActivity implements ProfileContract.ProfileView {
@@ -59,8 +60,8 @@ public class UserProfileActivity extends SameStyleActivity implements ProfileCon
     }
 
     private void jumpToChatPage() {
-        // TODO: 2019/3/12 jump to chat page
-        ToastUtils.showToast("jump to chat page!");
+        Intent intent = ChatActivity.newIntent(this, mUser);
+        startActivity(intent);
     }
 
     @Override
