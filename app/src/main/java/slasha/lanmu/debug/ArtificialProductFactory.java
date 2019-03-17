@@ -7,6 +7,7 @@ import java.util.List;
 
 import slasha.lanmu.bean.BookPost;
 import slasha.lanmu.bean.BookPosts;
+import slasha.lanmu.bean.LoginResult;
 import slasha.lanmu.bean.Message;
 import slasha.lanmu.bean.User;
 
@@ -33,6 +34,13 @@ public class ArtificialProductFactory {
         return new Gson().
                 fromJson(
                         readStringFromAsset("sample/user.json"), User.class
+                );
+    }
+
+    public static LoginResult loginResult() {
+        return new Gson().
+                fromJson(
+                        readStringFromAsset("sample/login.json"), LoginResult.class
                 );
     }
 }

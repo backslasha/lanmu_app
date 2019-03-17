@@ -1,5 +1,8 @@
 package slasha.lanmu.utils;
 
+import android.os.Handler;
+import android.os.Looper;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
@@ -21,5 +24,11 @@ public class AppUtils {
             e.printStackTrace();
         }
         return null;
+    }
+
+    private static Handler sMainHandler = new Handler(Looper.getMainLooper());
+
+    public static void runOnUiThread(Runnable runnable) {
+        sMainHandler.post(runnable);
     }
 }

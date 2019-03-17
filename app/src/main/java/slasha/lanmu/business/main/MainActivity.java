@@ -1,4 +1,4 @@
-package slasha.lanmu.ui;
+package slasha.lanmu.business.main;
 
 import android.app.SearchManager;
 import android.content.Context;
@@ -16,16 +16,28 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-import slasha.lanmu.R;
+import com.squareup.picasso.Picasso;
+
 import slasha.lanmu.GlobalBuffer;
+import slasha.lanmu.R;
+import slasha.lanmu.bean.User;
+import slasha.lanmu.business.login.LoginActivity;
 import slasha.lanmu.business.search_result.SearchResultActivity;
 import slasha.lanmu.utils.ToastUtils;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, GlobalBuffer.AccountInfo.UserInfoChangeListener {
 
     private SearchView mSearchView;
+    private NavigationView mNavigationView;
+
+    public static Intent newIntent(Context context) {
+        return new Intent(context, MainActivity.class);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,9 +60,34 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-        navigationView.setCheckedItem(R.id.nav_gallery);
+        mNavigationView = findViewById(R.id.nav_view);
+        mNavigationView.setNavigationItemSelectedListener(this);
+        mNavigationView.setCheckedItem(R.id.nav_gallery);
+        updateNavHeaderUI(GlobalBuffer.AccountInfo.currentUser());
+
+        GlobalBuffer.AccountInfo.registerLoginStatusListener(this);
+    }
+
+    private void updateNavHeaderUI(User user) {
+        View root = mNavigationView.getHeaderView(0);
+        if (user == null) {
+            ((ImageView) root.findViewById(R.id.iv_avatar)).setImageResource(R.mipmap.ic_launcher);
+            ((TextView) root.findViewById(R.id.tv_nav_header_title)).setText(R.string.nav_header_title);
+            ((TextView) root.findViewById(R.id.tv_nav_header_sub_title))
+                    .setText(R.string.nav_header_subtitle);
+
+        } else {
+            Picasso.with(this)
+                    .load(user.getAvatarUrl())
+                    .into((ImageView) root.findViewById(R.id.iv_avatar));
+
+            ((TextView) root.findViewById(R.id.tv_nav_header_title)).setText(
+                    user.getUsername()
+            );
+//        ((TextView) mNavigationView.findViewById(R.id.tv_nav_header_sub_title)).setText(
+//                user.getEmail()
+//        );
+        }
     }
 
     @Override
@@ -92,6 +129,12 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        GlobalBuffer.AccountInfo.unregisterLoginStatusListener(this);
+    }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -110,13 +153,18 @@ public class MainActivity extends AppCompatActivity
             GlobalBuffer.Debug.sUseFakeData = false;
         } else if (id == R.id.nav_share) {
 
-        } else if (id == R.id.nav_send) {
-
+        } else if (id == R.id.nav_loggout) {
+            jumpToLoginPage();
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void jumpToLoginPage() {
+        finish();
+        startActivity(LoginActivity.newIntent(this));
     }
 
     @Override
@@ -134,5 +182,16 @@ public class MainActivity extends AppCompatActivity
                     )
             );
         }
+    }
+
+    @Override
+    public void onLoggedIn(User user) {
+        updateNavHeaderUI(user);
+    }
+
+    @Override
+    public void onLoggedOut() {
+        updateNavHeaderUI(null);
+
     }
 }

@@ -45,12 +45,12 @@ public class ChatActivity extends SameStyleActivity
         // handle Intent
         handleIntent(getIntent());
 
-        if (!GlobalBuffer.Profile.loggedIn()) {
+        if (!GlobalBuffer.AccountInfo.loggedIn()) {
             throw new IllegalArgumentException();
         }
 
         myPresenter().performPullMessages(
-                GlobalBuffer.Profile.currentUser().getId(),
+                GlobalBuffer.AccountInfo.currentUser().getId(),
                 mChatGuy.getId()
         );
 
@@ -121,7 +121,7 @@ public class ChatActivity extends SameStyleActivity
 
         ChatAdapter(Context context) {
             super(context);
-            if (!GlobalBuffer.Profile.loggedIn()) {
+            if (!GlobalBuffer.AccountInfo.loggedIn()) {
                 throw new IllegalArgumentException("init ChatAdapter under un loggedIn status!");
             }
         }
@@ -156,7 +156,7 @@ public class ChatActivity extends SameStyleActivity
 
         private int getItemViewType(Message message) {
             User from = message.getFrom();
-            if (from.getId() == GlobalBuffer.Profile.currentUser().getId()) {
+            if (from.getId() == GlobalBuffer.AccountInfo.currentUser().getId()) {
                 return VIEW_TYPE_FROM_ME;
             } else {
                 return VIEW_TYPE_FROM_OTHERS;
