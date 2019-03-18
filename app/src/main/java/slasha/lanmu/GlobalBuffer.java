@@ -10,6 +10,7 @@ public class GlobalBuffer {
     public static class Debug {
         public static boolean sUseFakeData = false;
         public static boolean sUserFakeLoginResult = true;
+        public static boolean sUserFakeBookPostFlow = true;
     }
 
     public static class AccountInfo {

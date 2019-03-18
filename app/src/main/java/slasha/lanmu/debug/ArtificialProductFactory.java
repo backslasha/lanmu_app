@@ -6,6 +6,7 @@ import com.google.gson.reflect.TypeToken;
 import java.util.List;
 
 import slasha.lanmu.bean.BookPost;
+import slasha.lanmu.bean.BookPostFlow;
 import slasha.lanmu.bean.BookPosts;
 import slasha.lanmu.bean.LoginResult;
 import slasha.lanmu.bean.Message;
@@ -41,6 +42,13 @@ public class ArtificialProductFactory {
         return new Gson().
                 fromJson(
                         readStringFromAsset("sample/login.json"), LoginResult.class
+                );
+    }
+
+    public static BookPostFlow offerPostFlow() {
+        return new Gson().
+                fromJson(
+                        readStringFromAsset("sample/bookpost_flow.json"), BookPostFlow.class
                 );
     }
 }

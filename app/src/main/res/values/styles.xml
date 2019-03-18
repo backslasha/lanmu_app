@@ -24,6 +24,11 @@
         <!--<item name="searchIcon">@drawable/icon_search</item>-->
     </style>
 
+    <style name="TextViewCaption">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <declare-styleable name="round_image_view">
         <attr name="border_width" format="dimension" />
         <attr name="border_incolor" format="color" />
