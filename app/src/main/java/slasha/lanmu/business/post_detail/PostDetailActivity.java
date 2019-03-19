@@ -3,6 +3,8 @@ package slasha.lanmu.business.post_detail;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -19,23 +21,25 @@ import slasha.lanmu.application.LanmuApplication;
 import slasha.lanmu.bean.Book;
 import slasha.lanmu.bean.BookPost;
 import slasha.lanmu.bean.Comment;
-import slasha.lanmu.bean.CreateInfo;
 import slasha.lanmu.bean.User;
 import slasha.lanmu.business.profile.UserProfileActivity;
 import slasha.lanmu.utils.CommonUtils;
 import slasha.lanmu.utils.ToastUtils;
+import slasha.lanmu.widget.AppBarStateChangeListener;
+import slasha.lanmu.widget.StickyHeaderItemDecoration;
 import yhb.chorus.common.adapter.SimpleAdapter;
 import yhb.chorus.common.adapter.base.SimpleHolder;
 
 public class PostDetailActivity extends SameStyleActivity implements PostDetailContract.PostDetailView {
 
 
+    private static final CharSequence EMPTY_TITLE = " ";
     private static final String EXTRA_BOOK_POST = "extra_book_post";
     private RecyclerView mRecyclerView;
     private TextView mTvTitle, mTvAuthor, mTvDescription;
     private ImageView mIvCover;
     private SimpleAdapter<Comment> mAdapter;
-
+    private BookPost mBookPost;
 
     public static Intent newIntent(Context context, BookPost bookPost) {
         Intent intent = new Intent(context, PostDetailActivity.class);
@@ -53,6 +57,23 @@ public class PostDetailActivity extends SameStyleActivity implements PostDetailC
         mTvAuthor = findViewById(R.id.tv_author_name);
         mTvDescription = findViewById(R.id.tv_description);
 
+        CollapsingToolbarLayout collapsingToolbarLayout =
+                findViewById(R.id.collapsing_toolbar_layout);
+        collapsingToolbarLayout.setTitle(EMPTY_TITLE);// "" 将 显示 app label
+
+        AppBarLayout appbarLayout = findViewById(R.id.app_bar_layout);
+        appbarLayout.addOnOffsetChangedListener(new AppBarStateChangeListener() {
+            @Override
+            protected void onCollapsed(AppBarLayout appBarLayout) {
+                collapsingToolbarLayout.setTitle(mBookPost.getBook().getName());
+            }
+
+            @Override
+            protected void onScrolled(AppBarLayout appBarLayout) {
+                collapsingToolbarLayout.setTitle(EMPTY_TITLE);
+            }
+        });
+
         // creator info
 
 
@@ -67,8 +88,8 @@ public class PostDetailActivity extends SameStyleActivity implements PostDetailC
         if (intent == null) {
             return;
         }
-        BookPost bookPost = (BookPost) intent.getSerializableExtra(EXTRA_BOOK_POST);
-        showDetail(bookPost);
+        mBookPost = (BookPost) intent.getSerializableExtra(EXTRA_BOOK_POST);
+        showDetail(mBookPost);
     }
 
     @Override
@@ -81,11 +102,10 @@ public class PostDetailActivity extends SameStyleActivity implements PostDetailC
         showBookInfo(bookPost.getBook());
         showComments(bookPost.getComments());
         // TODO: 2019/3/12 add creator info
-        // showCreatorInfo(bookPost.getCreateInfo());
+        // showCreatorInfo(mBookPost.getCreateInfo());
     }
 
     private void showBookInfo(Book book) {
-        setTitle(book.getName());
         Picasso.with(LanmuApplication.instance())
                 .load(book.getCoverUrl())
                 .into(mIvCover);
@@ -129,6 +149,29 @@ public class PostDetailActivity extends SameStyleActivity implements PostDetailC
                 };
                 mRecyclerView.setAdapter(mAdapter);
                 mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+                mRecyclerView.addItemDecoration(
+                        new StickyHeaderItemDecoration.Builder(
+                                new StickyHeaderItemDecoration.HeaderHelper() {
+                                    @Override
+                                    public boolean isGroupCaptain(int position) {
+                                        return position == 0;
+                                    }
+
+                                    @Override
+                                    public String getGroupTitle(int position) {
+                                        return "评论列表";
+                                    }
+
+                                    @Override
+                                    public int getItemCount() {
+                                        return comments.size();
+                                    }
+                                }
+                        ).setHeaderTextColor(getResources().getColor(R.color.colorPrimary))
+                                .build(this)
+                );
+
+
             }
             mAdapter.performDataSetChanged(comments);
         }

@@ -135,24 +135,15 @@ public class MainActivity extends AppCompatActivity implements MainContract.Main
             mRecyclerView.setAdapter(mAdapter);
             mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
             mRecyclerView.setVisibility(View.VISIBLE);
-            StickyHeaderItemDecoration stickyHeaderItemDecoration = new StickyHeaderItemDecoration(
-                    new ItemDecorationHelper(bookPostFlow)
-            );
-            stickyHeaderItemDecoration.setHeaderBackgroundColor(
-                    getResources().getColor(R.color.colorPrimary)
-            );
-            stickyHeaderItemDecoration.setHeaderTextSize(
-                    DensityUtils.sp2px(this, 18)
-            );
-            stickyHeaderItemDecoration.setHeaderHeight(
-                    DensityUtils.dp2px(MainActivity.this, 24)
-            );
-            stickyHeaderItemDecoration.setHeaderTextPaddingStart(
-                    DensityUtils.dp2px(MainActivity.this, 6)
-            );
-            stickyHeaderItemDecoration.setHeaderTextColor(
-                    Color.WHITE
-            );
+            StickyHeaderItemDecoration stickyHeaderItemDecoration =
+                    new StickyHeaderItemDecoration.Builder(new ItemDecorationHelper(bookPostFlow))
+                            .setHeaderBackgroundColor(getResources().getColor(R.color.colorPrimary))
+                            .setHeaderTextSize(18)
+                            .setHeaderHeight(50)
+                            .setHeaderTextPaddingStart(6)
+                            .setHeaderTextColor(Color.WHITE)
+                            .setPadding(0, 0, 0, 6)
+                            .build(this);
             mRecyclerView.addItemDecoration(stickyHeaderItemDecoration);
         }
         mAdapter.performDataSetChanged(bookPostFlow.getBookPosts());

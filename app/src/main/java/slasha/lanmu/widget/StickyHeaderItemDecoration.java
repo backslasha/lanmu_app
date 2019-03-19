@@ -1,19 +1,170 @@
 package slasha.lanmu.widget;
 
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.support.annotation.ColorInt;
+import android.support.annotation.Dimension;
 import android.support.annotation.NonNull;
+import android.support.annotation.Px;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.View;
-import android.view.ViewGroup;
+
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.LOCAL_VARIABLE;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.RetentionPolicy.CLASS;
 
 
 public class StickyHeaderItemDecoration extends RecyclerView.ItemDecoration {
 
     private static final String TAG = "StickyHeaderItemDecoration";
+    private final HeaderHelper mHeaderHelper;
+    private final Paint mPaintText;
+    private final Paint mPaintRect;
+    private final @ColorInt
+    int mHeaderTextColor;
+    private final @ColorInt
+    int mHeaderBackgroundColor;
+    private final @Px
+    int mHeaderTextSize;
+    private final @Px
+    int mHeaderHeight;
+    private final @Px
+    int mPaddingLeft, mPaddingRight, mPaddingTop, mPaddingBottom;
+    private final @Px
+    int mHeaderTextPaddingStart;
+    private final boolean mHeaderTextCenterVertical;
+
+    private StickyHeaderItemDecoration(@NonNull Context context, @NonNull Builder builder) {
+        mHeaderHelper = builder.mHeaderHelper;
+        mHeaderTextColor = builder.mHeaderTextColor;
+        mHeaderBackgroundColor = builder.mHeaderBackgroundColor;
+        mHeaderTextSize = sp2px(context, builder.mHeaderTextSize);
+        mHeaderHeight = dp2px(context, builder.mHeaderHeight);
+        mHeaderTextPaddingStart = dp2px(context, builder.mHeaderTextPaddingStart);
+        mHeaderTextCenterVertical = builder.mHeaderTextCenterVertical;
+        mPaddingLeft = dp2px(context, builder.mPaddingLeft);
+        mPaddingRight = dp2px(context, builder.mPaddingRight);
+        mPaddingTop = dp2px(context, builder.mPaddingTop);
+        mPaddingBottom = dp2px(context, builder.mPaddingBottom);
+
+        mPaintText = new Paint();
+        mPaintText.setColor(mHeaderTextColor);
+        mPaintText.setTextSize(mHeaderTextSize);
+        mPaintText.setAntiAlias(true);
+        mPaintText.setDither(true);
+
+        mPaintRect = new Paint();
+        mPaintRect.setColor(mHeaderBackgroundColor);
+        mPaintRect.setAntiAlias(true);
+        mPaintRect.setDither(true);
+    }
+
+
+    @Override
+    public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
+        super.onDrawOver(c, parent, state);
+        drawStickyHeaders(c, parent);
+    }
+
+    private void drawStickyHeaders(Canvas c, RecyclerView parent) {
+
+        final int childCount = parent.getChildCount();
+        final int rectLeft = parent.getPaddingLeft() + mPaddingLeft;
+        final int rectRight = parent.getWidth() - parent.getPaddingRight() - mPaddingRight;
+
+        String groupTitle;
+
+        for (int i = 0; i < childCount; i++) {
+            View child = parent.getChildAt(i);
+            int position = parent.getChildAdapterPosition(child);
+            boolean isGroupCaptain = mHeaderHelper.isGroupCaptain(position);
+
+            if (!isGroupCaptain) {
+                // old captain is moved out, the item become captain
+                isGroupCaptain = child.getTop() < mHeaderHeight;
+            }
+
+            // only captain item need a header
+            if (!isGroupCaptain) {
+                continue;
+            }
+
+            groupTitle = mHeaderHelper.getGroupTitle(position);
+
+            // 1. 文字在 item 上方时：rectBottom = child.getTop()
+            // 2. item 和文字 重合时：rectBottom = mDrawRectHeight
+            // 绘制文字的 Rect 区域的 bottom y 坐标
+            int rectBottom = Math.max(child.getTop(), mHeaderHeight);
+
+            boolean isCurrentFixedHeader = rectBottom == mHeaderHeight;
+
+            // if new items follow
+            if (position < mHeaderHelper.getItemCount() - 1) {
+                String nextGroupTitle = mHeaderHelper.getGroupTitle(position + 1);
+                final boolean newGroupComes = !nextGroupTitle.equals(groupTitle);
+                final boolean currentItemIsMovingOut =
+                        child.getBottom() < rectBottom - mPaddingBottom; // 为了推挤时不造成空白1/2
+                if (currentItemIsMovingOut && newGroupComes) {
+                    rectBottom = child.getBottom() + mPaddingBottom; // 为了推挤时不造成空白2/2
+                }
+            }
+
+            int rectTop = rectBottom - mHeaderHeight;
+
+            mPaintText.setTypeface(isCurrentFixedHeader ? Typeface.DEFAULT_BOLD : Typeface.DEFAULT);
+
+            drawHeader(rectLeft, rectTop, rectRight, rectBottom, groupTitle, c);
+
+        }
+
+    }
+
+    private void drawHeader(int left, int top, int right, int bottom, String groupTitle, Canvas c) {
+
+        // 文字区域背景
+        c.drawRect(left + mPaddingLeft,
+                top + mPaddingTop,
+                right - mPaddingRight,
+                bottom - mPaddingBottom, mPaintRect);
+
+        // Group 文字
+        int textHeight = (int) (
+                mPaintText.getFontMetrics().bottom - mPaintText.getFontMetrics().top
+        );
+        int centerOffset = mHeaderTextCenterVertical ?
+                (mHeaderHeight - mPaddingTop - mPaddingBottom - textHeight) / 2 : 0;
+        c.drawText(
+                groupTitle,
+                mHeaderTextPaddingStart + left,
+                bottom - mPaddingBottom - mPaintText.getFontMetrics().bottom - centerOffset,
+                mPaintText
+        );
+
+    }
+
+    @Override
+    public void getItemOffsets(Rect outRect, View view,
+                               RecyclerView parent,
+                               RecyclerView.State state) {
+        super.getItemOffsets(outRect, view, parent, state);
+        int adapterPosition = parent.getChildAdapterPosition(view);
+        if (mHeaderHelper.isGroupCaptain(adapterPosition)) {
+            outRect.set(0, mHeaderHeight, 0, 0);
+        } else {
+            outRect.set(0, 0, 0, 0);
+        }
+    }
 
     public interface HeaderHelper {
         /**
@@ -39,157 +190,97 @@ public class StickyHeaderItemDecoration extends RecyclerView.ItemDecoration {
 
     }
 
-    private HeaderHelper mHeaderHelper;
-    private Paint mPaintText;
-    private Paint mPaintRect;
-    private int mRectHeight;
-    private int mHeaderTextColor = Color.BLACK;
-    private int mHeaderBackgroundColor = Color.TRANSPARENT;
-    private int mHeaderTextSize = 60;
-    private int mHeaderHeight = 60;
-    private int mHeaderTextPaddingStart;
-    private boolean mHeaderTextCenterVertical = true;
+    public static class Builder {
 
+        private HeaderHelper mHeaderHelper;
+        private @Dp
+        int mHeaderTextColor = Color.BLACK;
+        private @ColorInt
+        int mHeaderBackgroundColor = Color.WHITE;
+        private @Sp
+        int mHeaderTextSize = 18;
+        private @Dp
+        int mHeaderHeight = 36;
+        private @Dp
+        int mHeaderTextPaddingStart;
+        private boolean mHeaderTextCenterVertical = true;
+        private @Dp
+        int mPaddingLeft, mPaddingRight, mPaddingTop, mPaddingBottom;
 
-    public StickyHeaderItemDecoration(@NonNull HeaderHelper headerHelper) {
-        super();
-        mHeaderHelper = headerHelper;
-        mRectHeight = mHeaderHeight;
-        mPaintText = new Paint();
-        mPaintText.setColor(mHeaderTextColor);
-        mPaintText.setTextSize(mHeaderTextSize);
-        mPaintText.setAntiAlias(true);
-        mPaintText.setDither(true);
+        public Builder(HeaderHelper headerHelper) {
+            mHeaderHelper = headerHelper;
+        }
 
-        mPaintRect = new Paint();
-        mPaintRect.setColor(mHeaderBackgroundColor);
-        mPaintRect.setAntiAlias(true);
-        mPaintRect.setDither(true);
-    }
+        /*----------------- API -----------------------*/
 
-    @Override
-    public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
-        super.onDrawOver(c, parent, state);
-        drawStickyHeaders(c, parent);
-    }
+        public Builder setHeaderBackgroundColor(int headerBackgroundColor) {
+            mHeaderBackgroundColor = headerBackgroundColor;
+            return this;
+        }
 
-    private void drawStickyHeaders(Canvas c, RecyclerView parent) {
+        public Builder setHeaderTextSize(int headerTextSize) {
+            mHeaderTextSize = headerTextSize;
+            return this;
+        }
 
-        final int childCount = parent.getChildCount();
-        final int rectLeft = parent.getPaddingLeft();
-        final int rectRight = parent.getWidth() - parent.getPaddingRight();
+        public Builder setHeaderHeight(int headerHeight) {
+            mHeaderHeight = headerHeight;
+            return this;
+        }
 
-        String groupTitle;
+        public Builder setHeaderTextColor(int headerTextColor) {
+            mHeaderTextColor = headerTextColor;
+            return this;
+        }
 
-        for (int i = 0; i < childCount; i++) {
+        public Builder setHeaderTextPaddingStart(int headerTextPaddingStart) {
+            mHeaderTextPaddingStart = headerTextPaddingStart;
+            return this;
+        }
 
-            View child = parent.getChildAt(i);
+        public Builder setHeaderTextCenterVertical(boolean headerTextCenterVertical) {
+            mHeaderTextCenterVertical = headerTextCenterVertical;
+            return this;
+        }
 
-            int position = parent.getChildAdapterPosition(child);
+        public Builder setPadding(int left, int top, int right, int bottom) {
+            mPaddingLeft = left;
+            mPaddingRight = right;
+            mPaddingTop = top;
+            mPaddingBottom = bottom;
+            return this;
+        }
 
-            boolean isGroupCaptain = mHeaderHelper.isGroupCaptain(position);
-
-            // 本 Item 不是组内的第一个 Item && 本 Item 还没到达吸顶处，此时本 Item 啥也不用画，continue
-            if (!isGroupCaptain && child.getTop() > mRectHeight) {
-                continue;
-            }
-
-            groupTitle = mHeaderHelper.getGroupTitle(position);
-
-            // 1. 文字在 item 上方时：rectBottom = child.getTop()
-            // 2. item 和文字 重合时：rectBottom = mRectHeight
-            // 绘制文字的 Rect 区域的 bottom y 坐标
-            int rectBottom = Math.max(child.getTop(), mRectHeight);
-
-            // TODO: 2019/3/18 解决marginTop 在 header 之上的问题
-//            // 先画头部，中间为 marginTop
-//            ViewGroup.LayoutParams layoutParams = child.getLayoutParams();
-//            if (layoutParams instanceof ViewGroup.MarginLayoutParams) {
-//                rectBottom -= ((ViewGroup.MarginLayoutParams) layoutParams).topMargin;
-//            }
-
-            boolean isTopHeader = rectBottom == mRectHeight;
-
-            // 如果有下一个 Item
-            if (position < mHeaderHelper.getItemCount() - 1) {
-                String nextGroupTitle = mHeaderHelper.getGroupTitle(position + 1);
-                // 下一个 Item 头部和本个头部的不一样 && 本 Item 的 bottom 越过 mRectHeight
-                if (!nextGroupTitle.equals(groupTitle) && child.getBottom() < rectBottom) {
-                    //本个 Item 头部需要往上移动
-                    rectBottom = child.getBottom();
-                }
-            }
-
-            // 文字区域背景
-            int rectTop = rectBottom - mRectHeight;
-
-            mPaintText.setTypeface(isTopHeader ? Typeface.DEFAULT_BOLD : Typeface.DEFAULT);
-
-            drawHeader(rectLeft, rectTop, rectRight, rectBottom, groupTitle, c);
-
+        public StickyHeaderItemDecoration build(Context context) {
+            return new StickyHeaderItemDecoration(
+                    context, this
+            );
         }
 
     }
 
-    private void drawHeader(int left, int top, int right, int bottom, String groupTitle, Canvas c) {
-
-        // 文字区域背景
-        c.drawRect(left, top, right, bottom, mPaintRect);
-
-        // Group 文字
-        int textHeight = (int) (
-                mPaintText.getFontMetrics().bottom - mPaintText.getFontMetrics().top
-        );
-        int centerOffset = mHeaderTextCenterVertical ? (mRectHeight - textHeight) / 2 : 0;
-        c.drawText(
-                groupTitle,
-                mHeaderTextPaddingStart + left,
-                bottom - mPaintText.getFontMetrics().bottom - centerOffset,
-                mPaintText
-        );
-
+    private static int dp2px(Context context, float dpVal) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                dpVal, context.getResources().getDisplayMetrics());
     }
 
-    @Override
-    public void getItemOffsets(Rect outRect, View view,
-                               RecyclerView parent,
-                               RecyclerView.State state) {
-        super.getItemOffsets(outRect, view, parent, state);
-        int adapterPosition = parent.getChildAdapterPosition(view);
-        if (mHeaderHelper.isGroupCaptain(adapterPosition)) {
-            outRect.set(0, mRectHeight, 0, 0);
-        } else {
-            outRect.set(0, 0, 0, 0);
-        }
+    private static int sp2px(Context context, float spVal) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
+                spVal, context.getResources().getDisplayMetrics());
     }
 
-    /*----------------- API -----------------------*/
-
-    public void setHeaderBackgroundColor(int headerBackgroundColor) {
-        mHeaderBackgroundColor = headerBackgroundColor;
-        mPaintRect.setColor(mHeaderBackgroundColor);
+    @Documented
+    @Retention(CLASS)
+    @Target({METHOD, PARAMETER, FIELD, LOCAL_VARIABLE})
+    @Dimension(unit = Dimension.DP)
+    @interface Dp {
     }
 
-    public void setHeaderTextSize(int headerTextSize) {
-        mHeaderTextSize = headerTextSize;
-        mPaintText.setTextSize(mHeaderTextSize);
-    }
-
-    public void setHeaderHeight(int headerHeight) {
-        mHeaderHeight = headerHeight;
-    }
-
-    public void setHeaderTextColor(int headerTextColor) {
-        mHeaderTextColor = headerTextColor;
-        mPaintText.setColor(mHeaderTextColor);
-    }
-
-    public void setHeaderTextPaddingStart(int headerTextPaddingStart) {
-        mHeaderTextPaddingStart = headerTextPaddingStart;
-    }
-
-    public void setHeaderTextCenterVertical(boolean headerTextCenterVertical) {
-        mHeaderTextCenterVertical = headerTextCenterVertical;
+    @Documented
+    @Retention(CLASS)
+    @Target({METHOD, PARAMETER, FIELD, LOCAL_VARIABLE})
+    @Dimension(unit = Dimension.SP)
+    @interface Sp {
     }
 
 
