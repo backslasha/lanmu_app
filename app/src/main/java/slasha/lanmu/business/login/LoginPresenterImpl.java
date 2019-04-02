@@ -1,6 +1,6 @@
 package slasha.lanmu.business.login;
 
-import android.support.annotation.WorkerThread;
+import androidx.annotation.WorkerThread;
 import android.util.Log;
 
 import slasha.lanmu.GlobalBuffer;

@@ -1,6 +1,6 @@
 package slasha.lanmu.business.chat;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.util.List;
 

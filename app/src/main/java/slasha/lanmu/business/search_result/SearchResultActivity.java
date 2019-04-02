@@ -3,9 +3,9 @@ package slasha.lanmu.business.search_result;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.MenuItem;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -23,7 +23,6 @@ import slasha.lanmu.bean.CreateInfo;
 import slasha.lanmu.business.create_post.CreatePostActivity;
 import slasha.lanmu.business.post_detail.PostDetailActivity;
 import slasha.lanmu.utils.CommonUtils;
-import slasha.lanmu.utils.ToastUtils;
 import yhb.chorus.common.adapter.SimpleAdapter;
 import yhb.chorus.common.adapter.base.SimpleHolder;
 
