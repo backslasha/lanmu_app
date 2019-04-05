@@ -1,12 +1,16 @@
 package slasha.lanmu.utils;
 
+import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
+import androidx.annotation.Nullable;
 import slasha.lanmu.application.LanmuApplication;
+import slasha.lanmu.bean.BookPost;
+import slasha.lanmu.business.post_detail.PostDetailActivity;
 
 public class AppUtils {
     public static String readStringFromAsset(String fileName) {
@@ -30,5 +34,18 @@ public class AppUtils {
 
     public static void runOnUiThread(Runnable runnable) {
         sMainHandler.post(runnable);
+    }
+
+    public static void postOnUiThread(Runnable runnable, long delayMillis) {
+        sMainHandler.postDelayed(runnable, delayMillis);
+    }
+
+    public static void jumpToPostDetail(@Nullable Context context, BookPost bookPost) {
+        if (context == null) {
+            return;
+        }
+        context.startActivity(
+                PostDetailActivity.newIntent(context, bookPost)
+        );
     }
 }

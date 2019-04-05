@@ -1,8 +1,6 @@
 package slasha.lanmu.business.main;
 
-import slasha.lanmu.GlobalBuffer;
-import slasha.lanmu.bean.BookPostFlow;
-import slasha.lanmu.debug.ArtificialProductFactory;
+import slasha.lanmu.utils.AppUtils;
 
 class MainPresenterImpl implements MainContract.MainPresenter {
 
@@ -15,13 +13,13 @@ class MainPresenterImpl implements MainContract.MainPresenter {
     }
 
     @Override
-    public void performPullBookPostFlow() {
-        BookPostFlow bookPostFlow;
-        if (GlobalBuffer.Debug.sUserFakeBookPostFlow) {
-            bookPostFlow = ArtificialProductFactory.offerPostFlow();
-        } else {
-            bookPostFlow = mMainModel.offerPostFlow();
-        }
-        mMainView.showBookPostFlow(bookPostFlow);
+    public void performPullBookPostFlow(BookPostFlowFragment.FlowType flowType) {
+        mMainView.showLoadingIndicator();
+        mMainModel.offerPostFlow(flowType.getType(), bookPostFlow ->
+                AppUtils.runOnUiThread(() -> {
+                    mMainView.showBookPostFlow(bookPostFlow);
+                    mMainView.hideLoadingIndicator();
+                })
+        );
     }
 }

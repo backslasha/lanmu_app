@@ -3,6 +3,7 @@ package slasha.lanmu.business.search_result;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -83,6 +84,16 @@ public class SearchResultActivity extends SameStyleActivity implements
             );
         }
         return mPresenter;
+    }
+
+    @Override
+    public void showLoadingIndicator() {
+        showProgressDialog();
+    }
+
+    @Override
+    public void hideLoadingIndicator() {
+        hideProgressDialog();
     }
 
     @Override

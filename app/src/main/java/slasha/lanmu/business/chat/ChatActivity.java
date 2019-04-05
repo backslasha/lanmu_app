@@ -3,9 +3,11 @@ package slasha.lanmu.business.chat;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.View;
 
 import java.util.List;
@@ -101,6 +103,16 @@ public class ChatActivity extends SameStyleActivity
             );
         }
         return mPresenter;
+    }
+
+    @Override
+    public void showLoadingIndicator() {
+        showProgressDialog();
+    }
+
+    @Override
+    public void hideLoadingIndicator() {
+        hideProgressDialog();
     }
 
     @Override

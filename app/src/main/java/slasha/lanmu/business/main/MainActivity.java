@@ -2,42 +2,28 @@ package slasha.lanmu.business.main;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
 
-import com.squareup.picasso.Picasso;
+import com.google.android.material.tabs.TabLayout;
 
-import java.util.List;
-
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 import slasha.lanmu.R;
-import slasha.lanmu.application.LanmuApplication;
-import slasha.lanmu.bean.Book;
-import slasha.lanmu.bean.BookPost;
-import slasha.lanmu.bean.BookPostFlow;
-import slasha.lanmu.bean.CreateInfo;
 import slasha.lanmu.business.main.delegate.ActionbarDelegate;
 import slasha.lanmu.business.main.delegate.DrawerDelegate;
-import slasha.lanmu.business.post_detail.PostDetailActivity;
 import slasha.lanmu.business.search_result.SearchResultActivity;
 import slasha.lanmu.utils.ToastUtils;
-import slasha.lanmu.widget.StickyHeaderItemDecoration;
-import yhb.chorus.common.adapter.SimpleAdapter;
-import yhb.chorus.common.adapter.base.SimpleHolder;
 
-public class MainActivity extends AppCompatActivity implements MainContract.MainView {
+public class MainActivity extends AppCompatActivity {
 
     private DrawerDelegate mDrawerDelegate;
     private ActionbarDelegate mActionbarDelegate;
-    private MainPresenterImpl mMainPresenter;
-    private RecyclerView mRecyclerView;
-    private SimpleAdapter<BookPost> mAdapter;
+
+    private TabLayout mTabLayout;
+    private ViewPager mViewPager;
+
 
     public static Intent newIntent(Context context) {
         return new Intent(context, MainActivity.class);
@@ -54,10 +40,15 @@ public class MainActivity extends AppCompatActivity implements MainContract.Main
         mDrawerDelegate = new DrawerDelegate(this);
         mDrawerDelegate.delegate();
 
-        mRecyclerView = findViewById(R.id.recycler_view);
+        mTabLayout = findViewById(R.id.tab_layout);
+        mViewPager = findViewById(R.id.view_pager);
 
-        // pull data from somewhere
-        myPresenter().performPullBookPostFlow();
+        mViewPager.setAdapter(new BookPostFlowPagerAdapter(
+                getSupportFragmentManager(), new BookPostFlowFragment.FlowType[]{
+                        BookPostFlowFragment.FlowType.SUGGESTION,
+                        BookPostFlowFragment.FlowType.MY_TRACK,
+        }));
+        mTabLayout.setupWithViewPager(mViewPager);
     }
 
     @Override
@@ -97,111 +88,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.Main
                             String.valueOf(mActionbarDelegate.getSearchView().getQuery())
                     )
             );
-        }
-    }
-
-    @Override
-    public void showBookPostFlow(BookPostFlow bookPostFlow) {
-        if (mAdapter == null) {
-            mAdapter = new SimpleAdapter<BookPost>(
-                    MainActivity.this) {
-                @Override
-                protected int layoutResId(int viewType) {
-                    return R.layout.item_book_post;
-                }
-
-                @Override
-                public void bind(SimpleHolder holder, BookPost bookPost) {
-                    Book book = bookPost.getBook();
-                    CreateInfo createInfo = bookPost.getCreateInfo();
-                    if (book != null) {
-                        holder.setText(R.id.tv_title, book.getName());
-                        holder.setText(R.id.tv_author_name, book.getAuthor());
-                        Picasso.with(LanmuApplication.instance())
-                                .load(book.getCoverUrl())
-                                .into((ImageView) holder.getView(R.id.iv_cover));
-                    }
-
-                    if (createInfo != null) {
-                        holder.setText(R.id.tv_description, createInfo.getDescription());
-                    }
-
-                    holder.itemView.setOnClickListener(v -> jumpToPostDetail(bookPost));
-                }
-
-            };
-            mRecyclerView.setAdapter(mAdapter);
-            mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-            mRecyclerView.setVisibility(View.VISIBLE);
-            StickyHeaderItemDecoration stickyHeaderItemDecoration =
-                    new StickyHeaderItemDecoration.Builder(new ItemDecorationHelper(bookPostFlow))
-                            .setHeaderBackgroundColor(getResources().getColor(R.color.colorPrimary))
-                            .setHeaderTextSize(18)
-                            .setHeaderHeight(50)
-                            .setHeaderTextPaddingStart(6)
-                            .setHeaderTextColor(Color.WHITE)
-                            .setPadding(0, 0, 0, 6)
-                            .build(this);
-            mRecyclerView.addItemDecoration(stickyHeaderItemDecoration);
-        }
-        mAdapter.performDataSetChanged(bookPostFlow.getBookPosts());
-    }
-
-    private void jumpToPostDetail(BookPost bookPost) {
-        startActivity(
-                PostDetailActivity.newIntent(this, bookPost)
-        );
-    }
-
-    @Override
-    public MainContract.MainPresenter myPresenter() {
-        if (mMainPresenter == null) {
-            mMainPresenter = new MainPresenterImpl(this, new MainModelImpl());
-        }
-        return mMainPresenter;
-    }
-
-    private class ItemDecorationHelper implements StickyHeaderItemDecoration.HeaderHelper {
-
-        private BookPostFlow mBookPostFlow;
-        private List<BookPost> mBookPosts;
-        private final int[] mCounts = new int[3];
-        private final String[] mTitles = {
-                "热门帖子", "推荐帖子", "浏览历史", "值得一看"
-        };
-
-        private ItemDecorationHelper(BookPostFlow bookPostFlow) {
-            mBookPostFlow = bookPostFlow;
-            mBookPosts = mBookPostFlow.getBookPosts();
-            mCounts[0] = mBookPostFlow.getHotCount();
-            mCounts[1] = mBookPostFlow.getSuggestCount();
-            mCounts[2] = mBookPostFlow.getHistoryCount();
-        }
-
-        @Override
-        public boolean isGroupCaptain(int position) {
-            int indexBase1 = position + 1;
-            return 1 == indexBase1
-                    || mCounts[0] + 1 == indexBase1
-                    || mCounts[0] + mCounts[1] + 1 == indexBase1;
-        }
-
-        @Override
-        public String getGroupTitle(int position) {
-            int indexBase1 = position + 1;
-            if (indexBase1 <= mCounts[0]) {
-                return mTitles[0];
-            } else if (indexBase1 <= mCounts[0] + mCounts[1]) {
-                return mTitles[1];
-            } else if (indexBase1 <= mCounts[0] + mCounts[1] + mCounts[2]) {
-                return mTitles[2];
-            }
-            return mTitles[3];
-        }
-
-        @Override
-        public int getItemCount() {
-            return mBookPosts == null ? 0 : mBookPosts.size();
         }
     }
 

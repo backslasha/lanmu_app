@@ -146,6 +146,16 @@ public class LoginActivity extends SameStyleActivity implements LoginContract.Lo
         return mLoginPresenter;
     }
 
+    @Override
+    public void showLoadingIndicator() {
+        showProgressDialog();
+    }
+
+    @Override
+    public void hideLoadingIndicator() {
+        hideProgressDialog();
+    }
+
     private void jumpToMainPage() {
         startActivity(
                 MainActivity.newIntent(this)

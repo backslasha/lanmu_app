@@ -13,7 +13,9 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.NinePatchDrawable;
 import android.util.AttributeSet;
 
+import androidx.annotation.NonNull;
 import slasha.lanmu.R;
+import slasha.lanmu.utils.CommonUtils;
 
 
 /**
@@ -86,7 +88,7 @@ public class RoundImageView extends androidx.appcompat.widget.AppCompatImageView
         this.measure(0, 0);
         if (drawable.getClass() == NinePatchDrawable.class)
             return;
-        Bitmap b = ((BitmapDrawable) drawable).getBitmap();
+        Bitmap b = getBitmapFromDrawable(drawable);
         Bitmap bitmap = b.copy(Bitmap.Config.ARGB_8888, true);
         if (defaultWidth == 0) {
             defaultWidth = getWidth();
@@ -208,5 +210,16 @@ public class RoundImageView extends androidx.appcompat.widget.AppCompatImageView
         /* 设置paint的外框宽度 */
         paint.setStrokeWidth(mBorderThickness);
         canvas.drawCircle(defaultWidth / 2, defaultHeight / 2, radius, paint);
+    }
+
+    @NonNull
+    private Bitmap getBitmapFromDrawable(@NonNull Drawable drawable) {
+        final Bitmap bmp = Bitmap.createBitmap(
+                drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888
+        );
+        final Canvas canvas = new Canvas(bmp);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        return bmp;
     }
 }

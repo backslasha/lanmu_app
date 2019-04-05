@@ -3,10 +3,13 @@ package slasha.lanmu.business.post_detail;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -186,5 +189,15 @@ public class PostDetailActivity extends SameStyleActivity implements PostDetailC
     @Override
     public PostDetailContract.PostDetailPresenter myPresenter() {
         return null;
+    }
+
+    @Override
+    public void showLoadingIndicator() {
+        showProgressDialog();
+    }
+
+    @Override
+    public void hideLoadingIndicator() {
+        hideProgressDialog();
     }
 }

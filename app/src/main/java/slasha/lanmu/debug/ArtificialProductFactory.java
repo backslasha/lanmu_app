@@ -7,7 +7,6 @@ import java.util.List;
 
 import slasha.lanmu.bean.BookPost;
 import slasha.lanmu.bean.BookPostFlow;
-import slasha.lanmu.bean.BookPosts;
 import slasha.lanmu.bean.LoginResult;
 import slasha.lanmu.bean.Message;
 import slasha.lanmu.bean.User;
@@ -17,9 +16,11 @@ import static slasha.lanmu.utils.AppUtils.readStringFromAsset;
 public class ArtificialProductFactory {
 
     public static List<BookPost> bookPosts() {
-        String json = readStringFromAsset("sample/bookposts.json");
-        BookPosts bookPosts = new Gson().fromJson(json, BookPosts.class);
-        return bookPosts.getBookPosts();
+        return new Gson().fromJson(
+                readStringFromAsset("sample/bookposts.json"),
+                new TypeToken<List<BookPost>>() {
+                }.getType()
+        );
     }
 
     public static List<Message> messages() {

@@ -74,4 +74,14 @@ public class UserProfileActivity extends SameStyleActivity implements ProfileCon
     public ProfileContract.ProfilePresenter myPresenter() {
         return null;
     }
+
+    @Override
+    public void showLoadingIndicator() {
+        showProgressDialog();
+    }
+
+    @Override
+    public void hideLoadingIndicator() {
+        hideProgressDialog();
+    }
 }
