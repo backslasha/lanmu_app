@@ -1,6 +1,6 @@
 package slasha.lanmu.business.login;
 
-import slasha.lanmu.bean.LoginResult;
+import slasha.lanmu.bean.response.LoginResult;
 
 class LoginModelImpl implements LoginContract.LoginModel {
     @Override

@@ -4,7 +4,7 @@ import androidx.annotation.WorkerThread;
 import android.util.Log;
 
 import slasha.lanmu.GlobalBuffer;
-import slasha.lanmu.bean.LoginResult;
+import slasha.lanmu.bean.response.LoginResult;
 import slasha.lanmu.bean.User;
 import slasha.lanmu.debug.ArtificialProductFactory;
 import slasha.lanmu.utils.AppUtils;

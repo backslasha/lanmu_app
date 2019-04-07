@@ -26,15 +26,15 @@
 
         <ImageView
             android:id="@+id/iv_cover"
-            android:layout_width="120dp"
-            android:layout_height="168dp"
-            android:layout_centerVertical="true"
+            android:layout_width="100dp"
+            android:layout_height="142dp"
             android:scaleType="fitXY"
             android:src="@drawable/cover_sample" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignTop="@id/iv_cover"
             android:layout_centerVertical="true"
             android:layout_marginStart="12dp"
             android:layout_toEndOf="@+id/iv_cover"
@@ -45,7 +45,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
-                android:singleLine="true"
                 android:textSize="17sp"
                 android:textStyle="bold"
                 tools:text="解忧杂化店" />
@@ -60,15 +59,33 @@
                 tools:text="东野圭吾" />
 
             <TextView
-                android:id="@+id/tv_description"
+                android:id="@+id/tv_introduction"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="9dp"
                 android:ellipsize="end"
-                android:maxLines="6"
+                android:maxLines="5"
                 android:textSize="14sp"
                 tools:text="现代人内心流失的东西，这家杂货店能帮你找回——僻静的街道旁有一家杂货店，只要写下烦恼投进卷帘门的投信口，第二天就会在店后的牛奶箱里得到回答。因男友身患绝症，年轻女孩静子在爱情与梦想间徘徊；克郎为了音乐梦想离家漂泊，却在现实中寸步难行；少年浩介面临家庭巨变，挣扎在亲情与未来的迷茫中……他们将困惑写成信投进杂货店，随即奇妙的事情竟不断发生。生命中的一次偶然交会，将如何演绎出截然不同的人生？如今回顾写作过程，我发现自己始终在思考一个问题：站在人生的岔路口，人究竟应该怎么做？我希望读者能在掩卷时喃喃自语：我从未读过这样的小说。——东野圭吾" />
         </LinearLayout>
+
+        <ImageView
+            android:id="@+id/iv_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/iv_cover"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="6dp"
+            android:src="@color/color_bg_gray" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_divider"
+            android:layout_centerHorizontal="true"
+            android:drawableStart="@drawable/ic_comment_24dp"
+            android:drawablePadding="4dp"
+            android:text="999" />
 
     </RelativeLayout>
 

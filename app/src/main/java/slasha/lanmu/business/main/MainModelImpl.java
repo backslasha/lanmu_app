@@ -1,7 +1,7 @@
 package slasha.lanmu.business.main;
 
 import slasha.lanmu.GlobalBuffer;
-import slasha.lanmu.bean.BookPostFlow;
+import slasha.lanmu.bean.response.BookPostFlow;
 import slasha.lanmu.debug.ArtificialProductFactory;
 import slasha.lanmu.utils.ThreadUtils;
 

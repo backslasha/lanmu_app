@@ -33,7 +33,8 @@ import slasha.lanmu.widget.StickyHeaderItemDecoration;
 import yhb.chorus.common.adapter.SimpleAdapter;
 import yhb.chorus.common.adapter.base.SimpleHolder;
 
-public class PostDetailActivity extends SameStyleActivity implements PostDetailContract.PostDetailView {
+public class PostDetailActivity extends SameStyleActivity
+        implements PostDetailContract.PostDetailView {
 
 
     private static final CharSequence EMPTY_TITLE = " ";
@@ -43,6 +44,7 @@ public class PostDetailActivity extends SameStyleActivity implements PostDetailC
     private ImageView mIvCover;
     private SimpleAdapter<Comment> mAdapter;
     private BookPost mBookPost;
+    private PostDetailContract.PostDetailPresenter mPostDetailPresenter;
 
     public static Intent newIntent(Context context, BookPost bookPost) {
         Intent intent = new Intent(context, PostDetailActivity.class);
@@ -77,9 +79,6 @@ public class PostDetailActivity extends SameStyleActivity implements PostDetailC
             }
         });
 
-        // creator info
-
-
         // comments
         mRecyclerView = findViewById(R.id.recycler_view);
 
@@ -93,6 +92,8 @@ public class PostDetailActivity extends SameStyleActivity implements PostDetailC
         }
         mBookPost = (BookPost) intent.getSerializableExtra(EXTRA_BOOK_POST);
         showDetail(mBookPost);
+
+        myPresenter().performPullComments(mBookPost.getId());
     }
 
     @Override
@@ -103,9 +104,6 @@ public class PostDetailActivity extends SameStyleActivity implements PostDetailC
     @Override
     public void showDetail(BookPost bookPost) {
         showBookInfo(bookPost.getBook());
-        showComments(bookPost.getComments());
-        // TODO: 2019/3/12 add creator info
-        // showCreatorInfo(mBookPost.getCreateInfo());
     }
 
     private void showBookInfo(Book book) {
@@ -118,7 +116,9 @@ public class PostDetailActivity extends SameStyleActivity implements PostDetailC
         // TODO: 2019/3/12 complete book info
     }
 
-    private void showComments(List<Comment> comments) {
+    //todo  单独加载评论列表
+    @Override
+    public void showComments(List<Comment> comments) {
         if (CommonUtils.isEmpty(comments)) {
             ToastUtils.showToast("no comments found!");
         } else {
@@ -188,7 +188,13 @@ public class PostDetailActivity extends SameStyleActivity implements PostDetailC
 
     @Override
     public PostDetailContract.PostDetailPresenter myPresenter() {
-        return null;
+        if (mPostDetailPresenter == null) {
+            mPostDetailPresenter = new PostDetailPresenterImpl(
+                    this,
+                    new PostDetailModelImpl()
+            );
+        }
+        return mPostDetailPresenter;
     }
 
     @Override

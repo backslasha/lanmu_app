@@ -1,7 +1,9 @@
-package slasha.lanmu.bean;
+package slasha.lanmu.bean.response;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import slasha.lanmu.bean.User;
 
 public class LoginResult {
 

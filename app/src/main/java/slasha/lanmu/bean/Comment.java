@@ -17,7 +17,7 @@ public class Comment implements Serializable {
     @SerializedName("content")
     @Expose
     private String content;
-    @SerializedName("postId")
+    @SerializedName("post_id")
     @Expose
     private String postId;
 

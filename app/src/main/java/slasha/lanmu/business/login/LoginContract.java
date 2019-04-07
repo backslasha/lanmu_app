@@ -3,8 +3,7 @@ package slasha.lanmu.business.login;
 import slasha.lanmu.BaseModel;
 import slasha.lanmu.BasePresenter;
 import slasha.lanmu.BaseView;
-import slasha.lanmu.bean.LoginResult;
-import slasha.lanmu.bean.User;
+import slasha.lanmu.bean.response.LoginResult;
 
 public interface LoginContract {
 

@@ -20,8 +20,7 @@ import slasha.lanmu.R;
 import slasha.lanmu.application.LanmuApplication;
 import slasha.lanmu.bean.Book;
 import slasha.lanmu.bean.BookPost;
-import slasha.lanmu.bean.BookPostFlow;
-import slasha.lanmu.bean.CreateInfo;
+import slasha.lanmu.bean.response.BookPostFlow;
 import slasha.lanmu.utils.AppUtils;
 import slasha.lanmu.utils.ToastUtils;
 import yhb.chorus.common.adapter.SimpleAdapter;
@@ -78,7 +77,6 @@ public class BookPostFlowFragment extends Fragment
                 @Override
                 public void bind(SimpleHolder holder, BookPost bookPost) {
                     Book book = bookPost.getBook();
-                    CreateInfo createInfo = bookPost.getCreateInfo();
                     if (book != null) {
                         holder.setText(R.id.tv_title, book.getName());
                         holder.setText(R.id.tv_author_name, book.getAuthor());
@@ -87,9 +85,7 @@ public class BookPostFlowFragment extends Fragment
                                 .into((ImageView) holder.getView(R.id.iv_cover));
                     }
 
-                    if (createInfo != null) {
-                        holder.setText(R.id.tv_description, createInfo.getDescription());
-                    }
+                    holder.setText(R.id.tv_introduction, bookPost.getIntroduction());
 
                     holder.itemView.setOnClickListener(v ->
                             jumpToPostDetail(getActivity(), bookPost)

@@ -11,6 +11,7 @@ public class GlobalBuffer {
         public static boolean sUseFakeData = false;
         public static boolean sUserFakeLoginResult = true;
         public static boolean sUserFakeBookPostFlow = true;
+        public static boolean sUserFakeComments = true;
     }
 
     public static class AccountInfo {

@@ -2,7 +2,9 @@
 package slasha.lanmu.bean;
 
 import java.io.Serializable;
-import java.util.List;
+import java.sql.Time;
+
+import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -10,22 +12,29 @@ public class BookPost implements Serializable {
 
     @SerializedName("id")
     @Expose
-    private String id;
+    private long id;
+
     @SerializedName("book")
     @Expose
     private Book book;
-    @SerializedName("comments")
-    @Expose
-    private List<Comment> comments = null;
-    @SerializedName("createInfo")
-    @Expose
-    private CreateInfo createInfo;
 
-    public String getId() {
+    @SerializedName("creator")
+    @Expose
+    private User creator;
+
+    @SerializedName("create_time")
+    @Expose
+    private java.sql.Time createTime;
+
+    @SerializedName("recent_reply_time")
+    @Expose
+    private java.sql.Time recentReplyTime;
+
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -37,20 +46,76 @@ public class BookPost implements Serializable {
         this.book = book;
     }
 
-    public List<Comment> getComments() {
-        return comments;
+    public User getCreator() {
+        return creator;
     }
 
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
+    public void setCreator(User creator) {
+        this.creator = creator;
     }
 
-    public CreateInfo getCreateInfo() {
-        return createInfo;
+    public Time getCreateTime() {
+        return createTime;
     }
 
-    public void setCreateInfo(CreateInfo createInfo) {
-        this.createInfo = createInfo;
+    public void setCreateTime(Time createTime) {
+        this.createTime = createTime;
     }
 
+    public Time getRecentReplyTime() {
+        return recentReplyTime;
+    }
+
+    public void setRecentReplyTime(Time recentReplyTime) {
+        this.recentReplyTime = recentReplyTime;
+    }
+
+    public String getIntroduction() {
+        return introduction;
+    }
+
+    public void setIntroduction(String introduction) {
+        this.introduction = introduction;
+    }
+
+    public int getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(int commentCount) {
+        this.commentCount = commentCount;
+    }
+
+    @SerializedName("introduction")
+    @Expose
+    private String introduction;
+
+    @SerializedName("comment_count")
+    @Expose
+    private int commentCount;
+
+    public BookPost(long id, Book book, User creator,
+                    Time createTime, Time recentReplyTime, String introduction, int commentCount) {
+        this.id = id;
+        this.book = book;
+        this.creator = creator;
+        this.createTime = createTime;
+        this.recentReplyTime = recentReplyTime;
+        this.introduction = introduction;
+        this.commentCount = commentCount;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(new Gson().toJson(
+                new BookPost(
+                        5005078,
+                        new Book(),
+                        new User("username", "pwd", 5005078, ""),
+                        new Time(System.currentTimeMillis()),
+                        new Time(System.currentTimeMillis()),
+                        "introduction",
+                        999
+                )
+        ));
+    }
 }

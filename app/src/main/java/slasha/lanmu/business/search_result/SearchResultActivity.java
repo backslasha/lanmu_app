@@ -20,7 +20,6 @@ import slasha.lanmu.SameStyleActivity;
 import slasha.lanmu.application.LanmuApplication;
 import slasha.lanmu.bean.Book;
 import slasha.lanmu.bean.BookPost;
-import slasha.lanmu.bean.CreateInfo;
 import slasha.lanmu.business.create_post.CreatePostActivity;
 import slasha.lanmu.business.post_detail.PostDetailActivity;
 import slasha.lanmu.utils.CommonUtils;
@@ -117,7 +116,6 @@ public class SearchResultActivity extends SameStyleActivity implements
                 @Override
                 public void bind(SimpleHolder holder, BookPost bookPost) {
                     Book book = bookPost.getBook();
-                    CreateInfo createInfo = bookPost.getCreateInfo();
                     if (book != null) {
                         holder.setText(R.id.tv_title, book.getName());
                         holder.setText(R.id.tv_author_name, book.getAuthor());
@@ -126,10 +124,7 @@ public class SearchResultActivity extends SameStyleActivity implements
                                 .into((ImageView) holder.getView(R.id.iv_cover));
                     }
 
-                    if (createInfo != null) {
-                        holder.setText(R.id.tv_description, createInfo.getDescription());
-                    }
-
+                    holder.setText(R.id.tv_introduction, bookPost.getIntroduction());
                     holder.itemView.setOnClickListener(v -> jumpToPostDetail(bookPost));
                 }
 

@@ -5,7 +5,7 @@ import androidx.annotation.WorkerThread;
 import slasha.lanmu.BaseModel;
 import slasha.lanmu.BasePresenter;
 import slasha.lanmu.BaseView;
-import slasha.lanmu.bean.BookPostFlow;
+import slasha.lanmu.bean.response.BookPostFlow;
 
 public interface MainContract {
 

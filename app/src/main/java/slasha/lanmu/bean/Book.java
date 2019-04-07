@@ -14,9 +14,13 @@ public class Book implements Serializable {
     @SerializedName("author")
     @Expose
     private String author;
-    @SerializedName("publishDate")
+    @SerializedName("publish_date")
     @Expose
     private String publishDate;
+
+    @SerializedName("publisher")
+    @Expose
+    private String publisher;
     @SerializedName("version")
     @Expose
     private String version;
@@ -26,6 +30,14 @@ public class Book implements Serializable {
     @SerializedName("coverUrl")
     @Expose
     private String coverUrl;
+
+    public String getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
+    }
 
     public String getName() {
         return name;

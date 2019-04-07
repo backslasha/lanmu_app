@@ -1,0 +1,92 @@
+1. \login
+{
+  "username": ${username},
+  "password": ${password}
+}
+{
+   "status": 200,
+   "user": {
+     "username": ${username},
+     "password": ${password},
+     "id": ${id},
+     "avatar_url": ${avatar_url},
+     "introduction": ${introduction}
+   } 
+}
+
+2. \main
+{
+    "flow_type": ${flow_type}
+}
+{
+    "status": 200,
+    "name": ${name},
+    "book_posts": [
+        {
+          "id": ${id},
+          "book": {},
+          "creator": {
+            "username": "username",
+            "password": "pwd",
+            "id": 5005078,
+            "avatarUrl": ""
+          },
+          "create_time": "10:51:06 下午",
+          "recent_reply_time": "10:51:06 下午",
+          "introduction": "introduction",
+          "comment_count": 999
+        }
+    ]
+}
+
+3. \comment
+{
+    "post_id": ${post_id},
+    "from_id": ${from_id},
+    "to_id": ${to_id}
+}
+{
+    "status": 200,
+    "comments" [
+        {
+             "post_id": ${post_id},
+             "from_id": ${from_id},
+             "to_id": ${to_id},
+             "content": ${content}
+        }
+    ]
+}
+
+4. \search
+{
+    "keyword": ${keyword}
+    "creator_id": ${creator_id}
+}
+{
+     "status": 200,
+     "book_posts": [
+         {
+           "id": ${id},
+           "book": {},
+           "creator": {
+             "username": "username",
+             "password": "pwd",
+             "id": 5005078,
+             "avatarUrl": ""
+           },
+           "create_time": "10:51:06 下午",
+           "recent_reply_time": "10:51:06 下午",
+           "introduction": "introduction",
+           "comment_count": 999
+         }
+     ]
+}
+
+5. \messages
+6. \contracts
+
+7. \create_post
+8. \publish_comment
+9. \send_message
+10. \add_contract
+11. \remove_contract

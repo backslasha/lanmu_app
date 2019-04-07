@@ -1,10 +1,12 @@
-package slasha.lanmu.bean;
+package slasha.lanmu.bean.response;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.List;
+
+import slasha.lanmu.bean.BookPost;
 
 
 public class BookPostFlow implements Serializable {
