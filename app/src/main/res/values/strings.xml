@@ -52,4 +52,5 @@
     <string name="hot_book_posts">热帖</string>
     <string name="suggest">推荐</string>
     <string name="history">浏览历史</string>
+    <string name="no_comments">暂无评论，写评论</string>
 </resources>

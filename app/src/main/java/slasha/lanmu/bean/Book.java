@@ -7,7 +7,9 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 public class Book implements Serializable {
-
+    @SerializedName("id")
+    @Expose
+    private long id;
     @SerializedName("name")
     @Expose
     private String name;
@@ -17,7 +19,6 @@ public class Book implements Serializable {
     @SerializedName("publish_date")
     @Expose
     private String publishDate;
-
     @SerializedName("publisher")
     @Expose
     private String publisher;
@@ -27,9 +28,12 @@ public class Book implements Serializable {
     @SerializedName("languish")
     @Expose
     private String languish;
-    @SerializedName("coverUrl")
+    @SerializedName("images")
     @Expose
-    private String coverUrl;
+    private String images;
+    @SerializedName("introduction")
+    @Expose
+    private String introduction;
 
     public String getPublisher() {
         return publisher;
@@ -79,12 +83,29 @@ public class Book implements Serializable {
         this.languish = languish;
     }
 
-    public String getCoverUrl() {
-        return coverUrl;
+    public long getId() {
+        return id;
     }
 
-    public void setCoverUrl(String coverUrl) {
-        this.coverUrl = coverUrl;
+    public void setId(long id) {
+        this.id = id;
     }
+
+    public String getImages() {
+        return images;
+    }
+
+    public void setImages(String images) {
+        this.images = images;
+    }
+
+    public String getIntroduction() {
+        return introduction;
+    }
+
+    public void setIntroduction(String introduction) {
+        this.introduction = introduction;
+    }
+
 
 }

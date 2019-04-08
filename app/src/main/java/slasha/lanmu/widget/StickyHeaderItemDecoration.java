@@ -80,8 +80,8 @@ public class StickyHeaderItemDecoration extends RecyclerView.ItemDecoration {
     private void drawStickyHeaders(Canvas c, RecyclerView parent) {
 
         final int childCount = parent.getChildCount();
-        final int rectLeft = parent.getPaddingLeft() + mPaddingLeft;
-        final int rectRight = parent.getWidth() - parent.getPaddingRight() - mPaddingRight;
+        final int rectLeft = parent.getPaddingLeft();
+        final int rectRight = parent.getWidth() - parent.getPaddingRight();
 
         String groupTitle;
 
@@ -130,6 +130,9 @@ public class StickyHeaderItemDecoration extends RecyclerView.ItemDecoration {
 
     }
 
+    /**
+     * @param left rect left, rect is the zone of decoration
+     */
     private void drawHeader(int left, int top, int right, int bottom, String groupTitle, Canvas c) {
 
         // 文字区域背景

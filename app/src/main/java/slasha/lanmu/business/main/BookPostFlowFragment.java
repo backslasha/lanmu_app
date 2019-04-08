@@ -81,11 +81,10 @@ public class BookPostFlowFragment extends Fragment
                         holder.setText(R.id.tv_title, book.getName());
                         holder.setText(R.id.tv_author_name, book.getAuthor());
                         Picasso.with(LanmuApplication.instance())
-                                .load(book.getCoverUrl())
+                                .load(book.getImages())
                                 .into((ImageView) holder.getView(R.id.iv_cover));
+                        holder.setText(R.id.tv_introduction, book.getIntroduction());
                     }
-
-                    holder.setText(R.id.tv_introduction, bookPost.getIntroduction());
 
                     holder.itemView.setOnClickListener(v ->
                             jumpToPostDetail(getActivity(), bookPost)

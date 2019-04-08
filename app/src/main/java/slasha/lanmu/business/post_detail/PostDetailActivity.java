@@ -3,21 +3,18 @@ package slasha.lanmu.business.post_detail;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
-import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.appbar.CollapsingToolbarLayout;
-
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import slasha.lanmu.R;
 import slasha.lanmu.SameStyleActivity;
 import slasha.lanmu.application.LanmuApplication;
@@ -40,11 +37,13 @@ public class PostDetailActivity extends SameStyleActivity
     private static final CharSequence EMPTY_TITLE = " ";
     private static final String EXTRA_BOOK_POST = "extra_book_post";
     private RecyclerView mRecyclerView;
-    private TextView mTvTitle, mTvAuthor, mTvDescription;
+    private TextView mTvTitle, mTvDescription, mTvPostContent;
     private ImageView mIvCover;
     private SimpleAdapter<Comment> mAdapter;
     private BookPost mBookPost;
     private PostDetailContract.PostDetailPresenter mPostDetailPresenter;
+    private ImageView mIvAvatar;
+    private TextView mTvCreatorName;
 
     public static Intent newIntent(Context context, BookPost bookPost) {
         Intent intent = new Intent(context, PostDetailActivity.class);
@@ -56,11 +55,14 @@ public class PostDetailActivity extends SameStyleActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        mIvAvatar = findViewById(R.id.iv_avatar);
+        mTvCreatorName = findViewById(R.id.tv_username);
+
         // book info
         mIvCover = findViewById(R.id.iv_cover);
         mTvTitle = findViewById(R.id.tv_title);
-        mTvAuthor = findViewById(R.id.tv_author_name);
         mTvDescription = findViewById(R.id.tv_description);
+        mTvPostContent = findViewById(R.id.tv_post_content);
 
         CollapsingToolbarLayout collapsingToolbarLayout =
                 findViewById(R.id.collapsing_toolbar_layout);
@@ -103,18 +105,38 @@ public class PostDetailActivity extends SameStyleActivity
 
     @Override
     public void showDetail(BookPost bookPost) {
-        showBookInfo(bookPost.getBook());
-    }
 
-    private void showBookInfo(Book book) {
-        Picasso.with(LanmuApplication.instance())
-                .load(book.getCoverUrl())
-                .into(mIvCover);
-        mTvTitle.setText(book.getName());
-        mTvAuthor.setText(book.getAuthor());
-        mTvDescription.setText("现代人内心流失的东西，这家杂货店能帮你找回——僻静的街道旁有一家杂货店，只要写下烦恼投进卷帘门的投信口，第二天就会在店后的牛奶箱里得到回答。因男友身患绝症，年轻女孩静子在爱情与梦想间徘徊；克郎为了音乐梦想离家漂泊，却在现实中寸步难行；少年浩介面临家庭巨变，挣扎在亲情与未来的迷茫中……他们将困惑写成信投进杂货店，随即奇妙的事情竟不断发生。生命中的一次偶然交会，将如何演绎出截然不同的人生？如今回顾写作过程，我发现自己始终在思考一个问题：站在人生的岔路口，人究竟应该怎么做？我希望读者能在掩卷时喃喃自语：我从未读过这样的小说。——东野圭吾");
+        if (bookPost == null) {
+            return;
+        }
+
+        mTvPostContent.setText(bookPost.getContent());
+
+        Book book = bookPost.getBook();
+        if (book != null) {
+            Picasso.with(LanmuApplication.instance())
+                    .load(book.getImages())
+                    .into(mIvCover);
+            mTvTitle.setText(book.getName());
+            mTvDescription.setText(
+                    String.format("%s / %s / %s",
+                            book.getAuthor(),
+                            book.getPublisher(),
+                            book.getPublishDate())
+            );
+        }
+
+        User creator = bookPost.getCreator();
+        if (creator != null) {
+            Picasso.with(LanmuApplication.instance())
+                    .load(creator.getAvatarUrl())
+                    .into(mIvAvatar);
+            mTvCreatorName.setText(creator.getUsername());
+
+        }
         // TODO: 2019/3/12 complete book info
     }
+
 
     //todo  单独加载评论列表
     @Override
@@ -171,6 +193,8 @@ public class PostDetailActivity extends SameStyleActivity
                                     }
                                 }
                         ).setHeaderTextColor(getResources().getColor(R.color.colorPrimary))
+                                .setPadding(0, 0, 0, 6)
+                                .setHeaderTextPaddingStart(12)
                                 .build(this)
                 );
 
