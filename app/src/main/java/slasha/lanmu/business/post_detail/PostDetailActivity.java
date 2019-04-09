@@ -138,7 +138,6 @@ public class PostDetailActivity extends SameStyleActivity
     }
 
 
-    //todo  单独加载评论列表
     @Override
     public void showComments(List<Comment> comments) {
         if (CommonUtils.isEmpty(comments)) {
@@ -154,21 +153,36 @@ public class PostDetailActivity extends SameStyleActivity
 
                     @Override
                     public void bind(SimpleHolder holder, Comment comment) {
-                        Picasso.with(LanmuApplication.instance())
-                                .load(comment.getFrom().getAvatarUrl())
-                                .into((ImageView) holder.getView(R.id.iv_avatar));
-
+                        holder.setImage(R.id.iv_avatar, comment.getFrom().getAvatarUrl());
                         holder.setText(R.id.tv_username, comment.getFrom().getUsername());
                         holder.setText(R.id.tv_comment_content, comment.getContent());
                         holder.setText(R.id.tv_publish_date, "2007年7月24日");
                         holder.setText(R.id.tv_thumb_up_count, "999");
-
                         View.OnClickListener listener =
                                 v -> jumpToUserProfile(comment.getFrom());
                         holder.getView(R.id.tv_username).setOnClickListener(listener);
                         holder.getView(R.id.iv_avatar).setOnClickListener(listener);
 
-                        // TODO: 2019/3/12 complete data structures
+                        RecyclerView recyclerView
+                                = (RecyclerView) holder.getView(R.id.recycler_view_replies);
+                        recyclerView.setLayoutManager(
+                                new LinearLayoutManager(PostDetailActivity.this)
+                        );
+                        CommentReplyAdapter commentReplyAdapter = new CommentReplyAdapter(
+                                PostDetailActivity.this,
+                                comment,
+                                2,
+                                true
+                        );
+                        commentReplyAdapter.setOnItemClickListener(
+                                (CommentReplyAdapter.onItemClickListener) isExpandableItem -> {
+                                    if (isExpandableItem) {
+                                        ToastUtils.showToast("jump to reply board!");
+                                    }else {
+                                        ToastUtils.showToast("raise the reply edit view!");
+                                    }
+                        });
+                        recyclerView.setAdapter(commentReplyAdapter);
                     }
 
                 };

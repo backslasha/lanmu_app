@@ -1,9 +1,11 @@
 package yhb.chorus.common.adapter;
 
 import android.content.Context;
+
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
@@ -34,6 +36,11 @@ public abstract class SimpleAdapter<Entity> extends RecyclerView.Adapter<SimpleH
         }
     }
 
+    protected SimpleAdapter(Context context, List<Entity> entities) {
+        mContext = context;
+        mEntities = entities;
+    }
+
     @NonNull
     @Override
     public SimpleHolder onCreateViewHolder(@NonNull final ViewGroup parent, int viewType) {
@@ -45,7 +52,11 @@ public abstract class SimpleAdapter<Entity> extends RecyclerView.Adapter<SimpleH
 
     @Override
     public void onBindViewHolder(@NonNull SimpleHolder holder, int position) {
-        bind(holder, mEntities.get(position));
+        if (position < mEntities.size()) {
+            bind(holder, mEntities.get(position));
+        } else {
+            bind(holder, null);
+        }
     }
 
     @Override

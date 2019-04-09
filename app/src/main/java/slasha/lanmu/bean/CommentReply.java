@@ -5,14 +5,16 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import java.util.List;
 
-public class Comment implements Serializable {
+public class CommentReply implements Serializable {
 
 
     @SerializedName("id")
     @Expose
     private long id;
+    @SerializedName("comment_id")
+    @Expose
+    private long commentId;
     @SerializedName("from")
     @Expose
     private User from;
@@ -26,27 +28,12 @@ public class Comment implements Serializable {
     @Expose
     private String postId;
 
-    @SerializedName("replies")
-    @Expose
-    private List<CommentReply> replies;
-    @SerializedName("reply_count")
-    @Expose
-    private int replyCount;
-
-    public List<CommentReply> getReplies() {
-        return replies;
+    public long getCommentId() {
+        return commentId;
     }
 
-    public void setReplies(List<CommentReply> replies) {
-        this.replies = replies;
-    }
-
-    public int getReplyCount() {
-        return replyCount;
-    }
-
-    public void setReplyCount(int replyCount) {
-        this.replyCount = replyCount;
+    public void setCommentId(long commentId) {
+        this.commentId = commentId;
     }
 
     public long getId() {

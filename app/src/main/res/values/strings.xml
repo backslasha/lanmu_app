@@ -53,4 +53,7 @@
     <string name="suggest">推荐</string>
     <string name="history">浏览历史</string>
     <string name="no_comments">暂无评论，写评论</string>
+    <string name="expand_comment_reply">查看全部 %d 条评论 ▸</string>
+    <string name="colon">\u0020\u0020:\u0020\u0020</string>
+    <string name="reply">回复\u0020\u0020</string>
 </resources>
