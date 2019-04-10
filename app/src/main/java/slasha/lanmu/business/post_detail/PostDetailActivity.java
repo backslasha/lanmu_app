@@ -178,10 +178,10 @@ public class PostDetailActivity extends SameStyleActivity
                                 (CommentReplyAdapter.onItemClickListener) isExpandableItem -> {
                                     if (isExpandableItem) {
                                         ToastUtils.showToast("jump to reply board!");
-                                    }else {
+                                    } else {
                                         ToastUtils.showToast("raise the reply edit view!");
                                     }
-                        });
+                                });
                         recyclerView.setAdapter(commentReplyAdapter);
                     }
 

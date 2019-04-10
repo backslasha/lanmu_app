@@ -56,4 +56,6 @@
     <string name="expand_comment_reply">查看全部 %d 条评论 ▸</string>
     <string name="colon">\u0020\u0020:\u0020\u0020</string>
     <string name="reply">回复\u0020\u0020</string>
+    <string name="show_more">show more</string>
+    <string name="show_less">show less</string>
 </resources>

@@ -89,7 +89,9 @@ class CommentReplyAdapter extends SimpleAdapter<CommentReply> {
             if (to != null) {
                 builder.append(mContext.getString(R.string.reply))
                         .append(to.getUsername())
-                        .setForegroundColor(Color.parseColor("#03A7EB"))
+                        .setForegroundColor(
+                                mContext.getResources().getColor(R.color.colorClickableText)
+                        )
                         .setClickSpan(new ClickableSpan() {
                             @Override
                             public void onClick(@NonNull View widget) {

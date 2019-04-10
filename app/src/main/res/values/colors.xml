@@ -4,4 +4,6 @@
     <color name="colorPrimaryDark">#209CEF</color>
     <color name="colorAccent">#30ACFF</color>
     <color name="color_bg_gray">#F5F5F5</color>
+    <color name="colorClickableText">#03A7EB</color>
+    <color name="translucent">#1D000000</color>
 </resources>
