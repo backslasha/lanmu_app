@@ -39,7 +39,7 @@ class CommentReplyAdapter extends SimpleAdapter<CommentReply> {
         mTotalItemCount = comment.getReplyCount();
     }
 
-    public void setOnItemClickListener(onItemClickListener onItemClickListener) {
+    void setOnItemClickListener(onItemClickListener onItemClickListener) {
         mOnItemClickListener = onItemClickListener;
     }
 

@@ -11,7 +11,6 @@ public abstract class SameStyleActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(getContentViewResId());
 
         // handle ui style
         getWindow().setStatusBarColor(
@@ -37,5 +36,4 @@ public abstract class SameStyleActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    protected abstract int getContentViewResId();
 }

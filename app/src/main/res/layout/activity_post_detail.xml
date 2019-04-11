@@ -11,15 +11,15 @@
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/color_bg_gray"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/white"
+            android:background="@null"
             app:collapsedTitleTextAppearance="@style/TextAppearance.AppCompat.Title"
-            app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <include layout="@layout/include_post_detail_header" />
@@ -28,45 +28,60 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
+                android:background="@drawable/shape_gray_stroke_bottom_white_solid"
                 app:layout_collapseMode="pin"
-                app:popupTheme="@style/AppTheme.PopupOverlay" />
+                app:popupTheme="@style/AppTheme.PopupOverlay"
+                app:titleTextColor="@android:color/black" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/recycler_view_post_images"
+            android:background="@drawable/shape_gray_stroke_bottom_white_solid"
+            android:paddingStart="16dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="4dp"
+            android:text="@string/comments_title"
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout_comments"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior_copy">
 
-        <FrameLayout
-            android:id="@+id/fl_comment_zone"
+        <!--<FrameLayout-->
+        <!--android:id="@+id/fl_comment_zone"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:overScrollMode="never"
+            android:paddingStart="6dp"
+            android:paddingEnd="6dp"
+            android:scrollbars="none" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/white"
-                android:overScrollMode="never"
-                android:paddingStart="6dp"
-                android:paddingEnd="6dp"
-                android:scrollbars="none" />
-
-            <TextView
-                android:id="@+id/tv_no_comments"
-                android:layout_width="match_parent"
-                android:layout_height="228dp"
-                android:background="@android:color/white"
-                android:gravity="center_horizontal"
-                android:paddingTop="36dp"
-                android:text="@string/no_comments"
-                android:textColor="@color/colorPrimary"
-                android:visibility="gone" />
-        </FrameLayout>
+        <!--<TextView-->
+        <!--android:id="@+id/tv_no_comments"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="228dp"-->
+        <!--android:background="@android:color/white"-->
+        <!--android:gravity="center_horizontal"-->
+        <!--android:paddingTop="36dp"-->
+        <!--android:text="@string/no_comments"-->
+        <!--android:textColor="@color/colorPrimary"-->
+        <!--android:visibility="gone" />-->
+        <!--</FrameLayout>-->
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

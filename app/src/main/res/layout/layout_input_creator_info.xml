@@ -64,7 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
             android:hint="@string/hint_creator_message"
-            android:background="@drawable/shape_gray_stroke"
+            android:background="@drawable/shape_gray_round_border"
             android:padding="12dp"
             tools:ignore="RtlSymmetry">
 

@@ -4,12 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingBottom="16dp">
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/color_bg_gray" />
+    android:paddingBottom="12dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -20,8 +15,8 @@
 
         <slasha.lanmu.widget.RoundImageView
             android:id="@+id/iv_avatar"
-            android:layout_width="42dp"
-            android:layout_height="42dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
             android:layout_marginEnd="8dp"
             android:src="@drawable/cover_sample" />
 
@@ -30,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@id/iv_avatar"
-            android:layout_toStartOf="@id/tv_thumb_up_count"
+            android:layout_toStartOf="@id/ll_thumb_up"
             android:layout_toEndOf="@id/iv_avatar"
             android:textColor="@android:color/black"
             android:textSize="16sp"
@@ -46,31 +41,51 @@
             android:textSize="12sp"
             tools:text="2007年7月24日" />
 
-        <TextView
-            android:id="@+id/tv_thumb_up_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_toStartOf="@id/iv_more_horiz"
-            android:background="?attr/actionBarItemBackground"
-            android:clickable="true"
-            android:drawableEnd="@drawable/ic_thumb_up_gray_20dp"
-            android:drawablePadding="4dp"
-            android:focusable="true"
-            android:textSize="16sp"
-            tools:text="16" />
-
-        <ImageView
-            android:id="@+id/iv_more_horiz"
+        <LinearLayout
+            android:id="@+id/ll_thumb_up"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:background="?attr/actionBarItemBackground"
-            android:clickable="true"
-            android:focusable="true"
-            android:src="@drawable/ic_more_horiz_24dp"
-            tools:ignore="ContentDescription" />
+            android:gravity="center"
+            android:orientation="horizontal"
+            tools:ignore="UseCompoundDrawables">
+
+            <TextView
+                android:id="@+id/tv_thumb_up_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_marginEnd="6dp"
+                android:contentDescription="iv_thumb_up"
+                android:drawablePadding="4dp"
+                android:labelFor="@+id/iv_thumb_up"
+                android:textSize="13sp"
+                tools:ignore="HardcodedText"
+                tools:text="16" />
+
+            <ImageView
+                android:id="@+id/iv_thumb_up"
+                android:layout_width="17dp"
+                android:layout_height="17dp"
+                android:background="?attr/actionBarItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/ic_thumb_up_gray_20dp"
+                tools:ignore="ContentDescription" />
+
+        </LinearLayout>
+
+
+        <!--<ImageView-->
+        <!--android:id="@+id/iv_more_horiz"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentEnd="true"-->
+        <!--android:background="?attr/actionBarItemBackground"-->
+        <!--android:clickable="true"-->
+        <!--android:focusable="true"-->
+        <!--android:src="@drawable/ic_more_horiz_24dp"-->
+        <!--tools:ignore="ContentDescription" />-->
 
     </RelativeLayout>
 
@@ -88,6 +103,7 @@
             android:clickable="true"
             android:focusable="true"
             android:maxLines="5"
+            android:textColor="@android:color/black"
             android:textSize="16sp"
             tools:text="现代人内心流失的东西，这家杂货店能帮你找回——僻静的街道旁有一家杂货店，只要写下烦恼投进卷帘门的投信口，第二天就会在店后的牛奶箱里得到回答。因男友身患绝症，年轻女孩静子在爱情与梦想间徘徊；克郎为了音乐梦想离家漂泊，却在现实中寸步难行；少年浩介面临家庭巨变，挣扎在亲情与未来的迷茫中……他们将困惑写成信投进杂货店，随即奇妙的事情竟不断发生。生命中的一次偶然交会，将如何演绎出截然不同的人生？如今回顾写作过程，我发现自己始终在思考一个问题：站在人生的岔路口，人究竟应该怎么做？我希望读者能在掩卷时喃喃自语：我从未读过这样的小说。——东野圭吾" />
 
@@ -103,4 +119,9 @@
         android:background="@color/color_bg_gray"
         android:padding="6dp" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="12dp"
+        android:background="@color/color_bg_gray" />
 </LinearLayout>

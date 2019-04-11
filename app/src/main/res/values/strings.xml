@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">兰木书评</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -58,4 +58,8 @@
     <string name="reply">回复\u0020\u0020</string>
     <string name="show_more">show more</string>
     <string name="show_less">show less</string>
+
+
+    <string name="appbar_scrolling_view_behavior_copy" translatable="false">com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior</string>
+
 </resources>

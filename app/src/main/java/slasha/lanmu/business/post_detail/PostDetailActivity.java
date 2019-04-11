@@ -2,10 +2,13 @@ package slasha.lanmu.business.post_detail;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
@@ -13,8 +16,12 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.core.widget.ListViewCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import slasha.lanmu.R;
 import slasha.lanmu.SameStyleActivity;
 import slasha.lanmu.application.LanmuApplication;
@@ -23,6 +30,7 @@ import slasha.lanmu.bean.BookPost;
 import slasha.lanmu.bean.Comment;
 import slasha.lanmu.bean.User;
 import slasha.lanmu.business.profile.UserProfileActivity;
+import slasha.lanmu.utils.AppUtils;
 import slasha.lanmu.utils.CommonUtils;
 import slasha.lanmu.utils.ToastUtils;
 import slasha.lanmu.widget.AppBarStateChangeListener;
@@ -36,13 +44,15 @@ public class PostDetailActivity extends SameStyleActivity
 
     private static final CharSequence EMPTY_TITLE = " ";
     private static final String EXTRA_BOOK_POST = "extra_book_post";
-    private RecyclerView mRecyclerView;
+    private RecyclerView mRecyclerViewComments;
+    private SwipeRefreshLayout mSwipeRefreshLayoutComments;
     private TextView mTvTitle, mTvDescription, mTvPostContent;
     private ImageView mIvCover;
     private SimpleAdapter<Comment> mAdapter;
     private BookPost mBookPost;
     private PostDetailContract.PostDetailPresenter mPostDetailPresenter;
     private ImageView mIvAvatar;
+    private CardView mCardView;
     private TextView mTvCreatorName;
 
     public static Intent newIntent(Context context, BookPost bookPost) {
@@ -55,6 +65,13 @@ public class PostDetailActivity extends SameStyleActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // handle ui style
+        getWindow().setStatusBarColor(
+                getResources().getColor(android.R.color.white)
+        );
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setNavigationIcon(R.drawable.icon_less);
+
         mIvAvatar = findViewById(R.id.iv_avatar);
         mTvCreatorName = findViewById(R.id.tv_username);
 
@@ -63,10 +80,12 @@ public class PostDetailActivity extends SameStyleActivity
         mTvTitle = findViewById(R.id.tv_title);
         mTvDescription = findViewById(R.id.tv_description);
         mTvPostContent = findViewById(R.id.tv_post_content);
+        mCardView = findViewById(R.id.cv_book_info);
 
         CollapsingToolbarLayout collapsingToolbarLayout =
                 findViewById(R.id.collapsing_toolbar_layout);
         collapsingToolbarLayout.setTitle(EMPTY_TITLE);// "" 将 显示 app label
+        collapsingToolbarLayout.setCollapsedTitleTextColor(Color.BLACK);
 
         AppBarLayout appbarLayout = findViewById(R.id.app_bar_layout);
         appbarLayout.addOnOffsetChangedListener(new AppBarStateChangeListener() {
@@ -82,7 +101,17 @@ public class PostDetailActivity extends SameStyleActivity
         });
 
         // comments
-        mRecyclerView = findViewById(R.id.recycler_view);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        mRecyclerViewComments = findViewById(R.id.recycler_view);
+        mRecyclerViewComments.setLayoutManager(linearLayoutManager);
+        mSwipeRefreshLayoutComments = findViewById(R.id.swipe_refresh_layout_comments);
+        mSwipeRefreshLayoutComments.setOnRefreshListener(() -> {
+            ToastUtils.showToast("onRefreshing...");
+            AppUtils.postOnUiThread(
+                    () -> mSwipeRefreshLayoutComments.setRefreshing(false),
+                    2000
+            );
+        });
 
         handleIntent(getIntent());
 
@@ -124,6 +153,10 @@ public class PostDetailActivity extends SameStyleActivity
                             book.getPublisher(),
                             book.getPublishDate())
             );
+            mCardView.setOnClickListener(l->{
+                // TODO: 2019/4/11  jump to complete book info page.
+                ToastUtils.showToast("jump to complete book info page.");
+            });
         }
 
         User creator = bookPost.getCreator();
@@ -134,9 +167,7 @@ public class PostDetailActivity extends SameStyleActivity
             mTvCreatorName.setText(creator.getUsername());
 
         }
-        // TODO: 2019/3/12 complete book info
     }
-
 
     @Override
     public void showComments(List<Comment> comments) {
@@ -165,6 +196,7 @@ public class PostDetailActivity extends SameStyleActivity
 
                         RecyclerView recyclerView
                                 = (RecyclerView) holder.getView(R.id.recycler_view_replies);
+                        recyclerView.setNestedScrollingEnabled(false);
                         recyclerView.setLayoutManager(
                                 new LinearLayoutManager(PostDetailActivity.this)
                         );
@@ -186,32 +218,7 @@ public class PostDetailActivity extends SameStyleActivity
                     }
 
                 };
-                mRecyclerView.setAdapter(mAdapter);
-                mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-                mRecyclerView.addItemDecoration(
-                        new StickyHeaderItemDecoration.Builder(
-                                new StickyHeaderItemDecoration.HeaderHelper() {
-                                    @Override
-                                    public boolean isGroupCaptain(int position) {
-                                        return position == 0;
-                                    }
-
-                                    @Override
-                                    public String getGroupTitle(int position) {
-                                        return "评论列表";
-                                    }
-
-                                    @Override
-                                    public int getItemCount() {
-                                        return comments.size();
-                                    }
-                                }
-                        ).setHeaderTextColor(getResources().getColor(R.color.colorPrimary))
-                                .setPadding(0, 0, 0, 6)
-                                .setHeaderTextPaddingStart(12)
-                                .build(this)
-                );
-
+                mRecyclerViewComments.setAdapter(mAdapter);
 
             }
             mAdapter.performDataSetChanged(comments);
@@ -237,11 +244,11 @@ public class PostDetailActivity extends SameStyleActivity
 
     @Override
     public void showLoadingIndicator() {
-        showProgressDialog();
+        mSwipeRefreshLayoutComments.setRefreshing(true);
     }
 
     @Override
     public void hideLoadingIndicator() {
-        hideProgressDialog();
+        mSwipeRefreshLayoutComments.setRefreshing(false);
     }
 }

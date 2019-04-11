@@ -12,6 +12,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(getContentViewResId());
 
         // common loading spinner
         mProgressDialog = new ProgressDialog(this);
@@ -31,5 +32,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void hideProgressDialog() {
         mProgressDialog.hide();
     }
+
+    protected abstract int getContentViewResId();
 
 }

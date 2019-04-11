@@ -106,14 +106,14 @@ public class ExpandableTextViewLayout extends RelativeLayout {
             mTextView.setOnClickListener(v -> toggle());
             mTextView.setText(getContext().getString(R.string.show_more));
             mTextView.setBackgroundResource(R.drawable.selector_dark_on_press);
+            RelativeLayout.LayoutParams lp =
+                    new RelativeLayout.LayoutParams(
+                            ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
+                    );
+            lp.addRule(ALIGN_END, mContentView.getId());
+            lp.addRule(BELOW, mContentView.getId());
+            addView(mTextView, lp);
         }
-        RelativeLayout.LayoutParams lp =
-                new RelativeLayout.LayoutParams(
-                        ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
-                );
-        lp.addRule(ALIGN_END, mContentView.getId());
-        lp.addRule(BELOW, mContentView.getId());
-        addView(mTextView, lp);
     }
 
     private void toggle() {
