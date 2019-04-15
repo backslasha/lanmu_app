@@ -12,6 +12,7 @@ public class GlobalBuffer {
         public static boolean sUserFakeLoginResult = true;
         public static boolean sUserFakeBookPostFlow = true;
         public static boolean sUserFakeComments = true;
+        public static long sLoadingTime = 2000;
     }
 
     public static class AccountInfo {

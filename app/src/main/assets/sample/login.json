@@ -3,7 +3,7 @@
   "user": {
     "username": "${username}",
     "password": "${password}",
-    "id": "${id}",
+    "id": "3115005078",
     "avatar_url": "https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=2810916590,3869279225&fm=58&w=258&h=258&img.GIF",
     "introduction": "${introduction}"
   }

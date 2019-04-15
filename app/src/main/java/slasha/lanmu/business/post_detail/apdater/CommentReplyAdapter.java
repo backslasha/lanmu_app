@@ -1,4 +1,4 @@
-package slasha.lanmu.business.post_detail;
+package slasha.lanmu.business.post_detail.apdater;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -19,7 +19,7 @@ import slasha.lanmu.utils.ToastUtils;
 import yhb.chorus.common.adapter.SimpleAdapter;
 import yhb.chorus.common.adapter.base.SimpleHolder;
 
-class CommentReplyAdapter extends SimpleAdapter<CommentReply> {
+public class CommentReplyAdapter extends SimpleAdapter<CommentReply> {
 
     private Context mContext;
     private final List<CommentReply> mReplies;
@@ -27,10 +27,10 @@ class CommentReplyAdapter extends SimpleAdapter<CommentReply> {
     private final boolean mExpandable;
     private onItemClickListener mOnItemClickListener;
 
-    CommentReplyAdapter(@NonNull Context context,
-                        @NonNull Comment comment,
-                        int maxItemCount,
-                        boolean expandable) {
+    public CommentReplyAdapter(@NonNull Context context,
+                               @NonNull Comment comment,
+                               int maxItemCount,
+                               boolean expandable) {
         super(context, comment.getReplies());
         mContext = context;
         mReplies = comment.getReplies();
@@ -39,7 +39,7 @@ class CommentReplyAdapter extends SimpleAdapter<CommentReply> {
         mTotalItemCount = comment.getReplyCount();
     }
 
-    void setOnItemClickListener(onItemClickListener onItemClickListener) {
+    public void setOnItemClickListener(onItemClickListener onItemClickListener) {
         mOnItemClickListener = onItemClickListener;
     }
 
@@ -105,7 +105,7 @@ class CommentReplyAdapter extends SimpleAdapter<CommentReply> {
             itemView.setText(builder.create());
             itemView.setOnClickListener(v -> {
                 if (mOnItemClickListener != null) {
-                    mOnItemClickListener.onItemClick(false);
+                    mOnItemClickListener.onItemClick(false, commentReply);
                 }
             });
 
@@ -118,13 +118,13 @@ class CommentReplyAdapter extends SimpleAdapter<CommentReply> {
             );
             itemView.setOnClickListener(v -> {
                 if (mOnItemClickListener != null) {
-                    mOnItemClickListener.onItemClick(true);
+                    mOnItemClickListener.onItemClick(true, commentReply);
                 }
             });
         }
     }
 
-    interface onItemClickListener {
-        void onItemClick(boolean isExpandableItem);
+    public interface onItemClickListener {
+        void onItemClick(boolean isExpandableItem, CommentReply reply);
     }
 }

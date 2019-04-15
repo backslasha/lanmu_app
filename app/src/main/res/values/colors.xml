@@ -6,4 +6,5 @@
     <color name="color_bg_gray">#F5F5F5</color>
     <color name="colorClickableText">#03A7EB</color>
     <color name="translucent">#1D000000</color>
+    <color name="colorDefaultText">#808080</color>
 </resources>

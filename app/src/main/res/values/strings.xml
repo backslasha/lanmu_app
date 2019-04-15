@@ -61,5 +61,12 @@
 
 
     <string name="appbar_scrolling_view_behavior_copy" translatable="false">com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior</string>
+    <string name="say_about_yours">说说你的看法&#8230;</string>
+    <string name="publish">发布</string>
+    <string name="publish_succeed">发布成功</string>
+    <string name="publish_failed">发布失败</string>
+    <string name="reply_to">回复 %s :\u0020\u0020</string>
+    <string name="reply_comment">回复该评论：</string>
+    <string name="count">（%d条）</string>
 
 </resources>

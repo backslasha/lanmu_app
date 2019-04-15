@@ -9,6 +9,7 @@ import slasha.lanmu.BasePresenter;
 import slasha.lanmu.BaseView;
 import slasha.lanmu.bean.BookPost;
 import slasha.lanmu.bean.Comment;
+import slasha.lanmu.widget.reply.Publisher;
 
 public interface PostDetailContract {
 
@@ -24,6 +25,10 @@ public interface PostDetailContract {
         void performPullComments(long postId);
 
         void performPullPostDetail();
+
+        void performPublishComment(Publisher.CommentData commentData, String content);
+
+        void performPublishCommentReply(Publisher.CommentReplyData commentReplyData, String content);
     }
 
     interface PostDetailModel extends BaseModel {
