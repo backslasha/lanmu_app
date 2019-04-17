@@ -84,6 +84,9 @@ public class BookPostFlowFragment extends Fragment
                                 .load(book.getImages())
                                 .into((ImageView) holder.getView(R.id.iv_cover));
                         holder.setText(R.id.tv_introduction, book.getIntroduction());
+                        holder.setText(R.id.tv_comment_count, String.valueOf(
+                                bookPost.getCommentCount())
+                        );
                     }
 
                     holder.itemView.setOnClickListener(v ->

@@ -68,5 +68,8 @@
     <string name="reply_to">回复 %s :\u0020\u0020</string>
     <string name="reply_comment">回复该评论：</string>
     <string name="count">（%d条）</string>
+    <string name="warehouse">warehouse</string>
+    <string name="hospital">hospital</string>
+    <string name="lorem_ipsum">lorem_ipsum</string>
 
 </resources>
