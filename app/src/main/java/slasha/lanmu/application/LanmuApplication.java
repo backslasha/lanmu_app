@@ -3,6 +3,7 @@ package slasha.lanmu.application;
 import android.app.Application;
 
 import slasha.lanmu.utils.ToastUtils;
+import slasha.lanmu.widget.imagepicker.ImagePickerModule;
 
 public class LanmuApplication extends Application {
 
@@ -19,6 +20,7 @@ public class LanmuApplication extends Application {
 
     private void doModuleInit() {
         ToastUtils.init(this);
+        ImagePickerModule.init(this);
     }
 
     public static LanmuApplication instance() {

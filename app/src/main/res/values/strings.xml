@@ -71,5 +71,6 @@
     <string name="warehouse">warehouse</string>
     <string name="hospital">hospital</string>
     <string name="lorem_ipsum">lorem_ipsum</string>
+    <string name="label_cover">封面：</string>
 
 </resources>

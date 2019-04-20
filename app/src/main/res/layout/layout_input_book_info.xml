@@ -14,32 +14,45 @@
         android:text="@string/book_info"
         android:textStyle="bold" />
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/tv_cover_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_book_info"
+        android:layout_marginTop="12dp"
+        android:text="@string/label_cover"
+        android:textColor="@color/colorPrimary"
+        android:textSize="17sp" />
+
+    <FrameLayout
         android:id="@+id/fl_add_cover"
-        android:layout_width="match_parent"
+        android:layout_width="160dp"
         android:layout_height="228dp"
         android:layout_below="@id/tv_book_info"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
-        android:background="@drawable/shape_color_primary_dash_stroke"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_add_36dp" />
+        android:background="@drawable/shape_color_primary_dash_stroke">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:drawableTop="@drawable/ic_add_36dp"
             android:gravity="center"
             android:text="@string/click_to_post_cover"
             android:textColor="@color/colorPrimary" />
 
-    </LinearLayout>
+        <ImageView
+            android:id="@+id/iv_selected_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_margin="6dp"
+            android:scaleType="centerCrop"
+            tools:src="@drawable/cover_sample"  />
+
+    </FrameLayout>
 
 
     <LinearLayout
@@ -52,8 +65,8 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColorHint="@color/colorPrimary"
-            android:hint="@string/hint_book_name">
+            android:hint="@string/hint_book_name"
+            android:textColorHint="@color/colorPrimary">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edt_book_name"

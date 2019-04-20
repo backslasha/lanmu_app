@@ -3,7 +3,9 @@ package slasha.lanmu.business.create_post;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
@@ -25,6 +27,8 @@ public class CreatePostActivity extends SameStyleActivity {
 
     private NoScrollViewPager mViewPager;
     private Button mButton;
+    private BookInfoInputWidget mBookInfoInputWidget;
+    private CreatorInfoInputWidget mCreatorInfoInputWidget;
 
     public static Intent newIntent(Context context) {
         return new Intent(context, CreatePostActivity.class);
@@ -38,8 +42,10 @@ public class CreatePostActivity extends SameStyleActivity {
 
         // find views
         List<View> mViews = new ArrayList<>();
-        mViews.add(new BookInfoInputWidget(this));
-        mViews.add(new CreatorInfoInputWidget(this));
+        mBookInfoInputWidget = new BookInfoInputWidget(this);
+        mCreatorInfoInputWidget = new CreatorInfoInputWidget(this);
+        mViews.add(mBookInfoInputWidget);
+        mViews.add(mCreatorInfoInputWidget);
 
         mViewPager = findViewById(R.id.view_pager);
         mViewPager.setNoScroll(true);
@@ -93,4 +99,9 @@ public class CreatePostActivity extends SameStyleActivity {
         return R.layout.activity_create_post;
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        mBookInfoInputWidget.onActivityResult(requestCode, resultCode, data);
+    }
 }
