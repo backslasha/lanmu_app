@@ -20,7 +20,7 @@
     <string name="hint_content_description">内容简介：</string>
     <string name="hint_creator_message">创帖人留言：</string>
     <string name="click_to_post_cover">点击上传书籍封面</string>
-    <string name="next">下一步</string>
+    <string name="next">下一页</string>
     <string name="creator_info">创建该帖人信息</string>
     <string name="hint_creator_email">建帖人地址邮箱：</string>
     <string name="hint_phone">手机号码：</string>
@@ -72,7 +72,7 @@
     <string name="hospital">hospital</string>
     <string name="lorem_ipsum">lorem_ipsum</string>
     <string name="label_cover">封面：</string>
-    <string name="prev">上一步</string>
+    <string name="prev">上一页</string>
     <string name="hint_edit_post_content">关于本书，说点什么吧...</string>
     <string name="hint_introduction">书籍简介：</string>
     <string name="hint_languish">语言：</string>
@@ -89,5 +89,8 @@
     <string name="register_success">注册成功</string>
     <string name="register_fail">注册失败</string>
     <string name="error_invalid_username">用户名不超过24个字符</string>
+    <string name="select_no_image">无选中照片</string>
+    <string name="tip_should_select_cover">没有封面，要继续下一步请选择一个封面</string>
+    <string name="tip_text_too_short">至少 32 个字符</string>
 
 </resources>

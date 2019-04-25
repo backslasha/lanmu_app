@@ -1,19 +1,18 @@
 package slasha.lanmu.business.create_post;
 
-import java.util.List;
-
 import slasha.lanmu.BasePresenter;
 import slasha.lanmu.BaseView;
-import slasha.lanmu.entity.local.BookPost;
+import slasha.lanmu.entity.api.post.CreatePostModel;
+import slasha.lanmu.entity.card.BookPostCard;
 
 public interface CreatePostContract {
 
-    interface CreatePostView extends BaseView<CreatePostPresenter> {
-        void showBookPosts(List<BookPost> bookPosts);
+    interface View extends BaseView<Presenter> {
+        void showCreateSuccess(BookPostCard card);
     }
 
-    interface CreatePostPresenter extends BasePresenter {
-        void performQuery(String keyword);
+    interface Presenter extends BasePresenter {
+        void performCreate(CreatePostModel model);
     }
 
 }

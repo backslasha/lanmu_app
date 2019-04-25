@@ -5,12 +5,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.net.Uri;
+import android.text.Editable;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
 import com.imnjh.imagepicker.SImagePicker;
 import com.imnjh.imagepicker.activity.PhotoPickerActivity;
@@ -33,6 +36,9 @@ import yhb.chorus.common.adapter.base.SimpleHolder;
 public class PostEditWidget extends ScrollView implements CreatePostActivity.ResultListener {
 
     private static final int REQUEST_CODE_POST_EDIT_IMAGE = 201;
+    private static final int MIN_LENGTH = 32;
+    private static final String EMPTY_TEXT = "";
+
     private RecyclerView mRecyclerView;
     private EditText mEditText;
 
@@ -52,29 +58,11 @@ public class PostEditWidget extends ScrollView implements CreatePostActivity.Res
                 .inflate(R.layout.layout_post_edit, this, true);
 
         mEditText = findViewById(R.id.edt_post_content);
-
         mSelectedImageAdapter = new SelectedImageAdapter(context);
         mRecyclerView = findViewById(R.id.recycler_view_post_images);
         mRecyclerView.setAdapter(mSelectedImageAdapter);
         mRecyclerView.addItemDecoration(new RecyclerItemDecoration(4, 3));
         mRecyclerView.setLayoutManager(new GridLayoutManager(context, 3));
-    }
-
-    public String getText() {
-        return String.valueOf(mEditText.getText());
-    }
-
-    public String getImages() {
-        StringBuilder builder = new StringBuilder();
-        List<String> entities = mSelectedImageAdapter.getEntities();
-        for (int i = 0; i < entities.size(); i++) {
-            String entity = entities.get(i);
-            builder.append(entity);
-            if (i != entities.size() - 1) {
-                builder.append(":");
-            }
-        }
-        return builder.toString();
     }
 
     @Override
@@ -89,11 +77,46 @@ public class PostEditWidget extends ScrollView implements CreatePostActivity.Res
                     mSelectedImageAdapter.performDataSetChanged(pathList);
                 }
             } else {
-                ToastUtils.showToast("没有数据");
+                ToastUtils.showToast(R.string.select_no_image);
             }
 
         }
     }
+
+    public boolean withEnoughText() {
+        if (TextUtils.isEmpty(mEditText.getText())) {
+            return false;
+        } else
+            return mEditText.getText().length() > MIN_LENGTH;
+    }
+
+    public String getText() {
+        if (TextUtils.isEmpty(mEditText.getText())) {
+            return EMPTY_TEXT;
+        } else {
+            return String.valueOf(mEditText.getText());
+        }
+    }
+
+    public String getImages() {
+        StringBuilder builder = new StringBuilder();
+        List<String> entities = mSelectedImageAdapter.getEntities();
+        if (entities != null) {
+            for (int i = 0; i < entities.size(); i++) {
+                String entity = entities.get(i);
+                builder.append(entity);
+                if (i != entities.size() - 1) {
+                    builder.append(":");
+                }
+            }
+        }
+        return builder.toString();
+    }
+
+    public void showTextTooShortTip() {
+        ToastUtils.showToast(R.string.tip_text_too_short);
+    }
+
 
     private class SelectedImageAdapter extends SimpleAdapter<String> {
 

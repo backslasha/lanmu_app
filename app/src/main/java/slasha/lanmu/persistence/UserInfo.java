@@ -16,6 +16,10 @@ public class UserInfo {
         return self;
     }
 
+    public static long id() {
+        return self.getId();
+    }
+
     public static void save2SP(User user) {
         self = user;
         SPUtils.put(LanmuApplication.instance(), KEY_ID, Global.gson().toJson(user));

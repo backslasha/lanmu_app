@@ -2,7 +2,7 @@ package slasha.lanmu.entity.api.post;
 
 import com.google.gson.annotations.Expose;
 
-import slasha.lanmu.entity.card.BookCard;
+import slasha.lanmu.entity.local.Book;
 
 
 /**
@@ -11,7 +11,7 @@ import slasha.lanmu.entity.card.BookCard;
 public class CreatePostModel {
 
     @Expose
-    private BookCard book;
+    private Book  book;
     @Expose
     private long createId;
     @Expose
@@ -19,11 +19,18 @@ public class CreatePostModel {
     @Expose
     private String images;
 
-    public BookCard getBook() {
+    public CreatePostModel(Book book, long createId, String content, String images) {
+        this.book = book;
+        this.createId = createId;
+        this.content = content;
+        this.images = images;
+    }
+
+    public Book getBook() {
         return book;
     }
 
-    public void setBook(BookCard book) {
+    public void setBook(Book book) {
         this.book = book;
     }
 
@@ -51,11 +58,18 @@ public class CreatePostModel {
         this.images = images;
     }
 
-    public CreatePostModel(BookCard book, long createId, String content, String images) {
-        this.book = book;
-        this.createId = createId;
-        this.content = content;
-        this.images = images;
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("{");
+        sb.append("\"book\":")
+                .append(book);
+        sb.append(",\"createId\":")
+                .append(createId);
+        sb.append(",\"content\":\"")
+                .append(content).append('\"');
+        sb.append(",\"images\":\"")
+                .append(images).append('\"');
+        sb.append('}');
+        return sb.toString();
     }
-
 }

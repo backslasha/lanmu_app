@@ -3,12 +3,6 @@ package slasha.lanmu.business.create_post;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -16,25 +10,58 @@ import android.widget.Button;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+import butterknife.BindString;
+import butterknife.BindView;
+import butterknife.OnClick;
 import slasha.lanmu.R;
 import slasha.lanmu.SameStyleActivity;
 import slasha.lanmu.business.create_post.widget.BookInfoInputWidget;
-import slasha.lanmu.widget.NoScrollViewPager;
 import slasha.lanmu.business.create_post.widget.PostEditWidget;
+import slasha.lanmu.entity.api.post.CreatePostModel;
+import slasha.lanmu.entity.card.BookPostCard;
+import slasha.lanmu.persistence.UserInfo;
+import slasha.lanmu.utils.ToastUtils;
+import slasha.lanmu.widget.NoScrollViewPager;
 
 // TODO: 2019/3/11 consider whether to refactor with fragment
-public class CreatePostActivity extends SameStyleActivity {
+public class CreatePostActivity extends SameStyleActivity
+        implements CreatePostContract.View {
 
-    private NoScrollViewPager mViewPager;
-    private Button mButtonNext, mButtonPrev;
-    private BookInfoInputWidget mBookInfoInputWidget;
-    private PostEditWidget mPostEditWidget;
+    @BindView(R.id.view_pager)
+    NoScrollViewPager mViewPager;
 
-    public interface ResultListener {
-        void onActivityResult(int requestCode, int resultCode, @Nullable Intent data);
-    }
+    @BindView(R.id.btn_next)
+    Button mButtonNext;
 
+    @BindView(R.id.btn_prev)
+    Button mButtonPrev;
+
+    @BindString(R.string.create_post_first_step)
+    String stepOne;
+
+    @BindString(R.string.create_post_second_step)
+    String stepTwo;
+
+    @BindString(R.string.create_now)
+    String createNow;
+
+    @BindString(R.string.next)
+    String next;
+
+    BookInfoInputWidget mBookInfoInputWidget;
+    PostEditWidget mPostEditWidget;
+    List<View> mViews = new ArrayList<>(2);
+
+    private CreatePostContract.Presenter mPresenter;
     private List<ResultListener> mResultListeners = new ArrayList<>();
+
+    public static Intent newIntent(Context context) {
+        return new Intent(context, CreatePostActivity.class);
+    }
 
     public void addResultListener(ResultListener resultListener) {
         mResultListeners.add(resultListener);
@@ -44,29 +71,22 @@ public class CreatePostActivity extends SameStyleActivity {
         mResultListeners.remove(resultListener);
     }
 
-
-    public static Intent newIntent(Context context) {
-        return new Intent(context, CreatePostActivity.class);
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle(stepOne);
+    }
 
-        setTitle(R.string.create_post_first_step);
+    @Override
+    protected void initWidget() {
+        super.initWidget();
 
-        // find views
-        List<View> mViews = new ArrayList<>();
-        mBookInfoInputWidget = new BookInfoInputWidget(this);
-        mPostEditWidget = new PostEditWidget(this);
+        mViews.add(mBookInfoInputWidget = new BookInfoInputWidget(this));
+        mViews.add(mPostEditWidget = new PostEditWidget(this));
+
         addResultListener(mBookInfoInputWidget);
         addResultListener(mPostEditWidget);
 
-        mViews.add(mBookInfoInputWidget);
-        mViews.add(mPostEditWidget);
-
-
-        mViewPager = findViewById(R.id.view_pager);
         mViewPager.setNoScroll(true);
         mViewPager.setAdapter(new PagerAdapter() {
 
@@ -88,36 +108,65 @@ public class CreatePostActivity extends SameStyleActivity {
             }
 
             @Override
-            public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+            public void destroyItem(@NonNull ViewGroup container, int position,
+                                    @NonNull Object object) {
                 container.removeView((View) object);
             }
         });
+
         mViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
                 if (position == mViews.size() - 1) {
-                    mButtonNext.setText(R.string.create_now);
+                    mButtonNext.setText(createNow);
                     mButtonPrev.setVisibility(View.VISIBLE);
-                    setTitle(R.string.create_post_second_step);
+                    setTitle(stepTwo);
                 } else if (position == 0) {
                     mButtonPrev.setVisibility(View.GONE);
-                    mButtonNext.setText(R.string.next);
-                    setTitle(R.string.create_post_first_step);
+                    mButtonNext.setText(next);
+                    setTitle(stepOne);
                 }
             }
         });
 
-
-        mButtonNext = findViewById(R.id.btn_next);
-        mButtonPrev = findViewById(R.id.btn_prev);
-        mButtonNext.setOnClickListener(v -> {
-            mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1, true);
-        });
-        mButtonPrev.setOnClickListener(v -> {
-            mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1, true);
-        });
-        mButtonNext.setText(R.string.next);
+        mButtonNext.setText(next);
         mButtonPrev.setVisibility(View.GONE);
+    }
+
+    @OnClick(R.id.btn_next)
+    void next() {
+        int currentItem = mViewPager.getCurrentItem();
+        if (currentItem == mViews.size() - 1) {
+            if (mPostEditWidget.withEnoughText()) {
+                myPresenter().performCreate(collectInfo());
+            }else {
+                mPostEditWidget.showTextTooShortTip();
+            }
+        } else {
+            if (mBookInfoInputWidget.allFilled()) {
+                if (mBookInfoInputWidget.withCover()) {
+                    mViewPager.setCurrentItem(currentItem + 1, true);
+                } else {
+                    mBookInfoInputWidget.showCoverNeededTip();
+                }
+            } else {
+                mBookInfoInputWidget.showFieldsNeededTip();
+            }
+        }
+    }
+
+    private CreatePostModel collectInfo() {
+        return new CreatePostModel(
+                mBookInfoInputWidget.getBookInfo(),
+                UserInfo.id(),
+                mPostEditWidget.getText(),
+                mPostEditWidget.getImages()
+        );
+    }
+
+    @OnClick(R.id.btn_prev)
+    void previous() {
+        mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1, true);
     }
 
     @Override
@@ -140,5 +189,32 @@ public class CreatePostActivity extends SameStyleActivity {
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public void showCreateSuccess(BookPostCard card) {
+        ToastUtils.showToast(R.string.publish_succeed);
+    }
+
+    @Override
+    public CreatePostContract.Presenter myPresenter() {
+        if (mPresenter == null) {
+            mPresenter = new CreatePostPresenterImpl(this, this);
+        }
+        return mPresenter;
+    }
+
+    @Override
+    public void showLoadingIndicator() {
+        showProgressDialog();
+    }
+
+    @Override
+    public void hideLoadingIndicator() {
+        hideProgressDialog();
+    }
+
+    public interface ResultListener {
+        void onActivityResult(int requestCode, int resultCode, @Nullable Intent data);
     }
 }
