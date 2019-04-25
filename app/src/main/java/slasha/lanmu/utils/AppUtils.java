@@ -9,7 +9,7 @@ import java.io.InputStreamReader;
 
 import androidx.annotation.Nullable;
 import slasha.lanmu.application.LanmuApplication;
-import slasha.lanmu.bean.BookPost;
+import slasha.lanmu.entity.local.BookPost;
 import slasha.lanmu.business.post_detail.PostDetailActivity;
 
 public class AppUtils {

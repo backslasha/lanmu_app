@@ -4,7 +4,7 @@ import java.util.List;
 
 import slasha.lanmu.BasePresenter;
 import slasha.lanmu.BaseView;
-import slasha.lanmu.bean.BookPost;
+import slasha.lanmu.entity.local.BookPost;
 
 public interface CreatePostContract {
 

@@ -2,7 +2,7 @@ package slasha.lanmu.widget.reply;
 
 import android.util.Log;
 
-import slasha.lanmu.GlobalBuffer;
+import slasha.lanmu.persistence.Global;
 import slasha.lanmu.utils.AppUtils;
 import slasha.lanmu.utils.ThreadUtils;
 
@@ -19,7 +19,7 @@ public class ReplyPublisher implements Publisher {
     public void publishComment(CommentData commentData, String content) {
         ThreadUtils.execute(() -> {
             try {
-                Thread.sleep(GlobalBuffer.Debug.sLoadingTime);
+                Thread.sleep(Global.Debug.sLoadingTime);
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 AppUtils.runOnUiThread(() -> {
@@ -49,7 +49,7 @@ public class ReplyPublisher implements Publisher {
     public void publishCommentReply(CommentReplyData commentReplyData, String content) {
         ThreadUtils.execute(() -> {
             try {
-                Thread.sleep(GlobalBuffer.Debug.sLoadingTime);
+                Thread.sleep(Global.Debug.sLoadingTime);
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 AppUtils.runOnUiThread(() -> {

@@ -18,10 +18,13 @@ import java.io.File;
 import java.util.ArrayList;
 
 import slasha.lanmu.R;
+import slasha.lanmu.entity.local.Book;
+import slasha.lanmu.business.create_post.CreatePostActivity;
 import slasha.lanmu.utils.CommonUtils;
 import slasha.lanmu.utils.ToastUtils;
 
-public class BookInfoInputWidget extends ScrollView {
+public class BookInfoInputWidget extends ScrollView
+        implements CreatePostActivity.ResultListener {
 
     private final int REQUEST_CODE_IMAGE = 1080;
 
@@ -33,6 +36,8 @@ public class BookInfoInputWidget extends ScrollView {
     private TextInputEditText mEdtPublishHouse;
     private TextInputEditText mEdtPublishDate;
     private TextInputEditText mEdtPublisher;
+    private TextInputEditText mEdtIntroduction;
+    private TextInputEditText mEdtLanguish;
 
     public BookInfoInputWidget(Context context) {
         this(context, null);
@@ -55,6 +60,8 @@ public class BookInfoInputWidget extends ScrollView {
         mEdtPublishHouse = findViewById(R.id.edt_publish_house);
         mEdtPublishDate = findViewById(R.id.edt_publish_date);
         mEdtPublisher = findViewById(R.id.edt_publisher);
+        mEdtIntroduction = findViewById(R.id.edt_introduction);
+        mEdtLanguish = findViewById(R.id.edt_languish);
 
         mFlAddCover.setOnClickListener(v -> {
             SImagePicker
@@ -67,6 +74,7 @@ public class BookInfoInputWidget extends ScrollView {
         });
     }
 
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_IMAGE) {
             if (data != null) {
@@ -84,5 +92,19 @@ public class BookInfoInputWidget extends ScrollView {
             }
 
         }
+    }
+
+    public Book getBookInfo() {
+        Book book = new Book();
+        book.setAuthor(String.valueOf(mEdtAuthorName.getText()));
+//        book.setCoverUrl();
+//        book.setId();
+        book.setIntroduction(String.valueOf(mEdtIntroduction.getText()));
+        book.setLanguish(String.valueOf(mEdtLanguish.getText()));
+        book.setName(String.valueOf(mEdtBookName.getText()));
+        book.setPublishDate(String.valueOf(mEdtPublishDate.getText()));
+        book.setPublisher(String.valueOf(mEdtPublisher.getText()));
+        book.setVersion(String.valueOf(mEdtVersion.getText()));
+        return book;
     }
 }

@@ -19,16 +19,31 @@ import java.util.List;
 import slasha.lanmu.R;
 import slasha.lanmu.SameStyleActivity;
 import slasha.lanmu.business.create_post.widget.BookInfoInputWidget;
-import slasha.lanmu.business.create_post.widget.CreatorInfoInputWidget;
-import slasha.lanmu.business.create_post.widget.NoScrollViewPager;
+import slasha.lanmu.widget.NoScrollViewPager;
+import slasha.lanmu.business.create_post.widget.PostEditWidget;
 
 // TODO: 2019/3/11 consider whether to refactor with fragment
 public class CreatePostActivity extends SameStyleActivity {
 
     private NoScrollViewPager mViewPager;
-    private Button mButton;
+    private Button mButtonNext, mButtonPrev;
     private BookInfoInputWidget mBookInfoInputWidget;
-    private CreatorInfoInputWidget mCreatorInfoInputWidget;
+    private PostEditWidget mPostEditWidget;
+
+    public interface ResultListener {
+        void onActivityResult(int requestCode, int resultCode, @Nullable Intent data);
+    }
+
+    private List<ResultListener> mResultListeners = new ArrayList<>();
+
+    public void addResultListener(ResultListener resultListener) {
+        mResultListeners.add(resultListener);
+    }
+
+    public void removeResultListener(ResultListener resultListener) {
+        mResultListeners.remove(resultListener);
+    }
+
 
     public static Intent newIntent(Context context) {
         return new Intent(context, CreatePostActivity.class);
@@ -43,9 +58,13 @@ public class CreatePostActivity extends SameStyleActivity {
         // find views
         List<View> mViews = new ArrayList<>();
         mBookInfoInputWidget = new BookInfoInputWidget(this);
-        mCreatorInfoInputWidget = new CreatorInfoInputWidget(this);
+        mPostEditWidget = new PostEditWidget(this);
+        addResultListener(mBookInfoInputWidget);
+        addResultListener(mPostEditWidget);
+
         mViews.add(mBookInfoInputWidget);
-        mViews.add(mCreatorInfoInputWidget);
+        mViews.add(mPostEditWidget);
+
 
         mViewPager = findViewById(R.id.view_pager);
         mViewPager.setNoScroll(true);
@@ -77,21 +96,28 @@ public class CreatePostActivity extends SameStyleActivity {
             @Override
             public void onPageSelected(int position) {
                 if (position == mViews.size() - 1) {
-                    mButton.setText(R.string.create_now);
-                    setTitle(R.string.create_post_secend_step);
+                    mButtonNext.setText(R.string.create_now);
+                    mButtonPrev.setVisibility(View.VISIBLE);
+                    setTitle(R.string.create_post_second_step);
                 } else if (position == 0) {
-                    mButton.setText(R.string.next);
+                    mButtonPrev.setVisibility(View.GONE);
+                    mButtonNext.setText(R.string.next);
                     setTitle(R.string.create_post_first_step);
                 }
             }
         });
 
 
-        mButton = findViewById(R.id.btn_next);
-        mButton.setOnClickListener(v -> {
+        mButtonNext = findViewById(R.id.btn_next);
+        mButtonPrev = findViewById(R.id.btn_prev);
+        mButtonNext.setOnClickListener(v -> {
             mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1, true);
         });
-        mButton.setText(R.string.next);
+        mButtonPrev.setOnClickListener(v -> {
+            mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1, true);
+        });
+        mButtonNext.setText(R.string.next);
+        mButtonPrev.setVisibility(View.GONE);
     }
 
     @Override
@@ -102,6 +128,17 @@ public class CreatePostActivity extends SameStyleActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        mBookInfoInputWidget.onActivityResult(requestCode, resultCode, data);
+        for (ResultListener resultListener : mResultListeners) {
+            resultListener.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mButtonPrev.getVisibility() == View.VISIBLE) {
+            mButtonPrev.performClick();
+        } else {
+            super.onBackPressed();
+        }
     }
 }

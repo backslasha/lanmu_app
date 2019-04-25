@@ -3,9 +3,9 @@ package slasha.lanmu.business.post_detail;
 import java.util.Collections;
 import java.util.List;
 
-import slasha.lanmu.GlobalBuffer;
-import slasha.lanmu.bean.Comment;
-import slasha.lanmu.bean.response.Comments;
+import slasha.lanmu.persistence.Global;
+import slasha.lanmu.entity.local.Comment;
+import slasha.lanmu.entity.response.Comments;
 import slasha.lanmu.debug.ArtificialProductFactory;
 import slasha.lanmu.utils.ThreadUtils;
 
@@ -20,7 +20,7 @@ class PostDetailModelImpl implements PostDetailContract.PostDetailModel {
             }
             Comments comments = null;
             // TODO: 2019/3/17  offerPostFlow
-            if (GlobalBuffer.Debug.sUserFakeComments) {
+            if (Global.Debug.sUserFakeComments) {
                 comments = ArtificialProductFactory.offerComments();
             }
             if (comments != null) {

@@ -15,10 +15,10 @@ public class ToastUtils {
     }
 
     public static void showToast(@StringRes int stringRes) {
-        Toast.makeText(sAppContext, stringRes, Toast.LENGTH_SHORT).show();
+        Toast.makeText(sAppContext, stringRes, Toast.LENGTH_LONG).show();
     }
 
-    public static void showToast(String context) {
-        Toast.makeText(sAppContext, context, Toast.LENGTH_SHORT).show();
+    public static void showToast(String content) {
+        Toast.makeText(sAppContext, content, Toast.LENGTH_LONG).show();
     }
 }

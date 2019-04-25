@@ -1,7 +1,7 @@
 package slasha.lanmu.business.main;
 
-import slasha.lanmu.GlobalBuffer;
-import slasha.lanmu.bean.response.BookPostFlow;
+import slasha.lanmu.persistence.Global;
+import slasha.lanmu.entity.response.BookPostFlow;
 import slasha.lanmu.debug.ArtificialProductFactory;
 import slasha.lanmu.utils.ThreadUtils;
 
@@ -17,7 +17,7 @@ class MainModelImpl implements MainContract.MainModel {
             }
             BookPostFlow bookPostFlow = null;
             // TODO: 2019/3/17  offerPostFlow
-            if (GlobalBuffer.Debug.sUserFakeBookPostFlow) {
+            if (Global.Debug.sUserFakeBookPostFlow) {
                 bookPostFlow = ArtificialProductFactory.offerPostFlow();
             }
             postFlowCallback.callback(bookPostFlow);

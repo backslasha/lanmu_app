@@ -6,13 +6,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import java.io.Serializable;
-
 import slasha.lanmu.R;
 import slasha.lanmu.SameStyleActivity;
-import slasha.lanmu.bean.User;
+import slasha.lanmu.entity.local.User;
 import slasha.lanmu.business.chat.ChatActivity;
-import slasha.lanmu.utils.ToastUtils;
 
 public class UserProfileActivity extends SameStyleActivity implements ProfileContract.ProfileView {
 
@@ -67,7 +64,7 @@ public class UserProfileActivity extends SameStyleActivity implements ProfileCon
     @Override
     public void showProfile(User user) {
         // TODO: 2019/3/12 show profile
-        setTitle(user.getUsername());
+        setTitle(user.getName());
     }
 
     @Override

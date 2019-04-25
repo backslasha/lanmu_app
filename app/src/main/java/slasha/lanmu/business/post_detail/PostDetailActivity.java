@@ -19,17 +19,18 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import slasha.lanmu.GlobalBuffer;
+import slasha.lanmu.persistence.Global;
 import slasha.lanmu.R;
 import slasha.lanmu.SameStyleActivity;
 import slasha.lanmu.application.LanmuApplication;
-import slasha.lanmu.bean.Book;
-import slasha.lanmu.bean.BookPost;
-import slasha.lanmu.bean.Comment;
-import slasha.lanmu.bean.CommentReply;
-import slasha.lanmu.bean.User;
+import slasha.lanmu.entity.local.Book;
+import slasha.lanmu.entity.local.BookPost;
+import slasha.lanmu.entity.local.Comment;
+import slasha.lanmu.entity.local.CommentReply;
+import slasha.lanmu.entity.local.User;
 import slasha.lanmu.business.post_detail.apdater.CommentAdapter;
 import slasha.lanmu.business.profile.UserProfileActivity;
+import slasha.lanmu.persistence.UserInfo;
 import slasha.lanmu.utils.AppUtils;
 import slasha.lanmu.utils.CommonUtils;
 import slasha.lanmu.utils.ToastUtils;
@@ -132,7 +133,7 @@ public class PostDetailActivity extends SameStyleActivity
             ToastUtils.showToast("onRefreshing...");
             AppUtils.postOnUiThread(
                     () -> mSwipeRefreshLayoutComments.setRefreshing(false),
-                    GlobalBuffer.Debug.sLoadingTime
+                    Global.Debug.sLoadingTime
             );
         });
 
@@ -163,11 +164,11 @@ public class PostDetailActivity extends SameStyleActivity
 
         mCommentData = new Publisher.CommentData(
                 mBookPost.getId(),
-                GlobalBuffer.AccountInfo.currentUser().getId()
+                UserInfo.self().getId()
         );
         mCommentReplyData = new Publisher.CommentReplyData(
                 mBookPost.getId(),
-                GlobalBuffer.AccountInfo.currentUser().getId()
+                UserInfo.self().getId()
         );
 
         myPresenter().performPullComments(mBookPost.getId());
@@ -190,7 +191,7 @@ public class PostDetailActivity extends SameStyleActivity
         Book book = bookPost.getBook();
         if (book != null) {
             Picasso.with(LanmuApplication.instance())
-                    .load(book.getImages())
+                    .load(book.getCoverUrl())
                     .into(mIvCover);
             mTvTitle.setText(book.getName());
             mTvDescription.setText(
@@ -210,7 +211,7 @@ public class PostDetailActivity extends SameStyleActivity
             Picasso.with(LanmuApplication.instance())
                     .load(creator.getAvatarUrl())
                     .into(mIvAvatar);
-            mTvCreatorName.setText(creator.getUsername());
+            mTvCreatorName.setText(creator.getName());
 
         }
     }
@@ -242,7 +243,7 @@ public class PostDetailActivity extends SameStyleActivity
                                     mCommentReplyData.prepare(reply.getCommentId(),
                                             reply.getFrom().getId());
                                     mReplyBoard.open(String.format(getString(R.string.reply_to),
-                                            reply.getFrom().getUsername()
+                                            reply.getFrom().getName()
                                     ));
                                 }
                             }

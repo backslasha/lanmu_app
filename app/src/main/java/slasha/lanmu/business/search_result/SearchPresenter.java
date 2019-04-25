@@ -2,7 +2,7 @@ package slasha.lanmu.business.search_result;
 
 import java.util.List;
 
-import slasha.lanmu.bean.BookPost;
+import slasha.lanmu.entity.local.BookPost;
 
 public class SearchPresenter implements SearchContract.SearchPresenter {
 

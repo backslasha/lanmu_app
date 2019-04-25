@@ -5,12 +5,12 @@ import com.google.gson.reflect.TypeToken;
 
 import java.util.List;
 
-import slasha.lanmu.bean.BookPost;
-import slasha.lanmu.bean.response.BookPostFlow;
-import slasha.lanmu.bean.response.Comments;
-import slasha.lanmu.bean.response.LoginResult;
-import slasha.lanmu.bean.Message;
-import slasha.lanmu.bean.User;
+import slasha.lanmu.entity.local.BookPost;
+import slasha.lanmu.entity.response.BookPostFlow;
+import slasha.lanmu.entity.response.Comments;
+import slasha.lanmu.entity.response.LoginResult;
+import slasha.lanmu.entity.local.Message;
+import slasha.lanmu.entity.local.User;
 
 import static slasha.lanmu.utils.AppUtils.readStringFromAsset;
 

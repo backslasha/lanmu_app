@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.text.Layout.Alignment;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.style.AlignmentSpan;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.BulletSpan;
@@ -60,7 +61,10 @@ public class SpannableStringUtils {
 
     public static class Builder {
 
+        private static final CharSequence EMPTY_TEXT = "";
+
         private int defaultValue = 0x12000000;
+
         private CharSequence text;
 
         private int flag;
@@ -111,8 +115,8 @@ public class SpannableStringUtils {
         private SpannableStringBuilder mBuilder;
 
 
-        private Builder(@NonNull CharSequence text) {
-            this.text = text;
+        private Builder(CharSequence text) {
+            this.text = text == null ? EMPTY_TEXT : text;
             flag = Spanned.SPAN_EXCLUSIVE_EXCLUSIVE;
             foregroundColor = defaultValue;
             backgroundColor = defaultValue;
@@ -421,7 +425,8 @@ public class SpannableStringUtils {
          * @param text 样式字符串文本
          * @return {@link Builder}
          */
-        public Builder append(@NonNull CharSequence text) {
+        public Builder append(CharSequence text) {
+            text = text == null ? EMPTY_TEXT : text;
             setSpan();
             this.text = text;
             return this;

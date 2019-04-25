@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import butterknife.ButterKnife;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
@@ -12,7 +13,34 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(getContentViewResId());
+
+        if (initArgs(getIntent().getExtras())) {
+            int layId = getContentViewResId();
+            setContentView(layId);
+            initWidget();
+            initData();
+        } else {
+            finish();
+        }
+
+    }
+
+
+    /**
+     * 初始化相关参数
+     *
+     * @param bundle 参数Bundle
+     * @return 如果参数正确返回True，错误返回False
+     */
+    protected boolean initArgs(Bundle bundle) {
+        return true;
+    }
+
+    /**
+     * 初始化控件
+     */
+    protected void initWidget() {
+        ButterKnife.bind(this);
 
         // common loading spinner
         mProgressDialog = new ProgressDialog(this);
@@ -21,16 +49,32 @@ public abstract class BaseActivity extends AppCompatActivity {
         mProgressDialog.setCancelable(false);
     }
 
+
+    /**
+     * 初始化数据
+     */
+    protected void initData() {
+
+    }
+
+
     protected String getLoadingMessage() {
         return "";
     }
 
-    protected void showProgressDialog() {
+    public void showProgressDialog() {
         mProgressDialog.show();
     }
 
-    protected void hideProgressDialog() {
+    public void hideProgressDialog() {
         mProgressDialog.hide();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mProgressDialog != null)
+            mProgressDialog.dismiss();
     }
 
     protected abstract int getContentViewResId();

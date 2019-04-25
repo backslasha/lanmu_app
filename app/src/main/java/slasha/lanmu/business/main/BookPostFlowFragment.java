@@ -18,9 +18,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import slasha.lanmu.R;
 import slasha.lanmu.application.LanmuApplication;
-import slasha.lanmu.bean.Book;
-import slasha.lanmu.bean.BookPost;
-import slasha.lanmu.bean.response.BookPostFlow;
+import slasha.lanmu.entity.local.Book;
+import slasha.lanmu.entity.local.BookPost;
+import slasha.lanmu.entity.response.BookPostFlow;
 import slasha.lanmu.utils.AppUtils;
 import slasha.lanmu.utils.ToastUtils;
 import yhb.chorus.common.adapter.SimpleAdapter;
@@ -81,7 +81,7 @@ public class BookPostFlowFragment extends Fragment
                         holder.setText(R.id.tv_title, book.getName());
                         holder.setText(R.id.tv_author_name, book.getAuthor());
                         Picasso.with(LanmuApplication.instance())
-                                .load(book.getImages())
+                                .load(book.getCoverUrl())
                                 .into((ImageView) holder.getView(R.id.iv_cover));
                         holder.setText(R.id.tv_introduction, book.getIntroduction());
                         holder.setText(R.id.tv_comment_count, String.valueOf(

@@ -5,7 +5,7 @@ import java.util.List;
 import slasha.lanmu.BaseModel;
 import slasha.lanmu.BasePresenter;
 import slasha.lanmu.BaseView;
-import slasha.lanmu.bean.Message;
+import slasha.lanmu.entity.local.Message;
 
 public interface ChatContract {
 

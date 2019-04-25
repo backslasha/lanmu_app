@@ -2,7 +2,7 @@ package slasha.lanmu.business.profile;
 
 import slasha.lanmu.BasePresenter;
 import slasha.lanmu.BaseView;
-import slasha.lanmu.bean.User;
+import slasha.lanmu.entity.local.User;
 
 public interface ProfileContract {
 

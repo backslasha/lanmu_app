@@ -18,8 +18,8 @@ import java.util.List;
 import slasha.lanmu.R;
 import slasha.lanmu.SameStyleActivity;
 import slasha.lanmu.application.LanmuApplication;
-import slasha.lanmu.bean.Book;
-import slasha.lanmu.bean.BookPost;
+import slasha.lanmu.entity.local.Book;
+import slasha.lanmu.entity.local.BookPost;
 import slasha.lanmu.business.create_post.CreatePostActivity;
 import slasha.lanmu.business.post_detail.PostDetailActivity;
 import slasha.lanmu.utils.CommonUtils;
@@ -120,7 +120,7 @@ public class SearchResultActivity extends SameStyleActivity implements
                         holder.setText(R.id.tv_title, book.getName());
                         holder.setText(R.id.tv_author_name, book.getAuthor());
                         Picasso.with(LanmuApplication.instance())
-                                .load(book.getImages())
+                                .load(book.getCoverUrl())
                                 .into((ImageView) holder.getView(R.id.iv_cover));
                         holder.setText(R.id.tv_introduction, book.getIntroduction());
                     }

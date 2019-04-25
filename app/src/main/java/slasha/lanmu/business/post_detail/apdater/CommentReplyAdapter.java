@@ -11,9 +11,9 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import slasha.lanmu.R;
-import slasha.lanmu.bean.Comment;
-import slasha.lanmu.bean.CommentReply;
-import slasha.lanmu.bean.User;
+import slasha.lanmu.entity.local.Comment;
+import slasha.lanmu.entity.local.CommentReply;
+import slasha.lanmu.entity.local.User;
 import slasha.lanmu.utils.SpannableStringUtils;
 import slasha.lanmu.utils.ToastUtils;
 import yhb.chorus.common.adapter.SimpleAdapter;
@@ -76,7 +76,7 @@ public class CommentReplyAdapter extends SimpleAdapter<CommentReply> {
 
             String colon = mContext.getString(R.string.colon);
             SpannableStringUtils.Builder builder =
-                    SpannableStringUtils.getBuilder(from.getUsername())
+                    SpannableStringUtils.getBuilder(from.getName())
                             .setForegroundColor(Color.parseColor("#03A7EB"))
                             .setClickSpan(new ClickableSpan() {
                                 @Override
@@ -88,7 +88,7 @@ public class CommentReplyAdapter extends SimpleAdapter<CommentReply> {
 
             if (to != null) {
                 builder.append(mContext.getString(R.string.reply))
-                        .append(to.getUsername())
+                        .append(to.getName())
                         .setForegroundColor(
                                 mContext.getResources().getColor(R.color.colorClickableText)
                         )

@@ -2,7 +2,7 @@ package slasha.lanmu.business.chat;
 
 import java.util.List;
 
-import slasha.lanmu.bean.Message;
+import slasha.lanmu.entity.local.Message;
 
 class ChatModelImpl implements ChatContract.ChatModel {
 

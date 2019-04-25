@@ -12,11 +12,12 @@ import android.view.View;
 
 import java.util.List;
 
-import slasha.lanmu.GlobalBuffer;
+import slasha.lanmu.persistence.AccountInfo;
 import slasha.lanmu.R;
 import slasha.lanmu.SameStyleActivity;
-import slasha.lanmu.bean.Message;
-import slasha.lanmu.bean.User;
+import slasha.lanmu.entity.local.Message;
+import slasha.lanmu.entity.local.User;
+import slasha.lanmu.persistence.UserInfo;
 import slasha.lanmu.utils.ToastUtils;
 import yhb.chorus.common.adapter.SimpleAdapter;
 import yhb.chorus.common.adapter.base.SimpleHolder;
@@ -47,12 +48,12 @@ public class ChatActivity extends SameStyleActivity
         // handle Intent
         handleIntent(getIntent());
 
-        if (!GlobalBuffer.AccountInfo.loggedIn()) {
+        if (!AccountInfo.loggedIn()) {
             throw new IllegalArgumentException();
         }
 
         myPresenter().performPullMessages(
-                GlobalBuffer.AccountInfo.currentUser().getId(),
+                UserInfo.self().getId(),
                 mChatGuy.getId()
         );
 
@@ -63,7 +64,7 @@ public class ChatActivity extends SameStyleActivity
             return;
         }
         mChatGuy = (User) intent.getSerializableExtra(EXTRA_OTHER_USER);
-        setTitle(mChatGuy.getUsername());
+        setTitle(mChatGuy.getName());
     }
 
     @Override
@@ -133,7 +134,7 @@ public class ChatActivity extends SameStyleActivity
 
         ChatAdapter(Context context) {
             super(context);
-            if (!GlobalBuffer.AccountInfo.loggedIn()) {
+            if (!AccountInfo.loggedIn()) {
                 throw new IllegalArgumentException("init ChatAdapter under un loggedIn status!");
             }
         }
@@ -143,7 +144,7 @@ public class ChatActivity extends SameStyleActivity
             User from = message.getFrom();
             if (from != null) {
                 holder.setImage(R.id.iv_avatar, from.getAvatarUrl());
-                holder.setText(R.id.tv_bubble_username, from.getUsername());
+                holder.setText(R.id.tv_bubble_username, from.getName());
                 holder.setOnClickListener(R.id.iv_avatar, ChatActivity.this);
                 holder.setOnClickListener(R.id.tv_bubble_username, ChatActivity.this);
             }
@@ -168,7 +169,7 @@ public class ChatActivity extends SameStyleActivity
 
         private int getItemViewType(Message message) {
             User from = message.getFrom();
-            if (from.getId() == GlobalBuffer.AccountInfo.currentUser().getId()) {
+            if (from.getId() == UserInfo.self().getId()) {
                 return VIEW_TYPE_FROM_ME;
             } else {
                 return VIEW_TYPE_FROM_OTHERS;

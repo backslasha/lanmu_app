@@ -4,8 +4,8 @@ import androidx.annotation.NonNull;
 
 import java.util.List;
 
-import slasha.lanmu.GlobalBuffer;
-import slasha.lanmu.bean.Message;
+import slasha.lanmu.persistence.Global;
+import slasha.lanmu.entity.local.Message;
 import slasha.lanmu.debug.ArtificialProductFactory;
 
 class ChatPresenterImpl implements ChatContract.ChatPresenter {
@@ -22,7 +22,7 @@ class ChatPresenterImpl implements ChatContract.ChatPresenter {
     @Override
     public void performPullMessages(long myId, long otherId) {
         List<Message> result;
-        if (GlobalBuffer.Debug.sUseFakeData) {
+        if (Global.Debug.sUseFakeData) {
             result = ArtificialProductFactory.messages();
         } else {
             result = mChatModel.offer(myId, otherId);

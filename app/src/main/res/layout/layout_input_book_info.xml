@@ -45,12 +45,12 @@
 
         <ImageView
             android:id="@+id/iv_selected_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_gravity="start"
             android:layout_margin="6dp"
             android:scaleType="centerCrop"
-            tools:src="@drawable/cover_sample"  />
+            tools:src="@mipmap/ic_launcher" />
 
     </FrameLayout>
 
@@ -65,8 +65,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/hint_book_name"
-            android:textColorHint="@color/colorPrimary">
+            android:hint="@string/hint_book_name">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edt_book_name"
@@ -125,6 +124,29 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edt_publisher"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_languish">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edt_languish"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_introduction">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:inputType="textMultiLine"
+                android:id="@+id/edt_introduction"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>

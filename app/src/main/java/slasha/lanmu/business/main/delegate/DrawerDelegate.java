@@ -1,11 +1,14 @@
 package slasha.lanmu.business.main.delegate;
 
 import androidx.annotation.NonNull;
+
 import com.google.android.material.navigation.NavigationView;
+
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
+
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,14 +16,16 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import slasha.lanmu.GlobalBuffer;
+import slasha.lanmu.persistence.AccountInfo;
+import slasha.lanmu.persistence.Global;
 import slasha.lanmu.R;
-import slasha.lanmu.bean.User;
-import slasha.lanmu.business.login.LoginActivity;
+import slasha.lanmu.entity.local.User;
+import slasha.lanmu.business.account.AccountActivity;
 import slasha.lanmu.business.main.MainActivity;
+import slasha.lanmu.persistence.UserInfo;
 
 public class DrawerDelegate implements NavigationView.OnNavigationItemSelectedListener,
-        GlobalBuffer.AccountInfo.UserInfoChangeListener {
+        UserInfo.UserInfoChangeListener {
 
     private MainActivity activity;
     private NavigationView mNavigationView;
@@ -45,8 +50,8 @@ public class DrawerDelegate implements NavigationView.OnNavigationItemSelectedLi
         mNavigationView = activity.findViewById(R.id.nav_view);
         mNavigationView.setNavigationItemSelectedListener(this);
         mNavigationView.setCheckedItem(R.id.nav_gallery);
-        updateNavHeaderUI(GlobalBuffer.AccountInfo.currentUser());
-        GlobalBuffer.AccountInfo.registerLoginStatusListener(this);
+        updateNavHeaderUI(UserInfo.self());
+        UserInfo.registerLoginStatusListener(this);
     }
 
 
@@ -59,16 +64,19 @@ public class DrawerDelegate implements NavigationView.OnNavigationItemSelectedLi
         if (id == R.id.nav_camera) {
             // Handle the camera action            // 使用本地假数据
 
-            GlobalBuffer.Debug.sUseFakeData = true;
+            Global.Debug.sUseFakeData = true;
         } else if (id == R.id.nav_gallery) {
-            GlobalBuffer.Debug.sUseFakeData = false;
+            Global.Debug.sUseFakeData = false;
         } else if (id == R.id.nav_slideshow) {
-            GlobalBuffer.Debug.sUseFakeData = false;
+            Global.Debug.sUseFakeData = false;
         } else if (id == R.id.nav_manage) {
-            GlobalBuffer.Debug.sUseFakeData = false;
+            Global.Debug.sUseFakeData = false;
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_loggout) {
+            // 清除账户信息
+            AccountInfo.clear(activity);
+            UserInfo.clear();
             jumpToLoginPage();
         }
 
@@ -77,19 +85,23 @@ public class DrawerDelegate implements NavigationView.OnNavigationItemSelectedLi
         return true;
     }
 
-    @Override
-    public void onLoggedIn(User user) {
+    public void onUserInfoLoaded(User user) {
         updateNavHeaderUI(user);
     }
 
     @Override
-    public void onLoggedOut() {
+    public void onUserInfoCleared() {
         updateNavHeaderUI(null);
+    }
+
+    @Override
+    public void onUserInfoUpdated(User user) {
+
     }
 
     private void jumpToLoginPage() {
         activity.finish();
-        activity.startActivity(LoginActivity.newIntent(activity));
+        activity.startActivity(AccountActivity.newIntent(activity));
     }
 
     private void updateNavHeaderUI(User user) {
@@ -106,7 +118,7 @@ public class DrawerDelegate implements NavigationView.OnNavigationItemSelectedLi
                     .into((ImageView) root.findViewById(R.id.iv_avatar));
 
             ((TextView) root.findViewById(R.id.tv_nav_header_title)).setText(
-                    user.getUsername()
+                    user.getName()
             );
 //        ((TextView) mNavigationView.findViewById(R.id.tv_nav_header_sub_title)).setText(
 //                user.getEmail()
@@ -124,6 +136,6 @@ public class DrawerDelegate implements NavigationView.OnNavigationItemSelectedLi
     }
 
     public void onDestroy() {
-        GlobalBuffer.AccountInfo.unregisterLoginStatusListener(this);
+        UserInfo.unregisterLoginStatusListener(this);
     }
 }

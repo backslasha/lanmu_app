@@ -8,9 +8,9 @@ import java.util.List;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import slasha.lanmu.R;
-import slasha.lanmu.bean.Comment;
-import slasha.lanmu.bean.CommentReply;
-import slasha.lanmu.bean.User;
+import slasha.lanmu.entity.local.Comment;
+import slasha.lanmu.entity.local.CommentReply;
+import slasha.lanmu.entity.local.User;
 import yhb.chorus.common.adapter.SimpleAdapter;
 import yhb.chorus.common.adapter.base.SimpleHolder;
 
@@ -38,7 +38,7 @@ public class CommentAdapter extends SimpleAdapter<Comment> {
     @Override
     public void bind(SimpleHolder holder, Comment comment) {
         holder.setImage(R.id.iv_avatar, comment.getFrom().getAvatarUrl());
-        holder.setText(R.id.tv_username, comment.getFrom().getUsername());
+        holder.setText(R.id.tv_username, comment.getFrom().getName());
         holder.setText(R.id.tv_comment_content, comment.getContent());
         holder.setOnClickListener(R.id.tv_comment_content, l -> {
             if (mCommentClickListener != null) {
