@@ -9,6 +9,8 @@ public interface CreatePostContract {
 
     interface View extends BaseView<Presenter> {
         void showCreateSuccess(BookPostCard card);
+
+        void showCreateFail(String info);
     }
 
     interface Presenter extends BasePresenter {

@@ -24,6 +24,7 @@ import slasha.lanmu.business.create_post.widget.PostEditWidget;
 import slasha.lanmu.entity.api.post.CreatePostModel;
 import slasha.lanmu.entity.card.BookPostCard;
 import slasha.lanmu.persistence.UserInfo;
+import slasha.lanmu.utils.AppUtils;
 import slasha.lanmu.utils.ToastUtils;
 import slasha.lanmu.widget.NoScrollViewPager;
 
@@ -139,7 +140,7 @@ public class CreatePostActivity extends SameStyleActivity
         if (currentItem == mViews.size() - 1) {
             if (mPostEditWidget.withEnoughText()) {
                 myPresenter().performCreate(collectInfo());
-            }else {
+            } else {
                 mPostEditWidget.showTextTooShortTip();
             }
         } else {
@@ -194,6 +195,13 @@ public class CreatePostActivity extends SameStyleActivity
     @Override
     public void showCreateSuccess(BookPostCard card) {
         ToastUtils.showToast(R.string.publish_succeed);
+        AppUtils.jumpToMainPage(this);
+        finish();
+    }
+
+    @Override
+    public void showCreateFail(String info) {
+        ToastUtils.showToast(getString(R.string.publish_failed) + "：" + info);
     }
 
     @Override

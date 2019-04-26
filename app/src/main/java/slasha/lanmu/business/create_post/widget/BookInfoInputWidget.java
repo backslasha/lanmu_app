@@ -2,9 +2,12 @@ package slasha.lanmu.business.create_post.widget;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.text.InputFilter;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -18,9 +21,13 @@ import com.imnjh.imagepicker.SImagePicker;
 import com.imnjh.imagepicker.activity.PhotoPickerActivity;
 
 import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,6 +35,8 @@ import butterknife.OnClick;
 import slasha.lanmu.R;
 import slasha.lanmu.business.create_post.CreatePostActivity;
 import slasha.lanmu.entity.local.Book;
+import slasha.lanmu.persistence.Global;
+import slasha.lanmu.utils.AppUtils;
 import slasha.lanmu.utils.CommonUtils;
 import slasha.lanmu.utils.KeyBoardUtils;
 import slasha.lanmu.utils.ToastUtils;
@@ -90,6 +99,55 @@ public class BookInfoInputWidget extends ScrollView
                 mEdtIntroduction,
                 mEdtLanguish
         );
+
+        setupDateEditTexts(mEdtPublishDate);
+    }
+
+    private void setupDateEditTexts(TextInputEditText... editTexts) {
+        for (TextInputEditText editText : editTexts) {
+            editText.setInputType(InputType.TYPE_NULL);
+            editText.setFocusable(true);
+            editText.setClickable(true);
+            editText.setFocusableInTouchMode(true);
+            editText.setOnClickListener(v -> {
+                if (!editText.hasFocus()) {
+                    requestFocus();
+                } else {
+                    showDatePickerDialog(editText);
+                }
+            });
+            editText.setOnFocusChangeListener((v, hasFocus) -> {
+                if (hasFocus) {
+                    showDatePickerDialog(editText);
+                }
+            });
+            editText.setFilters(new InputFilter[]{
+                    (source, start, end, dest, dstart, dend) -> {
+                        if (source.length() == 1) {
+                            showDatePickerDialog(editText);//不管按什么键都让DatePicker出现
+                            return "";
+                        }
+                        editText.setError(null);
+                        return source;   //DatePicker的设置还是要让他显示滴
+                    }
+            });
+
+
+        }
+
+    }
+
+    private void showDatePickerDialog(TextInputEditText editText) {
+        Calendar c = Calendar.getInstance();
+        new DatePickerDialog(
+                getContext(),
+                (view, year, monthOfYear, dayOfMonth) ->
+                        editText.setText(String.format(
+                                Locale.CHINA, "%d/%d/%d", year, monthOfYear + 1, dayOfMonth)),
+                c.get(Calendar.YEAR),
+                c.get(Calendar.MONTH),
+                c.get(Calendar.DAY_OF_MONTH)
+        ).show();
     }
 
     @OnClick(R.id.fl_add_cover)
@@ -128,9 +186,12 @@ public class BookInfoInputWidget extends ScrollView
         book.setIntroduction(String.valueOf(mEdtIntroduction.getText()));
         book.setLanguish(String.valueOf(mEdtLanguish.getText()));
         book.setName(String.valueOf(mEdtBookName.getText()));
-        book.setPublishDate(String.valueOf(mEdtPublishDate.getText()));
+        book.setPublishDate(
+                AppUtils.toServerFormat(String.valueOf(mEdtPublishDate.getText()), "yyyy/MM/dd")
+        );
         book.setPublisher(String.valueOf(mEdtPublisher.getText()));
         book.setVersion(String.valueOf(mEdtVersion.getText()));
+        book.setCoverUrl(mCoverUri);
         return book;
     }
 

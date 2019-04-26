@@ -10,13 +10,14 @@ import slasha.lanmu.entity.local.User;
 
 public class Global {
 
-    public static final String API_URL = "http://192.168.42.198:8080/api/";
+    public static final String API_URL = "http://192.168.122.188:8080/api/";
+    public static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS";
 
     private static Gson gson;
 
     static {
         gson = new GsonBuilder()
-                .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS")
+                .setDateFormat(DATE_FORMAT)
                 .excludeFieldsWithoutExposeAnnotation()
                 .create();
     }

@@ -1,41 +1,34 @@
 
 package slasha.lanmu.entity.local;
 
+import com.google.gson.annotations.Expose;
+
 import java.io.Serializable;
 import java.sql.Time;
 
-import com.google.gson.Gson;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
 public class BookPost implements Serializable {
 
-    @SerializedName("id")
     @Expose
     private long id;
 
-    @SerializedName("book")
     @Expose
     private Book book;
 
-    @SerializedName("creator")
     @Expose
     private User creator;
 
-    @SerializedName("create_time")
     @Expose
     private java.sql.Time createTime;
 
-    @SerializedName("recent_reply_time")
     @Expose
     private java.sql.Time recentReplyTime;
-    @SerializedName("content")
+
     @Expose
     private String content;
-    @SerializedName("images")
+
     @Expose
     private String images;
-    @SerializedName("comment_count")
+
     @Expose
     private int commentCount;
 

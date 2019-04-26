@@ -2,36 +2,26 @@
 package slasha.lanmu.entity.local;
 
 import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
 public class Book implements Serializable {
-    @SerializedName("id")
     @Expose
     private long id;
-    @SerializedName("name")
     @Expose
     private String name;
-    @SerializedName("author")
     @Expose
     private String author;
-    @SerializedName("publish_date")
     @Expose
     private String publishDate;
-    @SerializedName("publisher")
     @Expose
     private String publisher;
-    @SerializedName("version")
     @Expose
     private String version;
-    @SerializedName("languish")
     @Expose
     private String languish;
-    @SerializedName("cover_url")
     @Expose
     private String coverUrl;
-    @SerializedName("introduction")
     @Expose
     private String introduction;
 

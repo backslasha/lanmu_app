@@ -3,6 +3,7 @@ package slasha.lanmu.entity.card;
 import com.google.gson.annotations.Expose;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 import slasha.lanmu.entity.db.User;
 
@@ -14,7 +15,7 @@ public class BookPostCard {
     @Expose
     private User creator;
     @Expose
-    private LocalDateTime createDate;
+    private Date createDate;
     @Expose
     private String content;
     @Expose
@@ -29,12 +30,12 @@ public class BookPostCard {
         this.book = book;
     }
 
-    public LocalDateTime getCreateDate() {
-        return createDate;
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
 
-    public void setCreateDate(LocalDateTime createDate) {
-        this.createDate = createDate;
+    public Date getCreateDate() {
+        return createDate;
     }
 
     public String getContent() {

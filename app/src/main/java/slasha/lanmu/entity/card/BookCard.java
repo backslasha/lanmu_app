@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 
 public class BookCard implements Serializable {
@@ -16,7 +17,7 @@ public class BookCard implements Serializable {
     @Expose
     private String publisher;
     @Expose
-    private LocalDateTime publishDate;
+    private Date publishDate;
     @Expose
     private String version;
     @Expose
@@ -56,11 +57,11 @@ public class BookCard implements Serializable {
         this.publisher = publisher;
     }
 
-    public LocalDateTime getPublishDate() {
+    public Date getPublishDate() {
         return publishDate;
     }
 
-    public void setPublishDate(LocalDateTime publishDate) {
+    public void setPublishDate(Date publishDate) {
         this.publishDate = publishDate;
     }
 

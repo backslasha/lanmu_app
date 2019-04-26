@@ -12,6 +12,8 @@ import slasha.lanmu.entity.api.account.AccountRspModel;
 import slasha.lanmu.entity.api.account.LoginModel;
 import slasha.lanmu.entity.api.account.RegisterModel;
 import slasha.lanmu.entity.api.base.RspModelWrapper;
+import slasha.lanmu.entity.api.post.CreatePostModel;
+import slasha.lanmu.entity.card.BookPostCard;
 import slasha.lanmu.entity.card.UserCard;
 
 /**
@@ -40,6 +42,11 @@ public interface RemoteService {
     @POST("account/login")
     Call<RspModelWrapper<AccountRspModel>> accountLogin(@Body LoginModel model);
 
+    /**
+     * 创建书帖
+     */
+    @POST("posts/create")
+    Call<RspModelWrapper<BookPostCard>> createPost(@Body CreatePostModel model);
 
     // 用户搜索的接口
     @GET("user/search/{name}")

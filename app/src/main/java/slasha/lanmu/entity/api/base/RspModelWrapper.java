@@ -66,10 +66,6 @@ public class RspModelWrapper<M> implements Serializable {
         this.code = code;
     }
 
-    public boolean isSucceed() {
-        return code == SUCCEED;
-    }
-
     public String getMessage() {
         return message;
     }
