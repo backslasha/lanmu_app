@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import slasha.lanmu.R;
-import slasha.lanmu.utils.KeyBoardUtils;
+import slasha.lanmu.utils.common.KeyBoardUtils;
 
 public class ReplyBoard extends LinearLayout implements View.OnClickListener, TextWatcher, View.OnFocusChangeListener {
 

@@ -3,7 +3,7 @@ package slasha.lanmu.business.main;
 import slasha.lanmu.persistence.Global;
 import slasha.lanmu.entity.response.BookPostFlow;
 import slasha.lanmu.debug.ArtificialProductFactory;
-import slasha.lanmu.utils.ThreadUtils;
+import slasha.lanmu.utils.common.ThreadUtils;
 
 class MainModelImpl implements MainContract.MainModel {
 

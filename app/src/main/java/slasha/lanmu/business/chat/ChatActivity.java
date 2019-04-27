@@ -18,7 +18,7 @@ import slasha.lanmu.SameStyleActivity;
 import slasha.lanmu.entity.local.Message;
 import slasha.lanmu.entity.local.User;
 import slasha.lanmu.persistence.UserInfo;
-import slasha.lanmu.utils.ToastUtils;
+import slasha.lanmu.utils.common.ToastUtils;
 import yhb.chorus.common.adapter.SimpleAdapter;
 import yhb.chorus.common.adapter.base.SimpleHolder;
 
@@ -114,6 +114,11 @@ public class ChatActivity extends SameStyleActivity
     @Override
     public void hideLoadingIndicator() {
         hideProgressDialog();
+    }
+
+    @Override
+    public void showActionFail(String message) {
+
     }
 
     @Override

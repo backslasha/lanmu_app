@@ -15,4 +15,7 @@ public interface BaseView<T extends BasePresenter> {
 
     @MainThread
     void hideLoadingIndicator();
+
+    @MainThread
+    void showActionFail(String message);
 }

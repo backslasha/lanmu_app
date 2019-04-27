@@ -3,14 +3,9 @@ package slasha.lanmu.persistence;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import slasha.lanmu.entity.local.User;
-
 public class Global {
 
-    public static final String API_URL = "http://192.168.42.161:8080/api/";
+    public static final String API_URL = "http://192.168.42.212:8080/api/";
     public static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS";
 
     private static Gson gson;

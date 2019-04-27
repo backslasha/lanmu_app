@@ -81,4 +81,9 @@ public class UserProfileActivity extends SameStyleActivity implements ProfileCon
     public void hideLoadingIndicator() {
         hideProgressDialog();
     }
+
+    @Override
+    public void showActionFail(String message) {
+
+    }
 }

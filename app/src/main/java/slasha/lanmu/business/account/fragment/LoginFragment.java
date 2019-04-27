@@ -16,8 +16,7 @@ import slasha.lanmu.business.account.AccountPresenterImpl;
 import slasha.lanmu.business.main.MainActivity;
 import slasha.lanmu.entity.api.account.LoginModel;
 import slasha.lanmu.entity.local.User;
-import slasha.lanmu.utils.LogUtil;
-import slasha.lanmu.utils.ToastUtils;
+import slasha.lanmu.utils.common.ToastUtils;
 
 /**
  * 登录的界面

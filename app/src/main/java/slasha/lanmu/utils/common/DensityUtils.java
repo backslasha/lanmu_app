@@ -1,4 +1,4 @@
-package slasha.lanmu.utils;
+package slasha.lanmu.utils.common;
 
 /**
  * Created by yhb on 18-2-3.

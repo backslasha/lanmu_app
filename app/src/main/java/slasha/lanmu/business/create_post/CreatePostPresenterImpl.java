@@ -4,7 +4,6 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;
@@ -19,8 +18,8 @@ import slasha.lanmu.net.QiniuUploader;
 import slasha.lanmu.net.RemoteService;
 import slasha.lanmu.net.Uploader;
 import slasha.lanmu.utils.AppUtils;
-import slasha.lanmu.utils.LogUtil;
-import slasha.lanmu.utils.ThreadUtils;
+import slasha.lanmu.utils.common.LogUtil;
+import slasha.lanmu.utils.common.ThreadUtils;
 
 class CreatePostPresenterImpl implements CreatePostContract.Presenter {
 
@@ -55,7 +54,7 @@ class CreatePostPresenterImpl implements CreatePostContract.Presenter {
                         BookPostCard card = body.getResult();
                         mView.showCreateSuccess(card);
                     } else {
-                        mView.showCreateFail(body.getMessage());
+                        mView.showActionFail(body.getMessage());
                     }
                     mView.hideLoadingIndicator();
                 });
@@ -65,7 +64,7 @@ class CreatePostPresenterImpl implements CreatePostContract.Presenter {
             public void onFailure(Call<RspModelWrapper<BookPostCard>> call,
                                   Throwable t) {
                 AppUtils.runOnUiThread(() -> {
-                    mView.showCreateFail(t.getCause().toString());
+                    mView.showActionFail(t.getCause().toString());
                     mView.hideLoadingIndicator();
                 });
             }
@@ -111,7 +110,7 @@ class CreatePostPresenterImpl implements CreatePostContract.Presenter {
                 model.setImages(AppUtils.asOneString(postImageRealUrls)); // update model's urls
                 AppUtils.runOnUiThread(realCreatePostAction);
             } else {
-                mView.showCreateFail(mContext.getString(R.string.tip_upload_image_error));
+                mView.showActionFail(mContext.getString(R.string.tip_upload_image_error));
                 mView.hideLoadingIndicator();
             }
 

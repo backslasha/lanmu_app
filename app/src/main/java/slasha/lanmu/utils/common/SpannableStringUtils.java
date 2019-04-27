@@ -1,4 +1,4 @@
-package slasha.lanmu.utils;
+package slasha.lanmu.utils.common;
 
 import android.graphics.Bitmap;
 import android.graphics.BlurMaskFilter;

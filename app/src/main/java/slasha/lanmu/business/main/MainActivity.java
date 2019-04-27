@@ -13,8 +13,8 @@ import androidx.viewpager.widget.ViewPager;
 import slasha.lanmu.R;
 import slasha.lanmu.business.main.delegate.ActionbarDelegate;
 import slasha.lanmu.business.main.delegate.DrawerDelegate;
-import slasha.lanmu.business.search_result.SearchResultActivity;
-import slasha.lanmu.utils.ToastUtils;
+import slasha.lanmu.business.search_result.ResultActivity;
+import slasha.lanmu.utils.common.ToastUtils;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         if ("android.intent.action.SEARCH".equals(intent.getAction())) {
             ToastUtils.showToast("intent.getAction():" + intent.getAction());
             startActivity(
-                    SearchResultActivity.newIntent(
+                    ResultActivity.newIntent(
                             this,
                             String.valueOf(mActionbarDelegate.getSearchView().getQuery())
                     )

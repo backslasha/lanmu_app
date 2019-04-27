@@ -12,7 +12,6 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 
@@ -21,8 +20,6 @@ import com.imnjh.imagepicker.SImagePicker;
 import com.imnjh.imagepicker.activity.PhotoPickerActivity;
 
 import java.io.File;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -35,11 +32,10 @@ import butterknife.OnClick;
 import slasha.lanmu.R;
 import slasha.lanmu.business.create_post.CreatePostActivity;
 import slasha.lanmu.entity.local.Book;
-import slasha.lanmu.persistence.Global;
 import slasha.lanmu.utils.AppUtils;
 import slasha.lanmu.utils.CommonUtils;
-import slasha.lanmu.utils.KeyBoardUtils;
-import slasha.lanmu.utils.ToastUtils;
+import slasha.lanmu.utils.common.KeyBoardUtils;
+import slasha.lanmu.utils.common.ToastUtils;
 
 public class BookInfoInputWidget extends ScrollView
         implements CreatePostActivity.ResultListener {

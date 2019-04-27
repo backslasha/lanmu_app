@@ -5,7 +5,7 @@ import java.util.List;
 
 import slasha.lanmu.application.LanmuApplication;
 import slasha.lanmu.entity.local.User;
-import slasha.lanmu.utils.SPUtils;
+import slasha.lanmu.utils.common.SPUtils;
 
 public class UserInfo {
 

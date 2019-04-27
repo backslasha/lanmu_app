@@ -25,7 +25,7 @@ import slasha.lanmu.entity.api.post.CreatePostModel;
 import slasha.lanmu.entity.card.BookPostCard;
 import slasha.lanmu.persistence.UserInfo;
 import slasha.lanmu.utils.AppUtils;
-import slasha.lanmu.utils.ToastUtils;
+import slasha.lanmu.utils.common.ToastUtils;
 import slasha.lanmu.widget.NoScrollViewPager;
 
 // TODO: 2019/3/11 consider whether to refactor with fragment
@@ -200,7 +200,7 @@ public class CreatePostActivity extends SameStyleActivity
     }
 
     @Override
-    public void showCreateFail(String info) {
+    public void showActionFail(String info) {
         ToastUtils.showToast(getString(R.string.publish_failed) + "：" + info);
     }
 

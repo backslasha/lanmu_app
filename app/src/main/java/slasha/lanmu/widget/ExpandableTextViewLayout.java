@@ -12,8 +12,8 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import slasha.lanmu.R;
-import slasha.lanmu.utils.DensityUtils;
-import slasha.lanmu.utils.LogUtil;
+import slasha.lanmu.utils.common.DensityUtils;
+import slasha.lanmu.utils.common.LogUtil;
 
 public class ExpandableTextViewLayout extends RelativeLayout {
 

@@ -33,7 +33,7 @@
             android:name=".business.create_post.CreatePostActivity"
             android:launchMode="singleTask" />
         <activity
-            android:name=".business.search_result.SearchResultActivity"
+            android:name=".business.search_result.ResultActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask" />
         <activity

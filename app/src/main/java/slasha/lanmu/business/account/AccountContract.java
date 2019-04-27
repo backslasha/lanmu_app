@@ -9,8 +9,6 @@ import slasha.lanmu.entity.local.User;
 public interface AccountContract {
 
     interface View extends BaseView<Presenter> {
-        void showActionFail(String info);
-
         void showActionSuccess(User user);
     }
 

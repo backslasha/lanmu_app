@@ -8,6 +8,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 import slasha.lanmu.entity.api.account.AccountRspModel;
 import slasha.lanmu.entity.api.account.LoginModel;
 import slasha.lanmu.entity.api.account.RegisterModel;
@@ -48,9 +49,9 @@ public interface RemoteService {
     @POST("posts/create")
     Call<RspModelWrapper<BookPostCard>> createPost(@Body CreatePostModel model);
 
-    // 用户搜索的接口
-    @GET("user/search/{name}")
-    Call<RspModelWrapper<List<UserCard>>> userSearch(@Path("name") String name);
+    // 书名关键字搜索书帖
+    @GET("posts/search?type=0")
+    Call<RspModelWrapper<List<BookPostCard>>> searchPosts(@Query("value") String keyword);
 
     // 用户关注接口
     @PUT("user/follow/{userId}")

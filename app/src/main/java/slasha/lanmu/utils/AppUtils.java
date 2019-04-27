@@ -17,6 +17,7 @@ import java.util.Locale;
 import androidx.annotation.NonNull;
 import slasha.lanmu.application.LanmuApplication;
 import slasha.lanmu.business.main.MainActivity;
+import slasha.lanmu.entity.card.BookPostCard;
 import slasha.lanmu.entity.local.BookPost;
 import slasha.lanmu.business.post_detail.PostDetailActivity;
 import slasha.lanmu.persistence.Global;
@@ -87,7 +88,7 @@ public class AppUtils {
         sMainHandler.postDelayed(runnable, delayMillis);
     }
 
-    public static void jumpToPostDetail(@NonNull Context context, BookPost bookPost) {
+    public static void jumpToPostDetail(@NonNull Context context, BookPostCard bookPost) {
         context.startActivity(
                 PostDetailActivity.newIntent(context, bookPost)
         );

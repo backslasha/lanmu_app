@@ -1,12 +1,11 @@
 package slasha.lanmu.persistence;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.text.TextUtils;
 
 import slasha.lanmu.application.LanmuApplication;
 import slasha.lanmu.entity.api.account.AccountRspModel;
-import slasha.lanmu.utils.SPUtils;
+import slasha.lanmu.utils.common.SPUtils;
 
 public class AccountInfo {
 

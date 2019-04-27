@@ -19,21 +19,21 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import slasha.lanmu.persistence.Global;
 import slasha.lanmu.R;
 import slasha.lanmu.SameStyleActivity;
 import slasha.lanmu.application.LanmuApplication;
-import slasha.lanmu.entity.local.Book;
-import slasha.lanmu.entity.local.BookPost;
+import slasha.lanmu.business.post_detail.apdater.CommentAdapter;
+import slasha.lanmu.business.profile.UserProfileActivity;
+import slasha.lanmu.entity.card.BookCard;
+import slasha.lanmu.entity.card.BookPostCard;
 import slasha.lanmu.entity.local.Comment;
 import slasha.lanmu.entity.local.CommentReply;
 import slasha.lanmu.entity.local.User;
-import slasha.lanmu.business.post_detail.apdater.CommentAdapter;
-import slasha.lanmu.business.profile.UserProfileActivity;
+import slasha.lanmu.persistence.Global;
 import slasha.lanmu.persistence.UserInfo;
 import slasha.lanmu.utils.AppUtils;
 import slasha.lanmu.utils.CommonUtils;
-import slasha.lanmu.utils.ToastUtils;
+import slasha.lanmu.utils.common.ToastUtils;
 import slasha.lanmu.widget.AppBarStateChangeListener;
 import slasha.lanmu.widget.reply.Publisher;
 import slasha.lanmu.widget.reply.ReplyBoard;
@@ -51,7 +51,7 @@ public class PostDetailActivity extends SameStyleActivity
     private TextView mTvTitle, mTvDescription, mTvPostContent;
     private ImageView mIvCover;
     private SimpleAdapter<Comment> mAdapter;
-    private BookPost mBookPost;
+    private BookPostCard mBookPost;
     private PostDetailContract.PostDetailPresenter mPostDetailPresenter;
     private ImageView mIvAvatar;
     private CardView mCardView;
@@ -62,7 +62,7 @@ public class PostDetailActivity extends SameStyleActivity
     private Publisher.CommentReplyData mCommentReplyData;
     private TextView mTvCommentCount;
 
-    public static Intent newIntent(Context context, BookPost bookPost) {
+    public static Intent newIntent(Context context, BookPostCard bookPost) {
         Intent intent = new Intent(context, PostDetailActivity.class);
         intent.putExtra(EXTRA_BOOK_POST, bookPost);
         return intent;
@@ -157,7 +157,7 @@ public class PostDetailActivity extends SameStyleActivity
         if (intent == null) {
             return;
         }
-        mBookPost = (BookPost) intent.getSerializableExtra(EXTRA_BOOK_POST);
+        mBookPost = (BookPostCard) intent.getSerializableExtra(EXTRA_BOOK_POST);
         showDetail(mBookPost);
 
         setTitle(mBookPost.getBook().getName());
@@ -180,7 +180,7 @@ public class PostDetailActivity extends SameStyleActivity
     }
 
     @Override
-    public void showDetail(BookPost bookPost) {
+    public void showDetail(BookPostCard bookPost) {
 
         if (bookPost == null) {
             return;
@@ -188,7 +188,7 @@ public class PostDetailActivity extends SameStyleActivity
 
         mTvPostContent.setText(bookPost.getContent());
 
-        Book book = bookPost.getBook();
+        BookCard book = bookPost.getBook();
         if (book != null) {
             Picasso.with(LanmuApplication.instance())
                     .load(book.getCoverUrl())
@@ -314,5 +314,10 @@ public class PostDetailActivity extends SameStyleActivity
     @Override
     public void hideLoadingIndicator() {
         mSwipeRefreshLayoutComments.setRefreshing(false);
+    }
+
+    @Override
+    public void showActionFail(String message) {
+
     }
 }

@@ -6,6 +6,8 @@ import android.util.Log;
 
 import java.io.File;
 
+import slasha.lanmu.utils.common.ImageUtils;
+
 public class CompressUtils {
 
     /**

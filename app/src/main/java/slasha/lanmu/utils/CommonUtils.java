@@ -9,6 +9,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 
 public class CommonUtils {
+
     public static boolean isEmpty(List<?> list) {
         return list == null || list.isEmpty();
     }

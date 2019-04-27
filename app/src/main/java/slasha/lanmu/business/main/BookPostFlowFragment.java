@@ -18,11 +18,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import slasha.lanmu.R;
 import slasha.lanmu.application.LanmuApplication;
-import slasha.lanmu.entity.local.Book;
-import slasha.lanmu.entity.local.BookPost;
+import slasha.lanmu.entity.card.BookCard;
+import slasha.lanmu.entity.card.BookPostCard;
 import slasha.lanmu.entity.response.BookPostFlow;
 import slasha.lanmu.utils.AppUtils;
-import slasha.lanmu.utils.ToastUtils;
+import slasha.lanmu.utils.common.ToastUtils;
 import yhb.chorus.common.adapter.SimpleAdapter;
 import yhb.chorus.common.adapter.base.SimpleHolder;
 
@@ -33,7 +33,7 @@ public class BookPostFlowFragment extends Fragment
 
     private static final String ARGS_BOOK_POST_FLOW = "bookPostFlow";
     private RecyclerView mRecyclerView;
-    private SimpleAdapter<BookPost> mAdapter;
+    private SimpleAdapter<BookPostCard> mAdapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private MainContract.MainPresenter mMainPresenter;
     private FlowType mFlowType;
@@ -67,7 +67,7 @@ public class BookPostFlowFragment extends Fragment
     @Override
     public void showBookPostFlow(BookPostFlow bookPostFlow) {
         if (mAdapter == null) {
-            mAdapter = new SimpleAdapter<BookPost>(
+            mAdapter = new SimpleAdapter<BookPostCard>(
                     getContext()) {
                 @Override
                 protected int layoutResId(int viewType) {
@@ -75,8 +75,8 @@ public class BookPostFlowFragment extends Fragment
                 }
 
                 @Override
-                public void bind(SimpleHolder holder, BookPost bookPost) {
-                    Book book = bookPost.getBook();
+                public void bind(SimpleHolder holder, BookPostCard bookPost) {
+                    BookCard book = bookPost.getBook();
                     if (book != null) {
                         holder.setText(R.id.tv_title, book.getName());
                         holder.setText(R.id.tv_author_name, book.getAuthor());
@@ -84,8 +84,8 @@ public class BookPostFlowFragment extends Fragment
                                 .load(book.getCoverUrl())
                                 .into((ImageView) holder.getView(R.id.iv_cover));
                         holder.setText(R.id.tv_introduction, book.getIntroduction());
-                        holder.setText(R.id.tv_comment_count, String.valueOf(
-                                bookPost.getCommentCount())
+                        holder.setText(R.id.tv_comment_count, String.valueOf(0)
+//                                bookPost.getCommentCount())
                         );
                     }
 
@@ -127,6 +127,11 @@ public class BookPostFlowFragment extends Fragment
     @Override
     public void hideLoadingIndicator() {
         mSwipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void showActionFail(String message) {
+
     }
 
 

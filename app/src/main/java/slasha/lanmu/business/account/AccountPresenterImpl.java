@@ -15,7 +15,7 @@ import slasha.lanmu.net.RemoteService;
 import slasha.lanmu.persistence.AccountInfo;
 import slasha.lanmu.persistence.UserInfo;
 import slasha.lanmu.utils.AppUtils;
-import slasha.lanmu.utils.LogUtil;
+import slasha.lanmu.utils.common.LogUtil;
 
 public class AccountPresenterImpl implements AccountContract.Presenter {
 

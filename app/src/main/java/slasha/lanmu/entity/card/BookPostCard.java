@@ -2,13 +2,13 @@ package slasha.lanmu.entity.card;
 
 import com.google.gson.annotations.Expose;
 
-import java.time.LocalDateTime;
+import java.io.Serializable;
 import java.util.Date;
 
-import slasha.lanmu.entity.db.User;
+import slasha.lanmu.entity.local.User;
 
 
-public class BookPostCard {
+public class BookPostCard implements Serializable {
 
     @Expose
     private BookCard book;
@@ -20,6 +20,27 @@ public class BookPostCard {
     private String content;
     @Expose
     private String images;
+    @Expose
+    private int commentCount;
+
+    public int getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(int commentCount) {
+        this.commentCount = commentCount;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    @Expose
+    private long id;
 
 
     public BookCard getBook() {

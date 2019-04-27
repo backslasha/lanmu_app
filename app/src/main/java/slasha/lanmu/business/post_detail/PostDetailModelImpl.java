@@ -7,7 +7,7 @@ import slasha.lanmu.persistence.Global;
 import slasha.lanmu.entity.local.Comment;
 import slasha.lanmu.entity.response.Comments;
 import slasha.lanmu.debug.ArtificialProductFactory;
-import slasha.lanmu.utils.ThreadUtils;
+import slasha.lanmu.utils.common.ThreadUtils;
 
 class PostDetailModelImpl implements PostDetailContract.PostDetailModel {
     @Override

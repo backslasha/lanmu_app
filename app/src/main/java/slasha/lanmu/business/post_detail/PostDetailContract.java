@@ -7,7 +7,7 @@ import androidx.annotation.WorkerThread;
 import slasha.lanmu.BaseModel;
 import slasha.lanmu.BasePresenter;
 import slasha.lanmu.BaseView;
-import slasha.lanmu.entity.local.BookPost;
+import slasha.lanmu.entity.card.BookPostCard;
 import slasha.lanmu.entity.local.Comment;
 import slasha.lanmu.widget.reply.Publisher;
 
@@ -15,7 +15,7 @@ public interface PostDetailContract {
 
     interface PostDetailView extends BaseView<PostDetailPresenter> {
         @MainThread
-        void showDetail(BookPost bookPost);
+        void showDetail(BookPostCard bookPost);
 
         @MainThread
         void showComments(List<Comment> comments);

@@ -14,8 +14,8 @@ import slasha.lanmu.R;
 import slasha.lanmu.entity.local.Comment;
 import slasha.lanmu.entity.local.CommentReply;
 import slasha.lanmu.entity.local.User;
-import slasha.lanmu.utils.SpannableStringUtils;
-import slasha.lanmu.utils.ToastUtils;
+import slasha.lanmu.utils.common.SpannableStringUtils;
+import slasha.lanmu.utils.common.ToastUtils;
 import yhb.chorus.common.adapter.SimpleAdapter;
 import yhb.chorus.common.adapter.base.SimpleHolder;
 

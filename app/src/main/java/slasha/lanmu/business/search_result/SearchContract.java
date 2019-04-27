@@ -5,12 +5,13 @@ import java.util.List;
 import slasha.lanmu.BaseModel;
 import slasha.lanmu.BasePresenter;
 import slasha.lanmu.BaseView;
+import slasha.lanmu.entity.card.BookPostCard;
 import slasha.lanmu.entity.local.BookPost;
 
 public interface SearchContract {
 
-    interface SearchView extends BaseView<SearchPresenter> {
-        void showBookPosts(List<BookPost> bookPosts);
+    interface View extends BaseView<SearchPresenter> {
+        void showBookPosts(List<BookPostCard> bookPosts);
     }
 
     interface SearchPresenter extends BasePresenter {

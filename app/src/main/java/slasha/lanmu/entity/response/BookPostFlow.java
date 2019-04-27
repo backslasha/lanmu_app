@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.List;
 
-import slasha.lanmu.entity.local.BookPost;
+import slasha.lanmu.entity.card.BookPostCard;
 
 
 public class BookPostFlow implements Serializable {
@@ -17,9 +17,9 @@ public class BookPostFlow implements Serializable {
 
     @Expose
     @SerializedName("book_posts")
-    private List<BookPost> bookPosts;
+    private List<BookPostCard> bookPosts;
 
-    public BookPostFlow(String name, List<BookPost> bookPosts) {
+    public BookPostFlow(String name, List<BookPostCard> bookPosts) {
         this.name = name;
         this.bookPosts = bookPosts;
     }
@@ -32,11 +32,11 @@ public class BookPostFlow implements Serializable {
         this.name = name;
     }
 
-    public List<BookPost> getBookPosts() {
+    public List<BookPostCard> getBookPosts() {
         return bookPosts;
     }
 
-    public void setBookPosts(List<BookPost> bookPosts) {
+    public void setBookPosts(List<BookPostCard> bookPosts) {
         this.bookPosts = bookPosts;
     }
 }

@@ -1,4 +1,4 @@
-package slasha.lanmu.utils;
+package slasha.lanmu.utils.common;
 
 import java.io.File;
 import java.io.FileInputStream;

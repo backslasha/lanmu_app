@@ -3,11 +3,6 @@ package slasha.lanmu.business.search_result;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,29 +10,32 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import slasha.lanmu.R;
 import slasha.lanmu.SameStyleActivity;
 import slasha.lanmu.application.LanmuApplication;
-import slasha.lanmu.entity.local.Book;
-import slasha.lanmu.entity.local.BookPost;
 import slasha.lanmu.business.create_post.CreatePostActivity;
 import slasha.lanmu.business.post_detail.PostDetailActivity;
+import slasha.lanmu.entity.card.BookCard;
+import slasha.lanmu.entity.card.BookPostCard;
 import slasha.lanmu.utils.CommonUtils;
+import slasha.lanmu.utils.common.ToastUtils;
 import yhb.chorus.common.adapter.SimpleAdapter;
 import yhb.chorus.common.adapter.base.SimpleHolder;
 
-public class SearchResultActivity extends SameStyleActivity implements
-        SearchContract.SearchView, View.OnClickListener {
+public class ResultActivity extends SameStyleActivity implements
+        SearchContract.View, android.view.View.OnClickListener {
 
     private static final String EXTRA_SEARCH_KEYWORD = "search_keyword";
     private SearchContract.SearchPresenter mPresenter;
     private RecyclerView mRecyclerView;
-    private SimpleAdapter<BookPost> mBookPostAdapter;
+    private SimpleAdapter<BookPostCard> mBookPostAdapter;
     private TextView mTvCreateBookPostGuide;
     private String mKeyword;
 
     public static Intent newIntent(Context context, String searchKeyword) {
-        Intent intent = new Intent(context, SearchResultActivity.class);
+        Intent intent = new Intent(context, ResultActivity.class);
         intent.putExtra(EXTRA_SEARCH_KEYWORD, searchKeyword);
         return intent;
     }
@@ -77,7 +75,7 @@ public class SearchResultActivity extends SameStyleActivity implements
     @Override
     public SearchContract.SearchPresenter myPresenter() {
         if (mPresenter == null) {
-            mPresenter = new SearchPresenter(
+            mPresenter = new SearchPresenterImpl(
                     new SearchModel(),
                     this
             );
@@ -96,7 +94,7 @@ public class SearchResultActivity extends SameStyleActivity implements
     }
 
     @Override
-    public void showBookPosts(List<BookPost> bookPosts) {
+    public void showBookPosts(List<BookPostCard> bookPosts) {
         if (CommonUtils.isEmpty(bookPosts)) {
             showCreateBookPostGuide();
         } else {
@@ -104,18 +102,23 @@ public class SearchResultActivity extends SameStyleActivity implements
         }
     }
 
-    private void showBookPostList(List<BookPost> bookPosts) {
+    @Override
+    public void showActionFail(String message) {
+        ToastUtils.showToast(R.string.tip_search_fail);
+    }
+
+    private void showBookPostList(List<BookPostCard> bookPosts) {
         if (mBookPostAdapter == null) {
-            mBookPostAdapter = new SimpleAdapter<BookPost>(
-                    SearchResultActivity.this) {
+            mBookPostAdapter = new SimpleAdapter<BookPostCard>(
+                    ResultActivity.this) {
                 @Override
                 protected int layoutResId(int viewType) {
                     return R.layout.item_book_post;
                 }
 
                 @Override
-                public void bind(SimpleHolder holder, BookPost bookPost) {
-                    Book book = bookPost.getBook();
+                public void bind(SimpleHolder holder, BookPostCard bookPost) {
+                    BookCard book = bookPost.getBook();
                     if (book != null) {
                         holder.setText(R.id.tv_title, book.getName());
                         holder.setText(R.id.tv_author_name, book.getAuthor());
@@ -131,14 +134,14 @@ public class SearchResultActivity extends SameStyleActivity implements
             };
             mRecyclerView.setAdapter(mBookPostAdapter);
             mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-            mRecyclerView.setVisibility(View.VISIBLE);
+            mRecyclerView.setVisibility(android.view.View.VISIBLE);
         }
         mBookPostAdapter.performDataSetChanged(bookPosts);
     }
 
     private void showCreateBookPostGuide() {
-        mRecyclerView.setVisibility(View.GONE);
-        mTvCreateBookPostGuide.setVisibility(View.VISIBLE);
+        mRecyclerView.setVisibility(android.view.View.GONE);
+        mTvCreateBookPostGuide.setVisibility(android.view.View.VISIBLE);
         mTvCreateBookPostGuide.setText(String.format(
                 getString(R.string.create_book_post_guide),
                 mKeyword
@@ -146,7 +149,7 @@ public class SearchResultActivity extends SameStyleActivity implements
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(android.view.View v) {
         switch (v.getId()) {
             case R.id.tv_create_book_post_guide:
                 jumpToCreatePost();
@@ -160,7 +163,7 @@ public class SearchResultActivity extends SameStyleActivity implements
         );
     }
 
-    private void jumpToPostDetail(BookPost bookPost) {
+    private void jumpToPostDetail(BookPostCard bookPost) {
         startActivity(
                 PostDetailActivity.newIntent(this, bookPost)
         );

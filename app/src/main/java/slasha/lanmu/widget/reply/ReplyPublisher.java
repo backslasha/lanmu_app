@@ -4,7 +4,7 @@ import android.util.Log;
 
 import slasha.lanmu.persistence.Global;
 import slasha.lanmu.utils.AppUtils;
-import slasha.lanmu.utils.ThreadUtils;
+import slasha.lanmu.utils.common.ThreadUtils;
 
 public class ReplyPublisher implements Publisher {
 

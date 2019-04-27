@@ -18,9 +18,9 @@ import java.util.Date;
 
 import androidx.annotation.WorkerThread;
 import slasha.lanmu.application.LanmuApplication;
-import slasha.lanmu.utils.CodecUtils;
+import slasha.lanmu.utils.common.CodecUtils;
 import slasha.lanmu.utils.CompressUtils;
-import slasha.lanmu.utils.LogUtil;
+import slasha.lanmu.utils.common.LogUtil;
 
 
 public class QiniuUploader implements Uploader {
