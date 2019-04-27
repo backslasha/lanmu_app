@@ -16,6 +16,7 @@ import slasha.lanmu.business.account.AccountPresenterImpl;
 import slasha.lanmu.business.main.MainActivity;
 import slasha.lanmu.entity.api.account.LoginModel;
 import slasha.lanmu.entity.local.User;
+import slasha.lanmu.utils.LogUtil;
 import slasha.lanmu.utils.ToastUtils;
 
 /**
@@ -24,6 +25,7 @@ import slasha.lanmu.utils.ToastUtils;
 public class LoginFragment extends BaseFragment
         implements AccountContract.View {
 
+    private static final String TAG = "lanmu.account";
     private AccountTrigger mAccountTrigger;
     private BaseActivity mBaseActivity;
     private AccountContract.Presenter mPresenter;

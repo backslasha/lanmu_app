@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import slasha.lanmu.R;
 import slasha.lanmu.business.create_post.CreatePostActivity;
+import slasha.lanmu.utils.AppUtils;
 import slasha.lanmu.utils.CommonUtils;
 import slasha.lanmu.utils.DensityUtils;
 import slasha.lanmu.utils.ToastUtils;
@@ -99,18 +100,7 @@ public class PostEditWidget extends ScrollView implements CreatePostActivity.Res
     }
 
     public String getImages() {
-        StringBuilder builder = new StringBuilder();
-        List<String> entities = mSelectedImageAdapter.getEntities();
-        if (entities != null) {
-            for (int i = 0; i < entities.size(); i++) {
-                String entity = entities.get(i);
-                builder.append(entity);
-                if (i != entities.size() - 1) {
-                    builder.append(":");
-                }
-            }
-        }
-        return builder.toString();
+        return AppUtils.asOneString(mSelectedImageAdapter.getEntities());
     }
 
     public void showTextTooShortTip() {

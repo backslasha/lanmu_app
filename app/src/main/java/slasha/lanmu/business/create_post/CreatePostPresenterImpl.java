@@ -1,17 +1,26 @@
 package slasha.lanmu.business.create_post;
 
 import android.content.Context;
+import android.text.TextUtils;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import slasha.lanmu.R;
 import slasha.lanmu.entity.api.base.RspModelWrapper;
 import slasha.lanmu.entity.api.post.CreatePostModel;
 import slasha.lanmu.entity.card.BookPostCard;
 import slasha.lanmu.net.Network;
+import slasha.lanmu.net.QiniuUploader;
 import slasha.lanmu.net.RemoteService;
+import slasha.lanmu.net.Uploader;
 import slasha.lanmu.utils.AppUtils;
 import slasha.lanmu.utils.LogUtil;
+import slasha.lanmu.utils.ThreadUtils;
 
 class CreatePostPresenterImpl implements CreatePostContract.Presenter {
 
@@ -19,10 +28,12 @@ class CreatePostPresenterImpl implements CreatePostContract.Presenter {
 
     private final CreatePostContract.View mView;
     private final Context mContext;
+    private final Uploader mUploader;
 
     CreatePostPresenterImpl(CreatePostContract.View view, Context context) {
         mView = view;
         mContext = context;
+        mUploader = new QiniuUploader();
     }
 
     @Override
@@ -33,7 +44,8 @@ class CreatePostPresenterImpl implements CreatePostContract.Presenter {
                 service.createPost(model);
 
         mView.showLoadingIndicator();
-        post.enqueue(new Callback<RspModelWrapper<BookPostCard>>() {
+
+        uploadImagesFirst(() -> post.enqueue(new Callback<RspModelWrapper<BookPostCard>>() {
             @Override
             public void onResponse(Call<RspModelWrapper<BookPostCard>> call,
                                    Response<RspModelWrapper<BookPostCard>> response) {
@@ -57,6 +69,51 @@ class CreatePostPresenterImpl implements CreatePostContract.Presenter {
                     mView.hideLoadingIndicator();
                 });
             }
+        }), model);
+
+    }
+
+    private void uploadImagesFirst(Runnable realCreatePostAction, CreatePostModel model) {
+        ThreadUtils.execute(() -> {
+
+            int failCount = 0;
+
+            String bookCoverUrl = model.getBook().getCoverUrl();
+            if (!TextUtils.isEmpty(bookCoverUrl)) {
+                String realUrl = mUploader.uploadPicture(bookCoverUrl);
+                if (realUrl != null) {
+                    model.getBook().setCoverUrl(realUrl);
+                    LogUtil.i(TAG, "upload cover success -> " + realUrl);
+                } else {
+                    failCount++;
+                    LogUtil.e(TAG, "upload cover fail.");
+                }
+            }
+
+            List<String> postImageUrls = AppUtils.asUrlList(model.getImages());
+            if (failCount == 0) {
+                for (String imageUrl : postImageUrls) {
+                    String realUrl = mUploader.uploadPicture(imageUrl);
+                    if (realUrl != null) {
+                        model.getBook().setCoverUrl(realUrl); // update model's cover url
+                        LogUtil.i(TAG, "upload cover success -> " + realUrl);
+                    } else {
+                        failCount++;
+                        LogUtil.e(TAG, "upload cover fail.");
+                        break;
+                    }
+                }
+            }
+
+            // all images upload finished, create post now
+            if (failCount == 0) {
+                model.setImages(AppUtils.asOneString(postImageUrls)); // update model's urls
+                AppUtils.runOnUiThread(realCreatePostAction);
+            } else {
+                mView.showCreateFail(mContext.getString(R.string.tip_upload_image_error));
+                mView.hideLoadingIndicator();
+            }
+
         });
     }
 }

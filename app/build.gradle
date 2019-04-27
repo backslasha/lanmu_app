@@ -38,4 +38,6 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:$rootProject.ext.retrofitVersion"
     implementation "com.google.code.gson:gson:$rootProject.ext.gsonVersion"
     implementation project(':imagepicker')
+
+    implementation 'com.qiniu:qiniu-java-sdk:7.2.7'
 }

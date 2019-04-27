@@ -92,5 +92,6 @@
     <string name="select_no_image">无选中照片</string>
     <string name="tip_should_select_cover">没有封面，要继续下一步请选择一个封面</string>
     <string name="tip_text_too_short">至少 32 个字符</string>
+    <string name="tip_upload_image_error">图片上传遇到问题啦</string>
 
 </resources>
