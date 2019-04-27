@@ -91,11 +91,12 @@ class CreatePostPresenterImpl implements CreatePostContract.Presenter {
             }
 
             List<String> postImageUrls = AppUtils.asUrlList(model.getImages());
+            List<String> postImageRealUrls = new ArrayList<>();
             if (failCount == 0) {
                 for (String imageUrl : postImageUrls) {
                     String realUrl = mUploader.uploadPicture(imageUrl);
                     if (realUrl != null) {
-                        model.getBook().setCoverUrl(realUrl); // update model's cover url
+                        postImageRealUrls.add(realUrl); // collect model's real url
                         LogUtil.i(TAG, "upload cover success -> " + realUrl);
                     } else {
                         failCount++;
@@ -107,7 +108,7 @@ class CreatePostPresenterImpl implements CreatePostContract.Presenter {
 
             // all images upload finished, create post now
             if (failCount == 0) {
-                model.setImages(AppUtils.asOneString(postImageUrls)); // update model's urls
+                model.setImages(AppUtils.asOneString(postImageRealUrls)); // update model's urls
                 AppUtils.runOnUiThread(realCreatePostAction);
             } else {
                 mView.showCreateFail(mContext.getString(R.string.tip_upload_image_error));
