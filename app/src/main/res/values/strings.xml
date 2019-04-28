@@ -95,5 +95,11 @@
     <string name="tip_upload_image_error">图片上传遇到问题啦</string>
     <string name="tip_search_fail">服务器坏掉了。。。</string>
     <string name="default_user_description">此人很懒，还没有填写任何介绍......</string>
+    <string name="label_submit">提交</string>
+    <string name="label_avatar_tips">点击设置头像</string>
+    <string name="hint_edit_introduction">一段话介绍一下自己......</string>
+    <string name="update_info">修改信息</string>
+    <string name="tip_info_updated">信息已更新</string>
+    <string name="tip_info_update_failed">信息更新失败：</string>
 
 </resources>

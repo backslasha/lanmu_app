@@ -27,33 +27,61 @@
         android:layout_height="wrap_content"
         android:padding="16dp">
 
-        <slasha.lanmu.widget.RoundImageView
-            android:id="@+id/iv_avatar"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/cover_sample" />
+        <RelativeLayout
+            android:id="@+id/rl_avatar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <slasha.lanmu.widget.RoundImageView
+                android:id="@+id/iv_avatar"
+                android:layout_width="92dp"
+                android:layout_height="92dp"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/default_holder_add" />
+
+            <ImageView
+                android:id="@+id/iv_sex_tag"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_alignEnd="@id/iv_avatar"
+                android:layout_alignBottom="@id/iv_avatar"
+                android:background="@drawable/sel_bg_sex"
+                android:contentDescription="@string/app_name"
+                android:padding="6dp"
+                android:src="@drawable/ic_sex_man"
+                android:tint="@color/white" />
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/tv_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/iv_avatar"
+            android:layout_below="@id/rl_avatar"
             android:layout_marginTop="8dp"
             android:gravity="center"
-            tools:text="BackSlasha"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            tools:text="BackSlasha" />
 
         <TextView
-            android:id="@+id/tv_user_description"
+            android:id="@+id/tv_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_username"
             android:layout_marginTop="8dp"
             android:gravity="center"
+            android:textSize="16sp"
+            tools:text="13631474584" />
+
+        <TextView
+            android:id="@+id/tv_user_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_phone"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
             android:padding="8dp"
-            tools:text="李荣浩，1985年7月11日出生于安徽省蚌埠市，中国流行乐男歌手、音乐制作人、吉他手、演员。2013年9月16日，发行首张专辑《模特》，凭借这张专辑提名第25届金曲奖五项大奖并获得最佳新人奖，实现了从制作人到歌手的转型；2014年9月4日签约华纳唱片，发行第二张同名专辑《李荣浩》，并在次年举办8场“天生李荣浩巡回演唱会”。2016年1月22日发行第三张专辑《有理想》，同年举办“有理想世界巡回演唱会 ... "
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            tools:text="李荣浩，1985年7月11日出生于安徽省蚌埠市，中国流行乐男歌手、音乐制作人、吉他手、演员。2013年9月16日，发行首张专辑《模特》，凭借这张专辑提名第25届金曲奖五项大奖并获得最佳新人奖，实现了从制作人到歌手的转型；2014年9月4日签约华纳唱片，发行第二张同名专辑《李荣浩》，并在次年举办8场“天生李荣浩巡回演唱会”。2016年1月22日发行第三张专辑《有理想》，同年举办“有理想世界巡回演唱会 ... " />
     </RelativeLayout>
 
     <TextView

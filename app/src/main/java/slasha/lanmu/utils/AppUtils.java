@@ -1,9 +1,12 @@
 package slasha.lanmu.utils;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
+import android.view.View;
+import android.view.Window;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -19,6 +22,7 @@ import slasha.lanmu.application.LanmuApplication;
 import slasha.lanmu.business.chat.ChatActivity;
 import slasha.lanmu.business.main.MainActivity;
 import slasha.lanmu.business.profile.UserProfileActivity;
+import slasha.lanmu.business.profile.edit.EditProfileActivity;
 import slasha.lanmu.entity.card.BookPostCard;
 import slasha.lanmu.entity.card.UserCard;
 import slasha.lanmu.entity.local.BookPost;
@@ -91,6 +95,16 @@ public class AppUtils {
         sMainHandler.postDelayed(runnable, delayMillis);
     }
 
+    public static void makeFullScreen(Window window) {
+        if (window == null) return;
+        window.getDecorView()
+                .setSystemUiVisibility(
+                        View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
+                                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+        window.setStatusBarColor(Color.TRANSPARENT);
+        window.setNavigationBarColor(Color.TRANSPARENT);
+    }
+
     public static void jumpToPostDetail(@NonNull Context context, BookPostCard bookPost) {
         context.startActivity(
                 PostDetailActivity.newIntent(context, bookPost)
@@ -116,6 +130,8 @@ public class AppUtils {
     }
 
     public static void jumpToEditProfilePage(Context context, UserCard userCard) {
-        // todo
+        context.startActivity(
+                EditProfileActivity.newIntent(context, userCard)
+        );
     }
 }

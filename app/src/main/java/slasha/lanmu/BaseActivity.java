@@ -16,6 +16,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         if (initArgs(getIntent().getExtras())) {
+            initWindow();
             int layId = getContentViewResId();
             setContentView(layId);
             initWidget();
@@ -23,6 +24,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         } else {
             finish();
         }
+
+    }
+
+    protected void initWindow() {
 
     }
 

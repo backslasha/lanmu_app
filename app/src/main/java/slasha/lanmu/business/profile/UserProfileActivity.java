@@ -2,6 +2,7 @@ package slasha.lanmu.business.profile;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -36,6 +37,12 @@ public class UserProfileActivity extends SameStyleActivity implements ProfileCon
     @BindView(R.id.tv_user_description)
     TextView mDescription;
 
+    @BindView(R.id.tv_phone)
+    TextView mPhone;
+
+    @BindView(R.id.iv_sex_tag)
+    ImageView mGender;
+
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
 
@@ -65,6 +72,14 @@ public class UserProfileActivity extends SameStyleActivity implements ProfileCon
                 .error(R.drawable.ic_default_avatar)
                 .into(mAvatar);
         mUsername.setText(mUserCard.getName());
+        mPhone.setText(mUserCard.getPhone());
+
+        boolean aBoy = "1".equals(mUserCard.getGender());
+        Drawable drawable = getResources()
+                .getDrawable(aBoy ? R.drawable.ic_sex_woman : R.drawable.ic_sex_man);
+        mGender.setImageDrawable(drawable);
+        mGender.getBackground().setLevel(aBoy ? 0 : 1);// 设置背景的层级，切换颜色
+
         String introduction = mUserCard.getIntroduction();
         if (TextUtils.isEmpty(introduction)) {
             mDescription.setText(R.string.default_user_description);
@@ -111,7 +126,6 @@ public class UserProfileActivity extends SameStyleActivity implements ProfileCon
 
     @Override
     public void showProfile(UserCard user) {
-        // TODO: 2019/3/12 show profile
         setTitle(user.getName());
     }
 
