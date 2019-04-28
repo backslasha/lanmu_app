@@ -21,8 +21,8 @@ import slasha.lanmu.persistence.UserInfo;
 import slasha.lanmu.utils.AppUtils;
 import slasha.lanmu.utils.common.LogUtil;
 
-public class UserProfileActivity extends SameStyleActivity implements ProfileContract.ProfileView {
-
+public class UserProfileActivity extends SameStyleActivity
+        implements ProfileContract.ProfileView, UserInfo.UserInfoChangeListener {
 
     private static final String EXTRA_USER = "extra_user";
     private static final String TAG = "lanmu.profile";
@@ -46,7 +46,6 @@ public class UserProfileActivity extends SameStyleActivity implements ProfileCon
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
 
-
     public static Intent newIntent(Context context, UserCard user) {
         Intent intent = new Intent(context, UserProfileActivity.class);
         intent.putExtra(EXTRA_USER, user);
@@ -66,6 +65,11 @@ public class UserProfileActivity extends SameStyleActivity implements ProfileCon
 
     @Override
     protected void initData() {
+        initOrUpdateUI();
+        UserInfo.registerLoginStatusListener(this);
+    }
+
+    private void initOrUpdateUI() {
         Picasso.with(this)
                 .load(mUserCard.getAvatarUrl())
                 .placeholder(R.drawable.ic_default_avatar)
@@ -87,6 +91,7 @@ public class UserProfileActivity extends SameStyleActivity implements ProfileCon
             mDescription.setText(introduction);
         }
     }
+
 
     private boolean myself() {
         return mUserCard.getId() == UserInfo.id();
@@ -147,5 +152,28 @@ public class UserProfileActivity extends SameStyleActivity implements ProfileCon
     @Override
     public void showActionFail(String message) {
 
+    }
+
+    @Override
+    public void onUserInfoLoaded(UserCard user) {
+        mUserCard = user;
+        initOrUpdateUI();
+    }
+
+    @Override
+    public void onUserInfoCleared() {
+
+    }
+
+    @Override
+    public void onUserInfoUpdated(UserCard user) {
+        mUserCard = user;
+        initOrUpdateUI();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        UserInfo.unregisterLoginStatusListener(this);
     }
 }

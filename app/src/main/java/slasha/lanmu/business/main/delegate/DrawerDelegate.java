@@ -98,7 +98,7 @@ public class DrawerDelegate implements NavigationView.OnNavigationItemSelectedLi
 
     @Override
     public void onUserInfoUpdated(UserCard user) {
-
+        updateNavHeaderUI(user);
     }
 
     private void jumpToLoginPage() {

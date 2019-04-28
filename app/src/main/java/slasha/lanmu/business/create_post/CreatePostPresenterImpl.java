@@ -32,7 +32,7 @@ class CreatePostPresenterImpl implements CreatePostContract.Presenter {
     CreatePostPresenterImpl(CreatePostContract.View view, Context context) {
         mView = view;
         mContext = context;
-        mUploader = new QiniuUploader();
+        mUploader = QiniuUploader.getInstance();
     }
 
     @Override
@@ -110,8 +110,10 @@ class CreatePostPresenterImpl implements CreatePostContract.Presenter {
                 model.setImages(AppUtils.asOneString(postImageRealUrls)); // update model's urls
                 AppUtils.runOnUiThread(realCreatePostAction);
             } else {
-                mView.showActionFail(mContext.getString(R.string.tip_upload_image_error));
-                mView.hideLoadingIndicator();
+                AppUtils.runOnUiThread(() -> {
+                    mView.showActionFail(mContext.getString(R.string.tip_upload_image_error));
+                    mView.hideLoadingIndicator();
+                });
             }
 
         });

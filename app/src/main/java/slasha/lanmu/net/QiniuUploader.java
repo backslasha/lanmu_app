@@ -36,6 +36,16 @@ public class QiniuUploader implements Uploader {
 
     private UploadManager uploadManager;
 
+    private QiniuUploader() {
+    }
+
+    public static QiniuUploader getInstance() {
+        return SingletonHolder.QINIU_UPLOADER;
+    }
+
+    private static class SingletonHolder {
+        private static final QiniuUploader QINIU_UPLOADER = new QiniuUploader();
+    }
 
     /**
      * eg. image/201703/dawewqfas243rfawr234.jpg

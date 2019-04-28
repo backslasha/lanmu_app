@@ -49,9 +49,17 @@ public interface RemoteService {
     @POST("posts/create")
     Call<RspModelWrapper<BookPostCard>> createPost(@Body CreatePostModel model);
 
-    // 书名关键字搜索书帖
+    /**
+     * 书名关键字搜索书帖
+     */
     @GET("posts/search?type=0")
     Call<RspModelWrapper<List<BookPostCard>>> searchPosts(@Query("value") String keyword);
+
+    /**
+     * 书名关键字搜索书帖
+     */
+    @POST("account/profile")
+    Call<RspModelWrapper<UserCard>> updateProfile(@Body UserCard userCard);
 
     // 用户关注接口
     @PUT("user/follow/{userId}")

@@ -25,6 +25,7 @@ import butterknife.OnClick;
 import slasha.lanmu.R;
 import slasha.lanmu.SameStyleActivity;
 import slasha.lanmu.entity.card.UserCard;
+import slasha.lanmu.persistence.UserInfo;
 import slasha.lanmu.utils.CommonUtils;
 import slasha.lanmu.utils.common.LogUtil;
 import slasha.lanmu.utils.common.ToastUtils;
@@ -175,6 +176,7 @@ public class EditProfileActivity extends SameStyleActivity
 
     @Override
     public void showProfileUpdateSuccess(UserCard user) {
+        UserInfo.save2SP(user);
         ToastUtils.showToast(getString(R.string.tip_info_updated));
         finish();
     }
@@ -182,7 +184,7 @@ public class EditProfileActivity extends SameStyleActivity
     @Override
     public EditProfileContract.Presenter myPresenter() {
         if (mPresenter == null) {
-            mPresenter = new EditProfileImpl(this);
+            mPresenter = new EditProfileImpl(this, this);
         }
         return mPresenter;
     }
