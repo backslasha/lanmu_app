@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import slasha.lanmu.application.LanmuApplication;
-import slasha.lanmu.entity.local.User;
+import slasha.lanmu.entity.card.UserCard;
 import slasha.lanmu.utils.common.SPUtils;
 
 public class UserInfo {
 
     private static final String KEY_ID = "sp_key_user";
-    private static User self = null;
+    private static UserCard self = null;
 
-    public static User self() {
+    public static UserCard self() {
         return self;
     }
 
@@ -20,7 +20,7 @@ public class UserInfo {
         return self.getId();
     }
 
-    public static void save2SP(User user) {
+    public static void save2SP(UserCard user) {
         self = user;
         SPUtils.put(LanmuApplication.instance(), KEY_ID, Global.gson().toJson(user));
         for (UserInfoChangeListener listener : sListeners) {
@@ -31,8 +31,8 @@ public class UserInfo {
     public static void load() {
         if (self == null) {
             self = Global.gson().fromJson(
-                    (String) SPUtils.get(LanmuApplication.instance(), KEY_ID,""),
-                    User.class
+                    (String) SPUtils.get(LanmuApplication.instance(), KEY_ID, ""),
+                    UserCard.class
             );
             for (UserInfoChangeListener listener : sListeners) {
                 listener.onUserInfoLoaded(self);
@@ -52,7 +52,7 @@ public class UserInfo {
         /**
          * invoke when user info was loaded from sp
          */
-        void onUserInfoLoaded(User user);
+        void onUserInfoLoaded(UserCard user);
 
         /**
          * invoke when user info was cleared from sp
@@ -62,7 +62,7 @@ public class UserInfo {
         /**
          * invoke when user info was updated/saved to sp
          */
-        void onUserInfoUpdated(User user);
+        void onUserInfoUpdated(UserCard user);
     }
 
     private static List<UserInfoChangeListener> sListeners = new ArrayList<>();

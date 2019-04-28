@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import slasha.lanmu.entity.card.UserCard;
 import slasha.lanmu.persistence.AccountInfo;
 import slasha.lanmu.persistence.Global;
 import slasha.lanmu.R;
@@ -23,6 +24,7 @@ import slasha.lanmu.entity.local.User;
 import slasha.lanmu.business.account.AccountActivity;
 import slasha.lanmu.business.main.MainActivity;
 import slasha.lanmu.persistence.UserInfo;
+import slasha.lanmu.utils.AppUtils;
 
 public class DrawerDelegate implements NavigationView.OnNavigationItemSelectedListener,
         UserInfo.UserInfoChangeListener {
@@ -85,7 +87,7 @@ public class DrawerDelegate implements NavigationView.OnNavigationItemSelectedLi
         return true;
     }
 
-    public void onUserInfoLoaded(User user) {
+    public void onUserInfoLoaded(UserCard user) {
         updateNavHeaderUI(user);
     }
 
@@ -95,7 +97,7 @@ public class DrawerDelegate implements NavigationView.OnNavigationItemSelectedLi
     }
 
     @Override
-    public void onUserInfoUpdated(User user) {
+    public void onUserInfoUpdated(UserCard user) {
 
     }
 
@@ -104,8 +106,9 @@ public class DrawerDelegate implements NavigationView.OnNavigationItemSelectedLi
         activity.startActivity(AccountActivity.newIntent(activity));
     }
 
-    private void updateNavHeaderUI(User user) {
+    private void updateNavHeaderUI(UserCard user) {
         View root = mNavigationView.getHeaderView(0);
+        root.setOnClickListener(v -> AppUtils.jumpToUserProfile(activity, UserInfo.self()));
         if (user == null) {
             ((ImageView) root.findViewById(R.id.iv_avatar)).setImageResource(R.mipmap.ic_launcher);
             ((TextView) root.findViewById(R.id.tv_nav_header_title)).setText(R.string.nav_header_title);
@@ -115,14 +118,16 @@ public class DrawerDelegate implements NavigationView.OnNavigationItemSelectedLi
         } else {
             Picasso.with(activity)
                     .load(user.getAvatarUrl())
+                    .placeholder(R.mipmap.ic_launcher)
+                    .error(R.mipmap.ic_launcher)
                     .into((ImageView) root.findViewById(R.id.iv_avatar));
 
             ((TextView) root.findViewById(R.id.tv_nav_header_title)).setText(
                     user.getName()
             );
-//        ((TextView) mNavigationView.findViewById(R.id.tv_nav_header_sub_title)).setText(
-//                user.getEmail()
-//        );
+            ((TextView) root.findViewById(R.id.tv_nav_header_sub_title)).setText(
+                    user.getPhone()
+            );
         }
     }
 

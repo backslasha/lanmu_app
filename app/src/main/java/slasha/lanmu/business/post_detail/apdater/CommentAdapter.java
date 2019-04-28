@@ -8,6 +8,7 @@ import java.util.List;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import slasha.lanmu.R;
+import slasha.lanmu.entity.card.UserCard;
 import slasha.lanmu.entity.local.Comment;
 import slasha.lanmu.entity.local.CommentReply;
 import slasha.lanmu.entity.local.User;
@@ -84,6 +85,6 @@ public class CommentAdapter extends SimpleAdapter<Comment> {
 
         void onCommentReplyClick(boolean isExpandableItem, CommentReply reply);
 
-        void onAvatarClick(User user);
+        void onAvatarClick(UserCard user);
     }
 }

@@ -15,6 +15,7 @@ import slasha.lanmu.business.account.AccountContract;
 import slasha.lanmu.business.account.AccountPresenterImpl;
 import slasha.lanmu.business.main.MainActivity;
 import slasha.lanmu.entity.api.account.RegisterModel;
+import slasha.lanmu.entity.card.UserCard;
 import slasha.lanmu.entity.local.User;
 import slasha.lanmu.utils.common.ToastUtils;
 
@@ -142,7 +143,7 @@ public class RegisterFragment extends BaseFragment
     }
 
     @Override
-    public void showActionSuccess(User user) {
+    public void showActionSuccess(UserCard user) {
         ToastUtils.showToast(R.string.register_success);
         jumpToMainPage();
     }

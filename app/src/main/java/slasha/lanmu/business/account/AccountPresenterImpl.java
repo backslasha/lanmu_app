@@ -9,6 +9,7 @@ import slasha.lanmu.entity.api.account.AccountRspModel;
 import slasha.lanmu.entity.api.account.LoginModel;
 import slasha.lanmu.entity.api.account.RegisterModel;
 import slasha.lanmu.entity.api.base.RspModelWrapper;
+import slasha.lanmu.entity.card.UserCard;
 import slasha.lanmu.entity.local.User;
 import slasha.lanmu.net.Network;
 import slasha.lanmu.net.RemoteService;
@@ -52,7 +53,7 @@ public class AccountPresenterImpl implements AccountContract.Presenter {
         AccountInfo.save2SP(accountRspModel); // 同步到XML持久化中
     }
 
-    private void saveUserInfo(User user) {
+    private void saveUserInfo(UserCard user) {
         UserInfo.save2SP(user);
     }
 
@@ -64,7 +65,7 @@ public class AccountPresenterImpl implements AccountContract.Presenter {
             RspModelWrapper<AccountRspModel> rspModel = response.body();
             if (rspModel.success()) {
                 AccountRspModel accountRspModel = rspModel.getResult();
-                User user = new User(accountRspModel.getUser());
+                UserCard user = accountRspModel.getUser();
                 saveAccountInfo(accountRspModel);
                 saveUserInfo(user);
                 AppUtils.runOnUiThread(() -> {

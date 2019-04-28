@@ -3,20 +3,19 @@ package slasha.lanmu.business.chat;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.View;
 
 import java.util.List;
 
-import slasha.lanmu.persistence.AccountInfo;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import slasha.lanmu.R;
 import slasha.lanmu.SameStyleActivity;
+import slasha.lanmu.entity.card.UserCard;
 import slasha.lanmu.entity.local.Message;
 import slasha.lanmu.entity.local.User;
+import slasha.lanmu.persistence.AccountInfo;
 import slasha.lanmu.persistence.UserInfo;
 import slasha.lanmu.utils.common.ToastUtils;
 import yhb.chorus.common.adapter.SimpleAdapter;
@@ -27,7 +26,7 @@ public class ChatActivity extends SameStyleActivity
 
     private static final String EXTRA_OTHER_USER = "extra_other_user";
 
-    public static Intent newIntent(Context context, User other) {
+    public static Intent newIntent(Context context, UserCard other) {
         Intent intent = new Intent(context, ChatActivity.class);
         intent.putExtra(EXTRA_OTHER_USER, other);
         return intent;
@@ -36,7 +35,7 @@ public class ChatActivity extends SameStyleActivity
     private RecyclerView mRecyclerView;
     private SimpleAdapter<Message> mMessageAdapter;
     private ChatContract.ChatPresenter mPresenter;
-    private User mChatGuy;
+    private UserCard mChatGuy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +62,7 @@ public class ChatActivity extends SameStyleActivity
         if (intent == null) {
             return;
         }
-        mChatGuy = (User) intent.getSerializableExtra(EXTRA_OTHER_USER);
+        mChatGuy = (UserCard) intent.getSerializableExtra(EXTRA_OTHER_USER);
         setTitle(mChatGuy.getName());
     }
 

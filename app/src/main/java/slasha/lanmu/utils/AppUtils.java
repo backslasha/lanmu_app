@@ -16,8 +16,11 @@ import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import slasha.lanmu.application.LanmuApplication;
+import slasha.lanmu.business.chat.ChatActivity;
 import slasha.lanmu.business.main.MainActivity;
+import slasha.lanmu.business.profile.UserProfileActivity;
 import slasha.lanmu.entity.card.BookPostCard;
+import slasha.lanmu.entity.card.UserCard;
 import slasha.lanmu.entity.local.BookPost;
 import slasha.lanmu.business.post_detail.PostDetailActivity;
 import slasha.lanmu.persistence.Global;
@@ -98,5 +101,21 @@ public class AppUtils {
         context.startActivity(
                 MainActivity.newIntent(context)
         );
+    }
+
+    public static void jumpToUserProfile(@NonNull Context context, UserCard userCard) {
+        context.startActivity(
+                UserProfileActivity.newIntent(context, userCard)
+        );
+    }
+
+    public static void jumpToChatPage(Context context, UserCard userCard) {
+        context.startActivity(
+                ChatActivity.newIntent(context, userCard)
+        );
+    }
+
+    public static void jumpToEditProfilePage(Context context, UserCard userCard) {
+        // todo
     }
 }

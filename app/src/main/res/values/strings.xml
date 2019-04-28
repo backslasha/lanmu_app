@@ -2,8 +2,8 @@
     <string name="app_name">兰木书评</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_title">兰木书评</string>
+    <string name="nav_header_subtitle">yaohaibiao2333@qq.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
     <string name="search_hint">搜书评</string>
@@ -94,5 +94,6 @@
     <string name="tip_text_too_short">至少 32 个字符</string>
     <string name="tip_upload_image_error">图片上传遇到问题啦</string>
     <string name="tip_search_fail">服务器坏掉了。。。</string>
+    <string name="default_user_description">此人很懒，还没有填写任何介绍......</string>
 
 </resources>

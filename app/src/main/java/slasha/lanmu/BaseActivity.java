@@ -3,6 +3,7 @@ package slasha.lanmu;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 
+import androidx.annotation.CallSuper;
 import androidx.appcompat.app.AppCompatActivity;
 import butterknife.ButterKnife;
 
@@ -39,6 +40,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     /**
      * 初始化控件
      */
+    @CallSuper
     protected void initWidget() {
         ButterKnife.bind(this);
 

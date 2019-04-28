@@ -6,4 +6,9 @@
         android:icon="@drawable/ic_chat_24dp"
         android:title="@string/action_settings"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/action_edit_mode"
+        android:icon="@drawable/ic_mode_edit_24dp"
+        android:title="@string/action_settings"
+        app:showAsAction="ifRoom" />
 </menu>

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     android:orientation="vertical"
     tools:context=".business.profile.UserProfileActivity">
 
@@ -40,7 +41,7 @@
             android:layout_below="@id/iv_avatar"
             android:layout_marginTop="8dp"
             android:gravity="center"
-            android:text="BackSlasha"
+            tools:text="BackSlasha"
             android:textSize="16sp" />
 
         <TextView
@@ -49,8 +50,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_username"
             android:layout_marginTop="8dp"
+            android:gravity="center"
             android:padding="8dp"
-            android:text="李荣浩，1985年7月11日出生于安徽省蚌埠市，中国流行乐男歌手、音乐制作人、吉他手、演员。2013年9月16日，发行首张专辑《模特》，凭借这张专辑提名第25届金曲奖五项大奖并获得最佳新人奖，实现了从制作人到歌手的转型；2014年9月4日签约华纳唱片，发行第二张同名专辑《李荣浩》，并在次年举办8场“天生李荣浩巡回演唱会”。2016年1月22日发行第三张专辑《有理想》，同年举办“有理想世界巡回演唱会 ... "
+            tools:text="李荣浩，1985年7月11日出生于安徽省蚌埠市，中国流行乐男歌手、音乐制作人、吉他手、演员。2013年9月16日，发行首张专辑《模特》，凭借这张专辑提名第25届金曲奖五项大奖并获得最佳新人奖，实现了从制作人到歌手的转型；2014年9月4日签约华纳唱片，发行第二张同名专辑《李荣浩》，并在次年举办8场“天生李荣浩巡回演唱会”。2016年1月22日发行第三张专辑《有理想》，同年举办“有理想世界巡回演唱会 ... "
             android:textSize="16sp" />
     </RelativeLayout>
 

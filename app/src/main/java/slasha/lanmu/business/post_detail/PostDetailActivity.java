@@ -26,6 +26,7 @@ import slasha.lanmu.business.post_detail.apdater.CommentAdapter;
 import slasha.lanmu.business.profile.UserProfileActivity;
 import slasha.lanmu.entity.card.BookCard;
 import slasha.lanmu.entity.card.BookPostCard;
+import slasha.lanmu.entity.card.UserCard;
 import slasha.lanmu.entity.local.Comment;
 import slasha.lanmu.entity.local.CommentReply;
 import slasha.lanmu.entity.local.User;
@@ -249,8 +250,8 @@ public class PostDetailActivity extends SameStyleActivity
                             }
 
                             @Override
-                            public void onAvatarClick(User user) {
-                                jumpToUserProfile(user);
+                            public void onAvatarClick(UserCard user) {
+                                AppUtils.jumpToUserProfile(PostDetailActivity.this, user);
                             }
                         }
                 );
@@ -267,12 +268,6 @@ public class PostDetailActivity extends SameStyleActivity
                 ), count));
             }
         }
-    }
-
-    private void jumpToUserProfile(User user) {
-        startActivity(
-                UserProfileActivity.newIntent(this, user)
-        );
     }
 
     @Override

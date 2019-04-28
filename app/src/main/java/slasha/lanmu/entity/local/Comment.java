@@ -7,25 +7,25 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.List;
 
-public class Comment implements Serializable {
+import slasha.lanmu.entity.card.UserCard;
 
+public class Comment implements Serializable {
 
     @SerializedName("id")
     @Expose
     private long id;
     @SerializedName("from")
     @Expose
-    private User from;
+    private UserCard from;
     @SerializedName("to")
     @Expose
-    private User to;
+    private UserCard to;
     @SerializedName("content")
     @Expose
     private String content;
     @SerializedName("post_id")
     @Expose
     private String postId;
-
     @SerializedName("replies")
     @Expose
     private List<CommentReply> replies;
@@ -57,19 +57,19 @@ public class Comment implements Serializable {
         this.id = id;
     }
 
-    public User getFrom() {
+    public UserCard getFrom() {
         return from;
     }
 
-    public void setFrom(User from) {
+    public void setFrom(UserCard from) {
         this.from = from;
     }
 
-    public User getTo() {
+    public UserCard getTo() {
         return to;
     }
 
-    public void setTo(User to) {
+    public void setTo(UserCard to) {
         this.to = to;
     }
 

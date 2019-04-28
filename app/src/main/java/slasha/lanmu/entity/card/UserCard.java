@@ -2,8 +2,10 @@ package slasha.lanmu.entity.card;
 
 import com.google.gson.annotations.Expose;
 
+import java.io.Serializable;
 
-public class UserCard {
+
+public class UserCard implements Serializable {
 
     @Expose
     private long id;
