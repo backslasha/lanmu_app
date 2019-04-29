@@ -15,6 +15,7 @@ import slasha.lanmu.entity.api.account.RegisterModel;
 import slasha.lanmu.entity.api.base.RspModelWrapper;
 import slasha.lanmu.entity.api.post.CreatePostModel;
 import slasha.lanmu.entity.card.BookPostCard;
+import slasha.lanmu.entity.card.DynamicCard;
 import slasha.lanmu.entity.card.UserCard;
 
 /**
@@ -56,10 +57,13 @@ public interface RemoteService {
     Call<RspModelWrapper<List<BookPostCard>>> searchPosts(@Query("value") String keyword);
 
     /**
-     * 书名关键字搜索书帖
+     * 修改用户信息
      */
     @POST("account/profile")
     Call<RspModelWrapper<UserCard>> updateProfile(@Body UserCard userCard);
+
+    @GET("account/dynamic/{id}")
+    Call<RspModelWrapper<List<DynamicCard>>> pullDynamics(@Path("id") long userId);
 
     // 用户关注接口
     @PUT("user/follow/{userId}")
@@ -72,4 +76,5 @@ public interface RemoteService {
     // 查询某人的信息
     @GET("user/{userId}")
     Call<RspModelWrapper<UserCard>> userFind(@Path("userId") String userId);
+
 }

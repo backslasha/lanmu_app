@@ -101,5 +101,7 @@
     <string name="update_info">修改信息</string>
     <string name="tip_info_updated">信息已更新</string>
     <string name="tip_info_update_failed">信息更新失败：</string>
+    <string name="tip_info_load_failed">数据加载失败</string>
+    <string name="his_dynamic">个人动态</string>
 
 </resources>

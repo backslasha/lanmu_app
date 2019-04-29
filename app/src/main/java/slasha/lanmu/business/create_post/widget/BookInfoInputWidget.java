@@ -32,8 +32,8 @@ import butterknife.OnClick;
 import slasha.lanmu.R;
 import slasha.lanmu.business.create_post.CreatePostActivity;
 import slasha.lanmu.entity.local.Book;
-import slasha.lanmu.utils.AppUtils;
 import slasha.lanmu.utils.CommonUtils;
+import slasha.lanmu.utils.FormatUtils;
 import slasha.lanmu.utils.common.KeyBoardUtils;
 import slasha.lanmu.utils.common.ToastUtils;
 
@@ -183,7 +183,7 @@ public class BookInfoInputWidget extends ScrollView
         book.setLanguish(String.valueOf(mEdtLanguish.getText()));
         book.setName(String.valueOf(mEdtBookName.getText()));
         book.setPublishDate(
-                AppUtils.toServerFormat(String.valueOf(mEdtPublishDate.getText()), "yyyy/MM/dd")
+                FormatUtils.toServerFormat(String.valueOf(mEdtPublishDate.getText()), "yyyy/MM/dd")
         );
         book.setPublisher(String.valueOf(mEdtPublisher.getText()));
         book.setVersion(String.valueOf(mEdtVersion.getText()));

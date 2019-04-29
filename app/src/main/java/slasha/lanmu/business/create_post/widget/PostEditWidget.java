@@ -26,6 +26,7 @@ import slasha.lanmu.R;
 import slasha.lanmu.business.create_post.CreatePostActivity;
 import slasha.lanmu.utils.AppUtils;
 import slasha.lanmu.utils.CommonUtils;
+import slasha.lanmu.utils.FormatUtils;
 import slasha.lanmu.utils.common.DensityUtils;
 import slasha.lanmu.utils.common.ToastUtils;
 import yhb.chorus.common.adapter.SimpleAdapter;
@@ -97,7 +98,7 @@ public class PostEditWidget extends ScrollView implements CreatePostActivity.Res
     }
 
     public String getImages() {
-        return AppUtils.asOneString(mSelectedImageAdapter.getEntities());
+        return FormatUtils.asOneString(mSelectedImageAdapter.getEntities());
     }
 
     public void showTextTooShortTip() {

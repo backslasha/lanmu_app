@@ -4,6 +4,8 @@ import android.content.Context;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.IdRes;
 import androidx.recyclerview.widget.RecyclerView;
+import slasha.lanmu.R;
+
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,6 +70,8 @@ public class SimpleHolder extends RecyclerView.ViewHolder {
     public void setImage(@IdRes int idRes, String url) {
         Picasso.with(mContext)
                 .load(url)
+                .placeholder(R.drawable.default_place_holder)
+                .error(R.drawable.default_loading_fail)
                 .into((ImageView) getView(idRes));
     }
 

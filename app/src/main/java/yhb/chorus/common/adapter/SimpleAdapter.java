@@ -38,7 +38,7 @@ public abstract class SimpleAdapter<Entity> extends RecyclerView.Adapter<SimpleH
 
     protected SimpleAdapter(Context context, List<Entity> entities) {
         mContext = context;
-        mEntities = entities;
+        mEntities = entities != null ? entities : new ArrayList<>();
     }
 
     @NonNull

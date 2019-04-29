@@ -84,4 +84,24 @@ public class BookPostCard implements Serializable {
     }
 
 
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("{");
+        sb.append("\"book\":")
+                .append(book);
+        sb.append(",\"creator\":")
+                .append(creator);
+        sb.append(",\"createDate\":\"")
+                .append(createDate).append('\"');
+        sb.append(",\"content\":\"")
+                .append(content).append('\"');
+        sb.append(",\"images\":\"")
+                .append(images).append('\"');
+        sb.append(",\"commentCount\":")
+                .append(commentCount);
+        sb.append(",\"id\":")
+                .append(id);
+        sb.append('}');
+        return sb.toString();
+    }
 }

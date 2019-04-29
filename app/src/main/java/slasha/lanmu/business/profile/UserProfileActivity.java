@@ -10,19 +10,27 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.material.appbar.AppBarLayout;
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
+
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import slasha.lanmu.R;
 import slasha.lanmu.SameStyleActivity;
+import slasha.lanmu.entity.card.DynamicCard;
 import slasha.lanmu.entity.card.UserCard;
 import slasha.lanmu.persistence.UserInfo;
 import slasha.lanmu.utils.AppUtils;
 import slasha.lanmu.utils.common.LogUtil;
+import slasha.lanmu.utils.common.ToastUtils;
 
 public class UserProfileActivity extends SameStyleActivity
-        implements ProfileContract.ProfileView, UserInfo.UserInfoChangeListener {
+        implements ProfileContract.View, UserInfo.UserInfoChangeListener {
 
     private static final String EXTRA_USER = "extra_user";
     private static final String TAG = "lanmu.profile";
@@ -46,6 +54,11 @@ public class UserProfileActivity extends SameStyleActivity
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
 
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+
+    private ProfileContract.Presenter mUserPresenterImpl;
+
     public static Intent newIntent(Context context, UserCard user) {
         Intent intent = new Intent(context, UserProfileActivity.class);
         intent.putExtra(EXTRA_USER, user);
@@ -64,12 +77,42 @@ public class UserProfileActivity extends SameStyleActivity
     }
 
     @Override
+    protected void initWindow() {
+        super.initWindow();
+//        AppUtils.makeFullScreen(getWindow());
+    }
+
+    @Override
+    protected void initWidget() {
+        super.initWidget();
+        AppBarLayout appbarLayout = findViewById(R.id.app_bar_layout);
+        NestedScrollView scrollView = findViewById(R.id.nested_scroll_view);
+        appbarLayout.addOnOffsetChangedListener((appBarLayout, offset) -> {
+            if (scrollView.getTop() < mToolbar.getHeight()) {
+                scrollView.setElevation(0);
+                appbarLayout.setElevation(10);
+                LogUtil.d(TAG, "scrollView.setElevation(0):" + (scrollView.getTop() - mToolbar.getHeight()));
+            } else {
+                scrollView.setElevation(10);
+                appbarLayout.setElevation(0);
+                LogUtil.d(TAG, "scrollView.setElevation(10):" + (scrollView.getTop() - mToolbar.getHeight()));
+            }
+        });
+
+    }
+
+    @Override
     protected void initData() {
-        initOrUpdateUI();
+        initOrUpdateProfileUI();
+        initOrUpdateDynamics();
         UserInfo.registerLoginStatusListener(this);
     }
 
-    private void initOrUpdateUI() {
+    private void initOrUpdateDynamics() {
+        myPresenter().performPullDynamics(mUserCard.getId());
+    }
+
+    private void initOrUpdateProfileUI() {
         Picasso.with(this)
                 .load(mUserCard.getAvatarUrl())
                 .placeholder(R.drawable.ic_default_avatar)
@@ -135,8 +178,20 @@ public class UserProfileActivity extends SameStyleActivity
     }
 
     @Override
-    public ProfileContract.ProfilePresenter myPresenter() {
-        return null;
+    public void showPullDynamicsSuccess(List<DynamicCard> dynamics) {
+        ProfileDynamicAdapter adapter
+                = new ProfileDynamicAdapter(this);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setAdapter(adapter);
+        adapter.performDataSetAdded(dynamics);
+    }
+
+    @Override
+    public ProfileContract.Presenter myPresenter() {
+        if (mUserPresenterImpl == null) {
+            mUserPresenterImpl = new UserPresenterImpl(this);
+        }
+        return mUserPresenterImpl;
     }
 
     @Override
@@ -151,13 +206,14 @@ public class UserProfileActivity extends SameStyleActivity
 
     @Override
     public void showActionFail(String message) {
-
+        ToastUtils.showToast(getResources().getString(R.string.
+                tip_info_load_failed) + "：" + message);
     }
 
     @Override
     public void onUserInfoLoaded(UserCard user) {
         mUserCard = user;
-        initOrUpdateUI();
+        initOrUpdateProfileUI();
     }
 
     @Override
@@ -168,7 +224,7 @@ public class UserProfileActivity extends SameStyleActivity
     @Override
     public void onUserInfoUpdated(UserCard user) {
         mUserCard = user;
-        initOrUpdateUI();
+        initOrUpdateProfileUI();
     }
 
     @Override

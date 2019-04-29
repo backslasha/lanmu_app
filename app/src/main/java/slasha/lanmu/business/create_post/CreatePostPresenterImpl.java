@@ -18,6 +18,7 @@ import slasha.lanmu.net.QiniuUploader;
 import slasha.lanmu.net.RemoteService;
 import slasha.lanmu.net.Uploader;
 import slasha.lanmu.utils.AppUtils;
+import slasha.lanmu.utils.FormatUtils;
 import slasha.lanmu.utils.common.LogUtil;
 import slasha.lanmu.utils.common.ThreadUtils;
 
@@ -89,7 +90,7 @@ class CreatePostPresenterImpl implements CreatePostContract.Presenter {
                 }
             }
 
-            List<String> postImageUrls = AppUtils.asUrlList(model.getImages());
+            List<String> postImageUrls = FormatUtils.asUrlList(model.getImages());
             List<String> postImageRealUrls = new ArrayList<>();
             if (failCount == 0) {
                 for (String imageUrl : postImageUrls) {
@@ -107,7 +108,7 @@ class CreatePostPresenterImpl implements CreatePostContract.Presenter {
 
             // all images upload finished, create post now
             if (failCount == 0) {
-                model.setImages(AppUtils.asOneString(postImageRealUrls)); // update model's urls
+                model.setImages(FormatUtils.asOneString(postImageRealUrls)); // update model's urls
                 AppUtils.runOnUiThread(realCreatePostAction);
             } else {
                 AppUtils.runOnUiThread(() -> {
