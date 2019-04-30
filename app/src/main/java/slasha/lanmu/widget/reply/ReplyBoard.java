@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import slasha.lanmu.R;
 import slasha.lanmu.entity.api.comment.CreateCommentModel;
+import slasha.lanmu.entity.api.comment.CreateReplyModel;
 import slasha.lanmu.utils.common.KeyBoardUtils;
 
 public class ReplyBoard extends LinearLayout implements View.OnClickListener,
@@ -25,9 +26,12 @@ public class ReplyBoard extends LinearLayout implements View.OnClickListener,
     private EditText mEditText;
     private TextView mTextView;
     private Publisher mPublisher;
-    private CreateCommentModel mCommentModel;
 
-    private CreateCommentModel mDefaultModel = new CreateCommentModel();
+    private boolean mIsCommentMode = true; // 编辑对帖评论模式
+
+    private CreateReplyModel mReplyModel;
+
+    private CreateCommentModel mCommentModel = new CreateCommentModel();
 
     public ReplyBoard(Context context) {
         this(context, null);
@@ -39,7 +43,6 @@ public class ReplyBoard extends LinearLayout implements View.OnClickListener,
 
     public ReplyBoard(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         this(context, attrs, defStyleAttr, 0);
-
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -57,12 +60,12 @@ public class ReplyBoard extends LinearLayout implements View.OnClickListener,
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.tv_publish) {
-            if (mCommentModel == null) {
-                mDefaultModel.setContent(getContent());
-                mPublisher.publishComment(mDefaultModel);
-            } else {
-                mCommentModel.setContent(getContent());
+            if (mIsCommentMode) {
+                mCommentModel.setContent(String.valueOf(mEditText.getText()));
                 mPublisher.publishComment(mCommentModel);
+            } else {
+                mReplyModel.setContent(String.valueOf(mEditText.getText()));
+                mPublisher.publishCommentReply(mReplyModel);
             }
         }
     }
@@ -88,17 +91,11 @@ public class ReplyBoard extends LinearLayout implements View.OnClickListener,
         }
     }
 
-    public void openAndAttach(Object tag, @NonNull CreateCommentModel model) {
-//        CreateCommentModel createCommentModel = cache.get(tag);
-//        if (createCommentModel == null) {
-//            createCommentModel = model;
-//        }
-//        String fromName = createCommentModel.getFromName();
-//        String content = createCommentModel.getContent();
-//        mEditText.setHint(String.format(getContext().getString(R.string.reply_to), fromName));
-//        mEditText.setText(content);
-//        mEditText.requestFocus();
-//        KeyBoardUtils.openKeybord(mEditText);
+    public void openAndAttach(@NonNull CreateReplyModel model, int position) {
+        mIsCommentMode = false;
+        mReplyModel = model;
+        mEditText.requestFocus();
+        setTag(position);
     }
 
     public void close() {
@@ -106,28 +103,47 @@ public class ReplyBoard extends LinearLayout implements View.OnClickListener,
     }
 
     public void clear() {
-        mDefaultModel.setContent("");
+        mCommentModel.setContent("");
+        mReplyModel = null;
     }
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
-        if (!hasFocus) {
-            KeyBoardUtils.closeKeybord(mEditText);
-            mDefaultModel.setContent(getContent());
-            mEditText.setText("");
+        if (hasFocus) {
+            KeyBoardUtils.openKeybord(mEditText);
+            if (mIsCommentMode) {
+                mEditText.setText(mCommentModel.getContent());
+            } else {
+                mEditText.setText(mReplyModel.getContent());
+                String hint;
+                if (mReplyModel.getToId() != -1) {
+                    hint = String.format(getContext().getString(R.string.reply_to),
+                            mReplyModel.getToName());
+                } else {
+                    hint = String.format(getContext().getString(R.string.reply_to),
+                            mReplyModel.getCommentOwnerName());
+                }
+                mEditText.setHint(hint);
+            }
         } else {
-            mEditText.setText(mDefaultModel.getContent());
+            KeyBoardUtils.closeKeybord(mEditText);
+            if (mIsCommentMode) {
+                mCommentModel.setContent(String.valueOf(mEditText.getText()));
+            } else {
+                mReplyModel.setContent(String.valueOf(mEditText.getText()));
+                mReplyModel = null;
+            }
+            mEditText.setText("");
+            mEditText.setHint(mHint);
+            mIsCommentMode = true;
+            setTag(null);
         }
     }
 
-    private String getContent() {
-        return String.valueOf(mEditText.getText());
-    }
 
-
-    public void setDefaultModel(@NonNull CreateCommentModel model) {
-        mDefaultModel.setFromId(model.getFromId());
-        mDefaultModel.setPostId(model.getPostId());
+    public void setCommentModel(@NonNull CreateCommentModel model) {
+        mCommentModel.setFromId(model.getFromId());
+        mCommentModel.setPostId(model.getPostId());
     }
 
     public void setPublisher(@NonNull Publisher publisher) {

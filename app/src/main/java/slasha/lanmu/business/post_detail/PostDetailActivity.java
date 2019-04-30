@@ -2,44 +2,38 @@ package slasha.lanmu.business.post_detail;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.appbar.CollapsingToolbarLayout;
-
 import java.util.List;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import butterknife.BindView;
-import slasha.lanmu.BaseActivity;
 import slasha.lanmu.LoadingProvider;
 import slasha.lanmu.R;
 import slasha.lanmu.SameStyleActivity;
 import slasha.lanmu.business.post_detail.apdater.CommentAdapter;
 import slasha.lanmu.entity.api.comment.CreateCommentModel;
+import slasha.lanmu.entity.api.comment.CreateReplyModel;
 import slasha.lanmu.entity.card.BookCard;
 import slasha.lanmu.entity.card.BookPostCard;
 import slasha.lanmu.entity.card.CommentCard;
+import slasha.lanmu.entity.card.CommentReplyCard;
 import slasha.lanmu.entity.card.UserCard;
-import slasha.lanmu.entity.local.CommentReply;
-import slasha.lanmu.persistence.Global;
 import slasha.lanmu.persistence.UserInfo;
 import slasha.lanmu.utils.AppUtils;
 import slasha.lanmu.utils.CommonUtils;
+import slasha.lanmu.utils.FormatUtils;
 import slasha.lanmu.utils.common.LogUtil;
 import slasha.lanmu.utils.common.ToastUtils;
-import slasha.lanmu.widget.AppBarStateChangeListener;
 import slasha.lanmu.widget.reply.Publisher;
 import slasha.lanmu.widget.reply.ReplyBoard;
-import yhb.chorus.common.adapter.SimpleAdapter;
 
 public class PostDetailActivity extends SameStyleActivity
         implements PostDetailContract.View {
@@ -69,14 +63,13 @@ public class PostDetailActivity extends SameStyleActivity
     TextView mTvCommentCount;
     @BindView(R.id.reply_board)
     ReplyBoard mReplyBoard;
+    @BindView(R.id.scroll_view)
+    NestedScrollView mScrollView;
 
 
-    private SimpleAdapter<CommentCard> mAdapter;
+    private CommentAdapter mCommentAdapter;
     private BookPostCard mBookPost;
     private PostDetailContract.Presenter mPostDetailPresenter;
-
-    private Publisher.CommentData mCommentData;
-    private Publisher.CommentReplyData mCommentReplyData;
 
     public static Intent newIntent(Context context, BookPostCard bookPost) {
         Intent intent = new Intent(context, PostDetailActivity.class);
@@ -95,7 +88,6 @@ public class PostDetailActivity extends SameStyleActivity
         return true;
     }
 
-
     @Override
     protected void initWindow() {
         getWindow().setStatusBarColor(getResources().getColor(android.R.color.white));
@@ -108,78 +100,34 @@ public class PostDetailActivity extends SameStyleActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.icon_less);
 
-        CollapsingToolbarLayout collapsingToolbarLayout =
-                findViewById(R.id.collapsing_toolbar_layout);
-        collapsingToolbarLayout.setTitleEnabled(false);
-        collapsingToolbarLayout.setCollapsedTitleTextColor(Color.BLACK);
+        mScrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (
+                v, scrollX, scrollY, oldScrollX, oldScrollY) -> mReplyBoard.close());
 
-        AppBarLayout appbarLayout = findViewById(R.id.app_bar_layout);
-        appbarLayout.addOnOffsetChangedListener(new AppBarStateChangeListener() {
-            @Override
-            protected void onCollapsed(AppBarLayout appBarLayout) {
-                setTitle(mBookPost.getBook().getName() + " : " +
-                        getString(R.string.comments_title));
-            }
+        mSwipeRefreshLayoutComments.setOnRefreshListener(() ->
+                myPresenter().performPullComments(mBookPost.getId()));
 
-            @Override
-            protected void onScrolled(AppBarLayout appBarLayout) {
-                setTitle(mBookPost.getBook().getName());
-                mReplyBoard.close();
-            }
+        mRecyclerViewComments.setLayoutManager(new LinearLayoutManager(this));
 
-            @Override
-            protected void onExpanded(AppBarLayout appBarLayout) {
-
-            }
-        });
-
-        // comments
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        mRecyclerViewComments.setLayoutManager(linearLayoutManager);
-        mRecyclerViewComments.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                mReplyBoard.close();
-            }
-        });
-        mSwipeRefreshLayoutComments.setOnRefreshListener(() -> {
-            mReplyBoard.close();
-            ToastUtils.showToast("onRefreshing...");
-            AppUtils.postOnUiThread(
-                    () -> mSwipeRefreshLayoutComments.setRefreshing(false),
-                    Global.Debug.sLoadingTime
-            );
-        });
         mReplyBoard.setPublisher(new Publisher() {
             @Override
             public void publishComment(CreateCommentModel model) {
-                myPresenter().performPublishComment(model,
-                        new CommentLoadingProvider(PostDetailActivity.this));
+                myPresenter().performPublishComment(model, new CommentLoadingProvider());
             }
 
             @Override
-            public void publishCommentReply(CommentReplyData commentReplyData, String content) {
-                ToastUtils.showToast("todo publish comment reply!");
+            public void publishCommentReply(CreateReplyModel model) {
+                myPresenter().performPublishCommentReply(model, new CommentLoadingProvider());
             }
+
         });
     }
-
 
     @Override
     protected void initData() {
         myPresenter().performPullComments(mBookPost.getId());
         showDetail(mBookPost);
         setTitle(mBookPost.getBook().getName());
-        mCommentData = new Publisher.CommentData(
-                mBookPost.getId(),
-                UserInfo.self().getId()
-        );
-        mCommentReplyData = new Publisher.CommentReplyData(
-                mBookPost.getId(),
-                UserInfo.self().getId()
-        );
-        mReplyBoard.setDefaultModel(new CreateCommentModel(mBookPost.getId(), UserInfo.id()));
+        mReplyBoard.setCommentModel(new CreateCommentModel(mBookPost.getId(), UserInfo.id()));
     }
 
     @Override
@@ -199,9 +147,11 @@ public class PostDetailActivity extends SameStyleActivity
             CommonUtils.setImage(mIvCover, book.getCoverUrl());
             mTvTitle.setText(book.getName());
             mTvCreatorName.setText(bookPost.getCreator().getName());
-            mTvDescription.setText(
-                    String.format("%s / %s / %s",
-                            book.getAuthor(), book.getPublisher(), book.getPublishDate()));
+            mTvDescription.setText(String.format("%s/%s/%s",
+                    book.getAuthor(),
+                    book.getPublisher(),
+                    FormatUtils.format2(book.getPublishDate())
+            ));
             mCardView.setOnClickListener(l -> {
                 // TODO: 2019/4/11  jump to complete book info page.
                 ToastUtils.showToast("jump to complete book info page.");
@@ -220,50 +170,17 @@ public class PostDetailActivity extends SameStyleActivity
         if (CommonUtils.isEmpty(comments)) {
             ToastUtils.showToast("no comments found!");
         } else {
-            if (mAdapter == null) {
-                mAdapter = new CommentAdapter(this);
-
-                ((CommentAdapter) mAdapter).setCommentClickListener(
-                        new CommentAdapter.CommentClickListener() {
-                            @Override
-                            public void onContentClick(CommentCard comment) {
-//                                mCommentData.clean();
-//                                mCommentReplyData.prepare(comment.getId(), -1);
-//                                mReplyBoard.openAndAttach(CreateCommentModel.);
-                            }
-
-                            @Override
-                            public void onCommentReplyClick(boolean isExpandableItem,
-                                                            CommentReply reply) {
-                                if (isExpandableItem) {
-                                    ToastUtils.showToast("jump to reply list!");
-                                } else {
-                                    mCommentData.clean();
-                                    mCommentReplyData.prepare(reply.getCommentId(),
-                                            reply.getFrom().getId());
-//                                    mReplyBoard.openAndAttach(String.format(getString(R.string.reply_to),
-//                                            reply.getFrom().getName()
-//                                    ));
-                                }
-                            }
-
-                            @Override
-                            public void onAvatarClick(UserCard user) {
-                                AppUtils.jumpToUserProfile(PostDetailActivity.this, user);
-                            }
-                        }
-                );
-
-                mRecyclerViewComments.setAdapter(mAdapter);
-
+            if (mCommentAdapter == null) {
+                mCommentAdapter = new CommentAdapter(this);
+                mCommentAdapter.setCommentClickListener(new CommentClickListener());
+                mRecyclerViewComments.setAdapter(mCommentAdapter);
             }
-            mAdapter.performDataSetChanged(comments);
+            mCommentAdapter.performDataSetChanged(comments);
             int count = comments.size();
             if (count > 0) {
                 mTvCommentCount.setText(String.format(String.format("%s%s",
                         getString(R.string.comments_title),
-                        getString(R.string.count)
-                ), count));
+                        getString(R.string.count)), count));
             }
         }
     }
@@ -272,7 +189,21 @@ public class PostDetailActivity extends SameStyleActivity
     public void showCreateCommentSuccess(CommentCard card) {
         ToastUtils.showToast(R.string.tip_create_comment_success);
         mReplyBoard.close();
-        mAdapter.performSingleDataAdded(card);
+        mReplyBoard.clear();
+        mCommentAdapter.performSingleDataAdded(card);
+    }
+
+    @Override
+    public void showCreateReplySuccess(CommentReplyCard card) {
+        ToastUtils.showToast(R.string.tip_create_reply_success);
+        int pos = (int) mReplyBoard.getTag();
+        if (pos < mCommentAdapter.getEntities().size()) {
+            CommentCard commentCard = mCommentAdapter.getEntities().get(pos);
+            commentCard.getReplies().add(card);
+            mCommentAdapter.notifyItemChanged(pos);
+        }
+        mReplyBoard.close();
+        mReplyBoard.clear();
     }
 
     @Override
@@ -298,23 +229,55 @@ public class PostDetailActivity extends SameStyleActivity
         ToastUtils.showToast(getString(R.string.tip_info_load_failed) + "：" + message);
     }
 
-    private static class CommentLoadingProvider implements LoadingProvider {
 
-        private BaseActivity mBaseActivity;
-
-        public CommentLoadingProvider(BaseActivity baseActivity) {
-            mBaseActivity = baseActivity;
-        }
+    private class CommentLoadingProvider implements LoadingProvider {
 
         @Override
         public void showLoadingIndicator() {
-            mBaseActivity.showProgressDialog();
+            showProgressDialog();
         }
 
         @Override
         public void hideLoadingIndicator() {
-            mBaseActivity.hideProgressDialog();
+            hideProgressDialog();
         }
     }
+
+    private class CommentClickListener implements CommentAdapter.CommentClickListener {
+        @Override
+        public void onContentClick(CommentCard comment, int position) {
+            CreateReplyModel createReplyModel = new CreateReplyModel();
+            createReplyModel.setCommentId(comment.getId());
+            createReplyModel.setFromId(UserInfo.id());
+            createReplyModel.setFromName(UserInfo.self().getName());
+            createReplyModel.setCommentOwnerName(comment.getFrom().getName());
+            createReplyModel.setToId(-1);
+            createReplyModel.setToName(null);
+            mReplyBoard.openAndAttach(createReplyModel, position);
+        }
+
+        @Override
+        public void onCommentReplyClick(boolean isExpandableItem,
+                                        CommentReplyCard reply, int position) {
+            if (isExpandableItem) {
+                ToastUtils.showToast("jump to reply list!");
+            } else {
+                CreateReplyModel createReplyModel = new CreateReplyModel();
+                createReplyModel.setCommentId(reply.getCommentId());
+                createReplyModel.setFromId(UserInfo.id());
+                createReplyModel.setFromName(UserInfo.self().getName());
+                createReplyModel.setCommentOwnerName(null);
+                createReplyModel.setToId(reply.getFromId());
+                createReplyModel.setToName(reply.getFromName());
+                mReplyBoard.openAndAttach(createReplyModel, position);
+            }
+        }
+
+        @Override
+        public void onAvatarClick(UserCard user) {
+            AppUtils.jumpToUserProfile(PostDetailActivity.this, user);
+        }
+    }
+
 
 }

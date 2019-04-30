@@ -99,6 +99,15 @@ public abstract class SimpleAdapter<Entity> extends RecyclerView.Adapter<SimpleH
         notifyItemRangeChanged(position, mEntities.size() - position - 1);
     }
 
+    public void performSingleDataChanged(Entity entity) {
+        int position = mEntities.indexOf(entity);
+        if (position != -1) {
+            mEntities.remove(entity);
+            mEntities.add(position, entity);
+        }
+        notifyItemChanged(position);
+    }
+
     public List<Entity> getEntities() {
         return mEntities;
     }

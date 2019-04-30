@@ -7,47 +7,35 @@ import android.text.style.ClickableSpan;
 import android.view.View;
 import android.widget.TextView;
 
-import java.util.Collections;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import slasha.lanmu.R;
-import slasha.lanmu.entity.local.Comment;
-import slasha.lanmu.entity.local.CommentReply;
-import slasha.lanmu.entity.local.User;
+import slasha.lanmu.entity.card.CommentCard;
+import slasha.lanmu.entity.card.CommentReplyCard;
 import slasha.lanmu.utils.common.SpannableStringUtils;
 import slasha.lanmu.utils.common.ToastUtils;
 import yhb.chorus.common.adapter.SimpleAdapter;
 import yhb.chorus.common.adapter.base.SimpleHolder;
 
-public class CommentReplyAdapter extends SimpleAdapter<CommentReply> {
+public class CommentReplyAdapter extends SimpleAdapter<CommentReplyCard> {
 
     private Context mContext;
-    private final List<CommentReply> mReplies;
-    private final int mMaxItemCount, mTotalItemCount;
-    private final boolean mExpandable;
+    private List<CommentReplyCard> mReplies;
+    private int mTotalItemCount;
+    private final boolean expandable;
     private onItemClickListener mOnItemClickListener;
 
-    public CommentReplyAdapter(@NonNull Context context,
-                               @NonNull Comment comment,
-                               int maxItemCount,
-                               boolean expandable) {
-//        super(context, comment.getReplies());
-//        mContext = context;
-//        mReplies = comment.getReplies();
-//        mMaxItemCount = maxItemCount;
-//        mExpandable = expandable;
-//        mTotalItemCount = comment.getReplyCount();
-        super(context);
+    CommentReplyAdapter(@NonNull Context context,
+                        @NonNull CommentCard comment) {
+        super(context, comment.getReplies());
         mContext = context;
-        mReplies = Collections.emptyList();
-        mMaxItemCount = maxItemCount;
-        mExpandable = expandable;
-        mTotalItemCount = 0;
-
+        mReplies = comment.getReplies();
+        mTotalItemCount = comment.getReplyCount();
+        expandable = mReplies.size() < mTotalItemCount;
     }
 
-    public void setOnItemClickListener(onItemClickListener onItemClickListener) {
+    void setOnItemClickListener(onItemClickListener onItemClickListener) {
         mOnItemClickListener = onItemClickListener;
     }
 
@@ -58,33 +46,22 @@ public class CommentReplyAdapter extends SimpleAdapter<CommentReply> {
 
     @Override
     public int getItemCount() {
-        int itemCount = mReplies.size();
-        if (itemCount > mMaxItemCount) {
-            itemCount = mMaxItemCount;
+        if (expandable) {
+            return mReplies.size() + 1;
         }
-        if (mExpandable) {
-            itemCount++;
-        }
-        return itemCount;
+        return mReplies.size();
     }
 
 
     @Override
-    protected void bind(SimpleHolder holder, CommentReply commentReply) {
+    protected void bind(SimpleHolder holder, CommentReplyCard reply) {
         TextView itemView = (TextView) holder.itemView;
         itemView.setMovementMethod(LinkMovementMethod.getInstance());
 
-        if (commentReply != null) {
-            User from = commentReply.getFrom();
-            User to = commentReply.getTo();
-
-            if (from == null) {
-                return;
-            }
-
+        if (reply != null) {
             String colon = mContext.getString(R.string.colon);
             SpannableStringUtils.Builder builder =
-                    SpannableStringUtils.getBuilder(from.getName())
+                    SpannableStringUtils.getBuilder(reply.getFromName())
                             .setForegroundColor(Color.parseColor("#03A7EB"))
                             .setClickSpan(new ClickableSpan() {
                                 @Override
@@ -94,9 +71,9 @@ public class CommentReplyAdapter extends SimpleAdapter<CommentReply> {
                             })
                             .append(colon);
 
-            if (to != null) {
+            if (reply.getToName() != null) {
                 builder.append(mContext.getString(R.string.reply))
-                        .append(to.getName())
+                        .append(reply.getToName())
                         .setForegroundColor(
                                 mContext.getResources().getColor(R.color.colorClickableText)
                         )
@@ -109,11 +86,13 @@ public class CommentReplyAdapter extends SimpleAdapter<CommentReply> {
                         .append(colon);
             }
 
-            builder.append(commentReply.getContent());
+            builder.append(reply.getContent());
             itemView.setText(builder.create());
             itemView.setOnClickListener(v -> {
-                if (mOnItemClickListener != null) {
-                    mOnItemClickListener.onItemClick(false, commentReply);
+                if (itemView.getSelectionStart() == -1 && itemView.getSelectionEnd() == -1) {
+                    if (mOnItemClickListener != null) {
+                        mOnItemClickListener.onItemClick(false, reply);
+                    }
                 }
             });
 
@@ -126,13 +105,13 @@ public class CommentReplyAdapter extends SimpleAdapter<CommentReply> {
             );
             itemView.setOnClickListener(v -> {
                 if (mOnItemClickListener != null) {
-                    mOnItemClickListener.onItemClick(true, commentReply);
+                    mOnItemClickListener.onItemClick(true, null);
                 }
             });
         }
     }
 
     public interface onItemClickListener {
-        void onItemClick(boolean isExpandableItem, CommentReply reply);
+        void onItemClick(boolean isExpandableItem, CommentReplyCard reply);
     }
 }

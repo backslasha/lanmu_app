@@ -1,9 +1,11 @@
 package slasha.lanmu.entity.card;
 
 
+import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 
 import java.util.Date;
+import java.util.List;
 
 
 public class CommentCard {
@@ -24,6 +26,29 @@ public class CommentCard {
 
     @Expose
     private Date time;
+
+
+    public List<CommentReplyCard> getReplies() {
+        return replies;
+    }
+
+    public void setReplies(List<CommentReplyCard> replies) {
+        this.replies = replies;
+    }
+
+    public int getReplyCount() {
+        return replyCount;
+    }
+
+    public void setReplyCount(int replyCount) {
+        this.replyCount = replyCount;
+    }
+
+    @Expose
+    private List<CommentReplyCard> replies;
+
+    @Expose
+    private int replyCount;
 
     public long getId() {
         return id;

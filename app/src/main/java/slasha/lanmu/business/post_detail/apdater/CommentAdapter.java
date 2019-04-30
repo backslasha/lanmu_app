@@ -3,16 +3,21 @@ package slasha.lanmu.business.post_detail.apdater;
 import android.content.Context;
 import android.view.View;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import slasha.lanmu.R;
 import slasha.lanmu.entity.card.CommentCard;
+import slasha.lanmu.entity.card.CommentReplyCard;
 import slasha.lanmu.entity.card.UserCard;
 import slasha.lanmu.entity.local.Comment;
 import slasha.lanmu.entity.local.CommentReply;
 import slasha.lanmu.entity.local.User;
+import slasha.lanmu.utils.CommonUtils;
+import slasha.lanmu.utils.FormatUtils;
 import yhb.chorus.common.adapter.SimpleAdapter;
 import yhb.chorus.common.adapter.base.SimpleHolder;
 
@@ -44,12 +49,12 @@ public class CommentAdapter extends SimpleAdapter<CommentCard> {
         holder.setText(R.id.tv_comment_content, comment.getContent());
         holder.setOnClickListener(R.id.tv_comment_content, l -> {
             if (mCommentClickListener != null) {
-                mCommentClickListener.onContentClick(comment);
+                mCommentClickListener.onContentClick(comment, holder.getAdapterPosition());
             }
         });
 
-        holder.setText(R.id.tv_publish_date, "2007年7月24日");
-        holder.setText(R.id.tv_thumb_up_count, "999");
+        holder.setText(R.id.tv_publish_date, FormatUtils.format1(comment.getTime()));
+        holder.setText(R.id.tv_thumb_up_count, "999"); //todo thumb up
 
         final View.OnClickListener listener = v -> {
             if (mCommentClickListener != null)
@@ -60,21 +65,23 @@ public class CommentAdapter extends SimpleAdapter<CommentCard> {
         holder.getView(R.id.iv_avatar).setOnClickListener(listener);
 
 
-//        RecyclerView recyclerView
-//                = (RecyclerView) holder.getView(R.id.recycler_view_replies);
-//        recyclerView.setNestedScrollingEnabled(false);
-//        recyclerView.setLayoutManager(
-//                new LinearLayoutManager(mContext)
-//        );
-//
-//        CommentReplyAdapter commentReplyAdapter = new CommentReplyAdapter(mContext, comment,
-//                2, true);
-//        commentReplyAdapter.setOnItemClickListener((isExpandableItem, reply) -> {
-//            if (mCommentClickListener != null) {
-//                mCommentClickListener.onCommentReplyClick(isExpandableItem, reply);
-//            }
-//        });
-//        recyclerView.setAdapter(commentReplyAdapter);
+        RecyclerView recyclerView
+                = (RecyclerView) holder.getView(R.id.recycler_view_replies);
+        if (!CommonUtils.isEmpty(comment.getReplies())) {
+            CommentReplyAdapter commentReplyAdapter = new CommentReplyAdapter(mContext, comment);
+            commentReplyAdapter.setOnItemClickListener((isExpandableItem, reply) -> {
+                if (mCommentClickListener != null) {
+                    mCommentClickListener.onCommentReplyClick(isExpandableItem, reply,
+                            holder.getAdapterPosition());
+                }
+            });
+            recyclerView.setNestedScrollingEnabled(false);
+            recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+            recyclerView.setVisibility(View.VISIBLE);
+            recyclerView.setAdapter(commentReplyAdapter);
+        } else {
+            recyclerView.setVisibility(View.GONE);
+        }
     }
 
     public void setCommentClickListener(CommentClickListener commentClickListener) {
@@ -82,9 +89,9 @@ public class CommentAdapter extends SimpleAdapter<CommentCard> {
     }
 
     public interface CommentClickListener {
-        void onContentClick(CommentCard comment);
+        void onContentClick(CommentCard comment, int position);
 
-        void onCommentReplyClick(boolean isExpandableItem, CommentReply reply);
+        void onCommentReplyClick(boolean isExpandableItem, CommentReplyCard reply, int position);
 
         void onAvatarClick(UserCard user);
     }

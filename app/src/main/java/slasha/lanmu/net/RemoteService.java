@@ -14,11 +14,14 @@ import slasha.lanmu.entity.api.account.LoginModel;
 import slasha.lanmu.entity.api.account.RegisterModel;
 import slasha.lanmu.entity.api.base.RspModelWrapper;
 import slasha.lanmu.entity.api.comment.CreateCommentModel;
+import slasha.lanmu.entity.api.comment.CreateReplyModel;
 import slasha.lanmu.entity.api.post.CreatePostModel;
 import slasha.lanmu.entity.card.BookPostCard;
 import slasha.lanmu.entity.card.CommentCard;
+import slasha.lanmu.entity.card.CommentReplyCard;
 import slasha.lanmu.entity.card.DynamicCard;
 import slasha.lanmu.entity.card.UserCard;
+import slasha.lanmu.entity.local.CommentReply;
 
 /**
  * 网络请求的所有的接口
@@ -76,6 +79,17 @@ public interface RemoteService {
     @POST("comment/create")
     Call<RspModelWrapper<CommentCard>> createComment(@Body CreateCommentModel model);
 
+    /**
+     * 发表对评论回复
+     */
+    @POST("comment/reply/create")
+    Call<RspModelWrapper<CommentReplyCard>> createCommentReply(@Body CreateReplyModel model);
+
+    /**
+     * 拉取用户个人动态
+     */
+    @GET("comment/{postId}")
+    Call<RspModelWrapper<List<CommentCard>>> pullComments(@Path("postId") long postId);
 
     // 用户关注接口
     @PUT("user/follow/{userId}")
@@ -88,5 +102,6 @@ public interface RemoteService {
     // 查询某人的信息
     @GET("user/{userId}")
     Call<RspModelWrapper<UserCard>> userFind(@Path("userId") String userId);
+
 
 }

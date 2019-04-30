@@ -1,13 +1,10 @@
 package slasha.lanmu.business.post_detail;
 
 import slasha.lanmu.LoadingProvider;
-import slasha.lanmu.entity.api.base.RspModelWrapper;
 import slasha.lanmu.entity.api.comment.CreateCommentModel;
-import slasha.lanmu.entity.card.CommentCard;
+import slasha.lanmu.entity.api.comment.CreateReplyModel;
 import slasha.lanmu.net.Network;
-import slasha.lanmu.utils.AppUtils;
 import slasha.lanmu.utils.PresenterHelper;
-import slasha.lanmu.widget.reply.Publisher;
 
 public class PostDetailPresenterImpl implements PostDetailContract.Presenter {
 
@@ -23,12 +20,13 @@ public class PostDetailPresenterImpl implements PostDetailContract.Presenter {
 
     @Override
     public void performPullComments(long postId) {
-        mView.showLoadingIndicator();
-        mModel.offerComments(postId, comments ->
-                AppUtils.runOnUiThread(() -> {
-                    mView.showComments(comments);
-                    mView.hideLoadingIndicator();
-                })
+        PresenterHelper.requestAndHandleResponse(
+                TAG,
+                Network.remote()::pullComments,
+                postId,
+                mView::showComments,
+                mView::showActionFail,
+                mView
         );
     }
 
@@ -50,7 +48,15 @@ public class PostDetailPresenterImpl implements PostDetailContract.Presenter {
     }
 
     @Override
-    public void performPublishCommentReply(Publisher.CommentReplyData commentReplyData, String content) {
-
+    public void performPublishCommentReply(CreateReplyModel model, LoadingProvider loadingProvider) {
+        PresenterHelper.requestAndHandleResponse(
+                TAG,
+                Network.remote()::createCommentReply,
+                model,
+                mView::showCreateReplySuccess,
+                mView::showActionFail,
+                loadingProvider
+        );
     }
+
 }

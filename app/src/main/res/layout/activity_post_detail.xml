@@ -1,89 +1,219 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clickable="true"
+    android:focusable="true"
+    android:id="@+id/rl_post_detail_root"
+    android:focusableInTouchMode="true"
     android:orientation="vertical"
     tools:context=".business.post_detail.PostDetailActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/app_bar_layout"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/color_bg_gray"
-        android:clickable="true"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:theme="@style/AppTheme.AppBarOverlay">
-
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/collapsing_toolbar_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@null"
-            app:collapsedTitleTextAppearance="@style/TextAppearance.AppCompat.Title"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
-
-            <include layout="@layout/include_post_detail_header" />
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="@drawable/shape_gray_stroke_bottom_white_solid"
-                app:layout_collapseMode="pin"
-                app:popupTheme="@style/AppTheme.PopupOverlay"
-                app:titleTextColor="@android:color/black" />
-
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
-
-
-    </com.google.android.material.appbar.AppBarLayout>
+        android:layout_height="?attr/actionBarSize"
+        android:background="@drawable/shape_gray_stroke_bottom_white_solid" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_layout_comments"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="46dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior_copy">
+        android:layout_below="@id/toolbar">
 
-        <!--<FrameLayout-->
-        <!--android:id="@+id/fl_comment_zone"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content">-->
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view"
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scroll_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/white"
-            android:overScrollMode="never"
-            android:paddingStart="6dp"
-            android:paddingEnd="6dp"
-            android:scrollbars="none" />
+            android:layout_height="wrap_content">
 
-        <!--<TextView-->
-        <!--android:id="@+id/tv_no_comments"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="228dp"-->
-        <!--android:background="@android:color/white"-->
-        <!--android:gravity="center_horizontal"-->
-        <!--android:paddingTop="36dp"-->
-        <!--android:text="@string/no_comments"-->
-        <!--android:textColor="@color/colorPrimary"-->
-        <!--android:visibility="gone" />-->
-        <!--</FrameLayout>-->
+            <RelativeLayout
+                android:id="@+id/cl_search_result"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:clickable="false"
+                tools:showIn="@layout/activity_post_detail">
+
+                <LinearLayout
+                    android:id="@+id/ll_creator_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="12dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="8dp">
+
+                    <slasha.lanmu.widget.RoundImageView
+                        android:id="@+id/iv_avatar"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_marginEnd="8dp"
+                        android:src="@drawable/cover_sample" />
+
+                    <TextView
+                        android:id="@+id/tv_username"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp"
+                        tools:text="Joyce Lau 悠然" />
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1" />
+
+                    <ImageView
+                        android:id="@+id/iv_more_horiz"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/actionBarItemBackground"
+                        android:src="@drawable/ic_more_horiz_24dp"
+                        tools:ignore="ContentDescription" />
+
+                </LinearLayout>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cv_book_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/ll_creator_info"
+                    android:layout_marginStart="18dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginEnd="18dp"
+                    android:layout_marginBottom="6dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    app:cardCornerRadius="4dp"
+                    app:cardElevation="4dp">
+
+                    <RelativeLayout
+                        android:id="@+id/rl_book_info"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/shape_round_rect_white"
+                        android:paddingStart="8dp"
+                        android:paddingTop="6dp"
+                        android:paddingEnd="8dp"
+                        android:paddingBottom="6dp">
+
+                        <ImageView
+                            android:id="@+id/iv_cover"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_centerVertical="true"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/cover_sample"
+                            tools:ignore="ContentDescription" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignTop="@id/iv_cover"
+                            android:layout_marginStart="12dp"
+                            android:layout_toEndOf="@+id/iv_cover"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tv_title"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:ellipsize="end"
+                                android:singleLine="true"
+                                android:textColor="@android:color/black"
+                                android:textSize="20sp"
+                                android:textStyle="bold"
+                                tools:text="解忧杂化店" />
+
+                            <TextView
+                                android:id="@+id/tv_description"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:layout_marginEnd="18dp"
+                                android:gravity="start"
+                                android:textColor="@android:color/darker_gray"
+                                android:textSize="12sp"
+                                tools:text="东野圭吾 / 上海古籍出版社 / 出版时间：1995" />
+                        </LinearLayout>
+
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:id="@+id/tv_post_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/cv_book_info"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="12dp"
+                    android:ellipsize="end"
+                    android:padding="6dp"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    tools:text="现代人内心流失的东西，这家杂货店能帮你找回——僻静的街道旁有一家杂货店，只要写下烦恼投进卷帘门的投信口，第二天就会在店后的牛奶箱里得到回答。因男友身患绝症，年轻女孩静子在爱情与梦想间徘徊；克郎为了音乐梦想离家漂泊，却在现实中寸步难行；少年浩介面临家庭巨变，挣扎在亲情与未来的迷茫中……他们将困惑写成信投进杂货店，随即奇妙的事情竟不断发生。生命中的一次偶然交会，将如何演绎出截然不同的人生？如今回顾写作过程，我发现自己始终在思考一个问题：站在人生的岔路口，人究竟应该怎么做？我希望读者能在掩卷时喃喃自语：我从未读过这样的小说。——东野圭吾" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view_post_images"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_post_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginBottom="12dp"
+                    android:nestedScrollingEnabled="false" />
+
+                <View
+                    android:id="@+id/v_divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="6dp"
+                    android:layout_below="@id/recycler_view_post_images"
+                    android:background="@color/color_bg_gray" />
+
+                <TextView
+                    android:id="@+id/tv_comment_count"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/v_divider"
+                    android:background="@drawable/shape_gray_stroke_bottom_white_solid"
+                    android:paddingStart="16dp"
+                    android:paddingTop="8dp"
+                    android:paddingEnd="16dp"
+                    android:paddingBottom="8dp"
+                    android:text="@string/comments_title"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_comment_count"
+                    android:layout_marginBottom="46dp"
+                    android:background="@android:color/white"
+                    android:nestedScrollingEnabled="false"
+                    android:overScrollMode="never"
+                    android:paddingStart="6dp"
+                    android:paddingEnd="6dp"
+                    android:scrollbars="none"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior_copy" />
+
+
+            </RelativeLayout>
+        </androidx.core.widget.NestedScrollView>
+
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <slasha.lanmu.widget.reply.ReplyBoard
         android:id="@+id/reply_board"
         android:layout_width="match_parent"
         android:layout_height="46dp"
-        android:layout_gravity="bottom"
+        android:layout_alignParentBottom="true"
         android:background="@drawable/shape_gray_border_solid_white" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</RelativeLayout>

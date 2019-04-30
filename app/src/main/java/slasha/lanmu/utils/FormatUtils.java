@@ -33,6 +33,16 @@ public class FormatUtils {
         return simpleFormatter.format(date);
     }
 
+    public static String format1(Date date) {
+        simpleFormatter.applyPattern("MM月dd日 hh时mm分");
+        return simpleFormatter.format(date);
+    }
+
+    public static String format2(Date date) {
+        simpleFormatter.applyPattern("yyyy年MM月dd日");
+        return simpleFormatter.format(date);
+    }
+
     public static String asOneString(List<String> urls) {
         StringBuilder builder = new StringBuilder();
         if (urls != null) {

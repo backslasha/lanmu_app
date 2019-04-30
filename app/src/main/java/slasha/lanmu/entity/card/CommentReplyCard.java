@@ -12,22 +12,19 @@ public class CommentReplyCard {
     private long id;
 
     @Expose
-    private UserCard from;
-
-    @Expose
     private long fromId;
-
-    @Expose
-    private CommentCard comment;
 
     @Expose
     private long commentId;
 
     @Expose
-    private UserCard to;
+    private long toId;
 
     @Expose
-    private long toId;
+    private String fromName;
+
+    @Expose
+    private String toName;
 
     @Expose
     private String content;
@@ -81,30 +78,6 @@ public class CommentReplyCard {
     }
 
 
-    public UserCard getFrom() {
-        return from;
-    }
-
-    public void setFrom(UserCard from) {
-        this.from = from;
-    }
-
-    public CommentCard getComment() {
-        return comment;
-    }
-
-    public void setComment(CommentCard comment) {
-        this.comment = comment;
-    }
-
-    public UserCard getTo() {
-        return to;
-    }
-
-    public void setTo(UserCard to) {
-        this.to = to;
-    }
-
     public Date getTime() {
         return time;
     }
@@ -118,18 +91,16 @@ public class CommentReplyCard {
         final StringBuilder sb = new StringBuilder("{");
         sb.append("\"id\":")
                 .append(id);
-        sb.append(",\"from\":")
-                .append(from);
         sb.append(",\"fromId\":")
                 .append(fromId);
-        sb.append(",\"comment\":")
-                .append(comment);
         sb.append(",\"commentId\":")
                 .append(commentId);
-        sb.append(",\"to\":")
-                .append(to);
         sb.append(",\"toId\":")
                 .append(toId);
+        sb.append(",\"fromName\":\"")
+                .append(fromName).append('\"');
+        sb.append(",\"toName\":\"")
+                .append(toName).append('\"');
         sb.append(",\"content\":\"")
                 .append(content).append('\"');
         sb.append(",\"time\":\"")
@@ -137,4 +108,21 @@ public class CommentReplyCard {
         sb.append('}');
         return sb.toString();
     }
+
+    public String getFromName() {
+        return fromName;
+    }
+
+    public void setFromName(String fromName) {
+        this.fromName = fromName;
+    }
+
+    public String getToName() {
+        return toName;
+    }
+
+    public void setToName(String toName) {
+        this.toName = toName;
+    }
+
 }

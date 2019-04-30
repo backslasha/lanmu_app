@@ -9,9 +9,12 @@ import slasha.lanmu.BasePresenter;
 import slasha.lanmu.BaseView;
 import slasha.lanmu.LoadingProvider;
 import slasha.lanmu.entity.api.comment.CreateCommentModel;
+import slasha.lanmu.entity.api.comment.CreateReplyModel;
 import slasha.lanmu.entity.card.BookPostCard;
 import slasha.lanmu.entity.card.CommentCard;
+import slasha.lanmu.entity.card.CommentReplyCard;
 import slasha.lanmu.entity.local.Comment;
+import slasha.lanmu.entity.local.CommentReply;
 import slasha.lanmu.widget.reply.Publisher;
 
 public interface PostDetailContract {
@@ -25,6 +28,9 @@ public interface PostDetailContract {
 
         @MainThread
         void showCreateCommentSuccess(CommentCard card);
+
+        @MainThread
+        void showCreateReplySuccess(CommentReplyCard card);
     }
 
     interface Presenter extends BasePresenter {
@@ -34,7 +40,7 @@ public interface PostDetailContract {
 
         void performPublishComment(CreateCommentModel model, LoadingProvider loadingProvider);
 
-        void performPublishCommentReply(Publisher.CommentReplyData commentReplyData, String content);
+        void performPublishCommentReply(CreateReplyModel model, LoadingProvider loadingProvider);
     }
 
     interface PostDetailModel extends BaseModel {

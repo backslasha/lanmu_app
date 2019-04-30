@@ -1,11 +1,12 @@
 package slasha.lanmu.widget.reply;
 
 import slasha.lanmu.entity.api.comment.CreateCommentModel;
+import slasha.lanmu.entity.api.comment.CreateReplyModel;
 
 public interface Publisher {
     void publishComment(CreateCommentModel model);
 
-    void publishCommentReply(CommentReplyData commentReplyData, String content);
+    void publishCommentReply(CreateReplyModel commentReplyData);
 
     class CommentData implements Cloneable {
         private long postId;
