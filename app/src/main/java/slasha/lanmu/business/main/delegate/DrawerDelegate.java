@@ -25,6 +25,7 @@ import slasha.lanmu.business.account.AccountActivity;
 import slasha.lanmu.business.main.MainActivity;
 import slasha.lanmu.persistence.UserInfo;
 import slasha.lanmu.utils.AppUtils;
+import slasha.lanmu.utils.CommonUtils;
 
 public class DrawerDelegate implements NavigationView.OnNavigationItemSelectedListener,
         UserInfo.UserInfoChangeListener {
@@ -116,12 +117,8 @@ public class DrawerDelegate implements NavigationView.OnNavigationItemSelectedLi
                     .setText(R.string.nav_header_subtitle);
 
         } else {
-            Picasso.with(activity)
-                    .load(user.getAvatarUrl())
-                    .placeholder(R.mipmap.ic_launcher)
-                    .error(R.mipmap.ic_launcher)
-                    .into((ImageView) root.findViewById(R.id.iv_avatar));
-
+            CommonUtils.setAvatar(root.findViewById(R.id.iv_avatar),
+                    user.getAvatarUrl());
             ((TextView) root.findViewById(R.id.tv_nav_header_title)).setText(
                     user.getName()
             );

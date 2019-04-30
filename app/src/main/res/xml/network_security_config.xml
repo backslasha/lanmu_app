@@ -3,5 +3,5 @@
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">up-z2.qiniu.com</domain>
         <domain includeSubdomains="true">pqk956muf.bkt.clouddn.com</domain>
-        <domain includeSubdomains="true">192.168.42.158</domain>
+        <domain includeSubdomains="true">192.168.42.142</domain>
     </domain-config></network-security-config>

@@ -1,12 +1,14 @@
 package slasha.lanmu.business.profile;
 
 import android.content.Context;
+import android.view.View;
 
 import java.util.List;
 
 import slasha.lanmu.R;
 import slasha.lanmu.entity.card.BookPostCard;
 import slasha.lanmu.entity.card.DynamicCard;
+import slasha.lanmu.utils.AppUtils;
 import slasha.lanmu.utils.FormatUtils;
 import slasha.lanmu.utils.common.LogUtil;
 import yhb.chorus.common.adapter.SimpleAdapter;
@@ -15,13 +17,16 @@ import yhb.chorus.common.adapter.base.SimpleHolder;
 public class ProfileDynamicAdapter extends SimpleAdapter<DynamicCard> {
 
     private static final String TAG = "lanmu.profile.dynamic";
+    private final Context mContext;
 
     ProfileDynamicAdapter(Context context) {
         super(context);
+        mContext = context;
     }
 
     ProfileDynamicAdapter(Context context, List<DynamicCard> dynamicCards) {
         super(context, dynamicCards);
+        mContext = context;
     }
 
 
@@ -56,7 +61,7 @@ public class ProfileDynamicAdapter extends SimpleAdapter<DynamicCard> {
         if (card != null) {
             List<String> urls = FormatUtils.asUrlList(card.getImages());
             if (urls.isEmpty()) {
-                holder.setImage(R.id.iv_cover, R.drawable.default_place_holder);
+                holder.getView(R.id.iv_cover).setVisibility(View.GONE);
             } else {
                 holder.setImage(R.id.iv_cover, urls.get(0));
             }
@@ -69,6 +74,7 @@ public class ProfileDynamicAdapter extends SimpleAdapter<DynamicCard> {
             ));
             holder.setText(R.id.tv_comment_count, String.valueOf(card.getCommentCount()));
             holder.setText(R.id.tv_date, FormatUtils.format(card.getCreateDate(), "MM月\ndd日"));
+            holder.itemView.setOnClickListener(v -> AppUtils.jumpToPostDetail(mContext, card));
         }
     }
 

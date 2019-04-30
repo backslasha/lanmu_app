@@ -26,6 +26,7 @@ import slasha.lanmu.entity.card.DynamicCard;
 import slasha.lanmu.entity.card.UserCard;
 import slasha.lanmu.persistence.UserInfo;
 import slasha.lanmu.utils.AppUtils;
+import slasha.lanmu.utils.CommonUtils;
 import slasha.lanmu.utils.common.LogUtil;
 import slasha.lanmu.utils.common.ToastUtils;
 
@@ -113,11 +114,7 @@ public class UserProfileActivity extends SameStyleActivity
     }
 
     private void initOrUpdateProfileUI() {
-        Picasso.with(this)
-                .load(mUserCard.getAvatarUrl())
-                .placeholder(R.drawable.ic_default_avatar)
-                .error(R.drawable.ic_default_avatar)
-                .into(mAvatar);
+        CommonUtils.setAvatar(mAvatar, mUserCard.getAvatarUrl());
         mUsername.setText(mUserCard.getName());
         mPhone.setText(mUserCard.getPhone());
 

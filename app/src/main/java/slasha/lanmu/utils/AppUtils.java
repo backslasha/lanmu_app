@@ -49,16 +49,6 @@ public class AppUtils {
         sMainHandler.postDelayed(runnable, delayMillis);
     }
 
-    public static void makeFullScreen(Window window) {
-        if (window == null) return;
-        window.getDecorView()
-                .setSystemUiVisibility(
-                        View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
-                                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
-        window.setStatusBarColor(Color.TRANSPARENT);
-        window.setNavigationBarColor(Color.TRANSPARENT);
-    }
-
     public static void jumpToPostDetail(@NonNull Context context, BookPostCard bookPost) {
         context.startActivity(
                 PostDetailActivity.newIntent(context, bookPost)

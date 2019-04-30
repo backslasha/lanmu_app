@@ -122,9 +122,9 @@ public class ResultActivity extends SameStyleActivity implements
                     if (book != null) {
                         holder.setText(R.id.tv_title, book.getName());
                         holder.setText(R.id.tv_author_name, book.getAuthor());
-                        Picasso.with(LanmuApplication.instance())
-                                .load(book.getCoverUrl())
-                                .into((ImageView) holder.getView(R.id.iv_cover));
+                        CommonUtils.setCover(
+                                (ImageView) holder.getView(R.id.iv_cover),
+                                book.getCoverUrl());
                         holder.setText(R.id.tv_introduction, book.getIntroduction());
                     }
 

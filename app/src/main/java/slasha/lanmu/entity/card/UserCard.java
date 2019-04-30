@@ -68,4 +68,23 @@ public class UserCard implements Serializable {
     public void setIntroduction(String introduction) {
         this.introduction = introduction;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("{");
+        sb.append("\"id\":")
+                .append(id);
+        sb.append(",\"name\":\"")
+                .append(name).append('\"');
+        sb.append(",\"avatarUrl\":\"")
+                .append(avatarUrl).append('\"');
+        sb.append(",\"introduction\":\"")
+                .append(introduction).append('\"');
+        sb.append(",\"gender\":\"")
+                .append(gender).append('\"');
+        sb.append(",\"phone\":\"")
+                .append(phone).append('\"');
+        sb.append('}');
+        return sb.toString();
+    }
 }

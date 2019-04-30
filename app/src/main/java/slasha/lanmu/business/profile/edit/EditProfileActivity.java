@@ -15,7 +15,6 @@ import android.widget.ImageView;
 
 import com.imnjh.imagepicker.SImagePicker;
 import com.imnjh.imagepicker.activity.PhotoPickerActivity;
-import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -106,11 +105,7 @@ public class EditProfileActivity extends SameStyleActivity
     @Override
     protected void initData() {
         super.initData();
-        Picasso.with(this)
-                .load(mOldCard.getAvatarUrl())
-                .placeholder(R.drawable.default_holder_add)
-                .error(R.drawable.default_holder_add)
-                .into(mAvatar);
+        CommonUtils.setAvatar(mAvatar, mOldCard.getAvatarUrl());
         updateGenderUI("1".equals(mOldCard.getGender()));
         mUsername.setText(mOldCard.getName());
         mDesc.setText(mOldCard.getIntroduction());

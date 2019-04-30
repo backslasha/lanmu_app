@@ -5,15 +5,13 @@ import com.google.gson.annotations.Expose;
 import java.io.Serializable;
 import java.util.Date;
 
-import slasha.lanmu.entity.local.User;
-
 
 public class BookPostCard implements Serializable {
 
     @Expose
     private BookCard book;
     @Expose
-    private User creator;
+    private UserCard creator;
     @Expose
     private Date createDate;
     @Expose
@@ -41,7 +39,6 @@ public class BookPostCard implements Serializable {
 
     @Expose
     private long id;
-
 
     public BookCard getBook() {
         return book;
@@ -75,14 +72,13 @@ public class BookPostCard implements Serializable {
         this.images = images;
     }
 
-    public User getCreator() {
+    public UserCard getCreator() {
         return creator;
     }
 
-    public void setCreator(User creator) {
+    public void setCreator(UserCard creator) {
         this.creator = creator;
     }
-
 
     @Override
     public String toString() {

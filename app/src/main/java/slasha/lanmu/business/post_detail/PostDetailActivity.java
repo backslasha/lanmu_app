@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -21,15 +20,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import slasha.lanmu.R;
 import slasha.lanmu.SameStyleActivity;
-import slasha.lanmu.application.LanmuApplication;
 import slasha.lanmu.business.post_detail.apdater.CommentAdapter;
-import slasha.lanmu.business.profile.UserProfileActivity;
 import slasha.lanmu.entity.card.BookCard;
 import slasha.lanmu.entity.card.BookPostCard;
 import slasha.lanmu.entity.card.UserCard;
 import slasha.lanmu.entity.local.Comment;
 import slasha.lanmu.entity.local.CommentReply;
-import slasha.lanmu.entity.local.User;
 import slasha.lanmu.persistence.Global;
 import slasha.lanmu.persistence.UserInfo;
 import slasha.lanmu.utils.AppUtils;
@@ -186,34 +182,25 @@ public class PostDetailActivity extends SameStyleActivity
         if (bookPost == null) {
             return;
         }
-
         mTvPostContent.setText(bookPost.getContent());
-
         BookCard book = bookPost.getBook();
         if (book != null) {
-            Picasso.with(LanmuApplication.instance())
-                    .load(book.getCoverUrl())
-                    .into(mIvCover);
+            CommonUtils.setImage(mIvCover, book.getCoverUrl());
             mTvTitle.setText(book.getName());
+            mTvCreatorName.setText(bookPost.getCreator().getName());
             mTvDescription.setText(
                     String.format("%s / %s / %s",
-                            book.getAuthor(),
-                            book.getPublisher(),
-                            book.getPublishDate())
-            );
+                            book.getAuthor(), book.getPublisher(), book.getPublishDate()));
             mCardView.setOnClickListener(l -> {
                 // TODO: 2019/4/11  jump to complete book info page.
                 ToastUtils.showToast("jump to complete book info page.");
             });
         }
 
-        User creator = bookPost.getCreator();
+        UserCard creator = bookPost.getCreator();
         if (creator != null) {
-            Picasso.with(LanmuApplication.instance())
-                    .load(creator.getAvatarUrl())
-                    .into(mIvAvatar);
+            CommonUtils.setAvatar(mIvAvatar, creator.getAvatarUrl());
             mTvCreatorName.setText(creator.getName());
-
         }
     }
 

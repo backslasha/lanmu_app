@@ -5,7 +5,11 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
+import android.graphics.Color;
 import android.util.DisplayMetrics;
+import android.view.View;
+import android.view.Window;
 
 /**
  * Created by yhb on 18-1-17.
@@ -34,4 +38,15 @@ public class ActivityUtils {
         activity.getWindowManager().getDefaultDisplay().getMetrics(out);
         return out.widthPixels;
     }
+
+    public static void makeFullScreen(Window window) {
+        if (window == null) return;
+        window.getDecorView()
+                .setSystemUiVisibility(
+                        View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
+                                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+        window.setStatusBarColor(Color.TRANSPARENT);
+        window.setNavigationBarColor(Color.TRANSPARENT);
+    }
+
 }

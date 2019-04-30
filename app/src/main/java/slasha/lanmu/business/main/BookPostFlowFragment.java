@@ -22,6 +22,7 @@ import slasha.lanmu.entity.card.BookCard;
 import slasha.lanmu.entity.card.BookPostCard;
 import slasha.lanmu.entity.response.BookPostFlow;
 import slasha.lanmu.utils.AppUtils;
+import slasha.lanmu.utils.CommonUtils;
 import slasha.lanmu.utils.common.ToastUtils;
 import yhb.chorus.common.adapter.SimpleAdapter;
 import yhb.chorus.common.adapter.base.SimpleHolder;
@@ -80,13 +81,11 @@ public class BookPostFlowFragment extends Fragment
                     if (book != null) {
                         holder.setText(R.id.tv_title, book.getName());
                         holder.setText(R.id.tv_author_name, book.getAuthor());
-                        Picasso.with(LanmuApplication.instance())
-                                .load(book.getCoverUrl())
-                                .into((ImageView) holder.getView(R.id.iv_cover));
+                        CommonUtils.setCover((ImageView) holder.getView(R.id.iv_cover),
+                                book.getCoverUrl());
                         holder.setText(R.id.tv_introduction, book.getIntroduction());
-                        holder.setText(R.id.tv_comment_count, String.valueOf(0)
-//                                bookPost.getCommentCount())
-                        );
+                        holder.setText(R.id.tv_comment_count,
+                                String.valueOf(bookPost.getCommentCount()));
                     }
 
                     holder.itemView.setOnClickListener(v ->
