@@ -26,28 +26,28 @@ public class Comment implements Serializable {
     @SerializedName("post_id")
     @Expose
     private String postId;
-    @SerializedName("replies")
-    @Expose
-    private List<CommentReply> replies;
-    @SerializedName("reply_count")
-    @Expose
-    private int replyCount;
+//    @SerializedName("replies")
+//    @Expose
+//    private List<CommentReply> replies;
+//    @SerializedName("reply_count")
+//    @Expose
+//    private int replyCount;
 
-    public List<CommentReply> getReplies() {
-        return replies;
-    }
-
-    public void setReplies(List<CommentReply> replies) {
-        this.replies = replies;
-    }
-
-    public int getReplyCount() {
-        return replyCount;
-    }
-
-    public void setReplyCount(int replyCount) {
-        this.replyCount = replyCount;
-    }
+//    public List<CommentReply> getReplies() {
+//        return replies;
+//    }
+//
+//    public void setReplies(List<CommentReply> replies) {
+//        this.replies = replies;
+//    }
+//
+//    public int getReplyCount() {
+//        return replyCount;
+//    }
+//
+//    public void setReplyCount(int replyCount) {
+//        this.replyCount = replyCount;
+//    }
 
     public long getId() {
         return id;

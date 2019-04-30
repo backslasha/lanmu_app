@@ -3,6 +3,7 @@ package slasha.lanmu.business.post_detail;
 import java.util.Collections;
 import java.util.List;
 
+import slasha.lanmu.entity.card.CommentCard;
 import slasha.lanmu.persistence.Global;
 import slasha.lanmu.entity.local.Comment;
 import slasha.lanmu.entity.response.Comments;
@@ -11,7 +12,7 @@ import slasha.lanmu.utils.common.ThreadUtils;
 
 class PostDetailModelImpl implements PostDetailContract.PostDetailModel {
     @Override
-    public void offerComments(long postId, Callback<List<Comment>> listCallback) {
+    public void offerComments(long postId, Callback<List<CommentCard>> listCallback) {
         ThreadUtils.execute(() -> {
             try {
                 Thread.sleep(2000);

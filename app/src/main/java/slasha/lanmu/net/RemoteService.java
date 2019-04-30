@@ -13,8 +13,10 @@ import slasha.lanmu.entity.api.account.AccountRspModel;
 import slasha.lanmu.entity.api.account.LoginModel;
 import slasha.lanmu.entity.api.account.RegisterModel;
 import slasha.lanmu.entity.api.base.RspModelWrapper;
+import slasha.lanmu.entity.api.comment.CreateCommentModel;
 import slasha.lanmu.entity.api.post.CreatePostModel;
 import slasha.lanmu.entity.card.BookPostCard;
+import slasha.lanmu.entity.card.CommentCard;
 import slasha.lanmu.entity.card.DynamicCard;
 import slasha.lanmu.entity.card.UserCard;
 
@@ -62,8 +64,18 @@ public interface RemoteService {
     @POST("account/profile")
     Call<RspModelWrapper<UserCard>> updateProfile(@Body UserCard userCard);
 
+    /**
+     * 拉取用户个人动态
+     */
     @GET("account/dynamic/{id}")
     Call<RspModelWrapper<List<DynamicCard>>> pullDynamics(@Path("id") long userId);
+
+    /**
+     * 发表对帖评论
+     */
+    @POST("comment/create")
+    Call<RspModelWrapper<CommentCard>> createComment(@Body CreateCommentModel model);
+
 
     // 用户关注接口
     @PUT("user/follow/{userId}")

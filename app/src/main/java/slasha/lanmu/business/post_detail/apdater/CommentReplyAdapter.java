@@ -7,6 +7,7 @@ import android.text.style.ClickableSpan;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.Collections;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -31,12 +32,19 @@ public class CommentReplyAdapter extends SimpleAdapter<CommentReply> {
                                @NonNull Comment comment,
                                int maxItemCount,
                                boolean expandable) {
-        super(context, comment.getReplies());
+//        super(context, comment.getReplies());
+//        mContext = context;
+//        mReplies = comment.getReplies();
+//        mMaxItemCount = maxItemCount;
+//        mExpandable = expandable;
+//        mTotalItemCount = comment.getReplyCount();
+        super(context);
         mContext = context;
-        mReplies = comment.getReplies();
+        mReplies = Collections.emptyList();
         mMaxItemCount = maxItemCount;
         mExpandable = expandable;
-        mTotalItemCount = comment.getReplyCount();
+        mTotalItemCount = 0;
+
     }
 
     public void setOnItemClickListener(onItemClickListener onItemClickListener) {

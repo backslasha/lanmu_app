@@ -12,16 +12,22 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import slasha.lanmu.R;
+import slasha.lanmu.entity.api.comment.CreateCommentModel;
 import slasha.lanmu.utils.common.KeyBoardUtils;
 
-public class ReplyBoard extends LinearLayout implements View.OnClickListener, TextWatcher, View.OnFocusChangeListener {
+public class ReplyBoard extends LinearLayout implements View.OnClickListener,
+        TextWatcher, View.OnFocusChangeListener {
 
     private final CharSequence mHint;
     private EditText mEditText;
     private TextView mTextView;
-    private OnSendKeyListener mOnSendKeyListener;
+    private Publisher mPublisher;
+    private CreateCommentModel mCommentModel;
+
+    private CreateCommentModel mDefaultModel = new CreateCommentModel();
 
     public ReplyBoard(Context context) {
         this(context, null);
@@ -33,6 +39,7 @@ public class ReplyBoard extends LinearLayout implements View.OnClickListener, Te
 
     public ReplyBoard(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         this(context, attrs, defStyleAttr, 0);
+
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -44,15 +51,18 @@ public class ReplyBoard extends LinearLayout implements View.OnClickListener, Te
         mEditText.addTextChangedListener(this);
         mEditText.setOnFocusChangeListener(this);
         mTextView.setOnClickListener(this);
-
         mHint = mEditText.getHint();
     }
 
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.tv_publish) {
-            if (mOnSendKeyListener != null) {
-                mOnSendKeyListener.onSendKeyClick();
+            if (mCommentModel == null) {
+                mDefaultModel.setContent(getContent());
+                mPublisher.publishComment(mDefaultModel);
+            } else {
+                mCommentModel.setContent(getContent());
+                mPublisher.publishComment(mCommentModel);
             }
         }
     }
@@ -69,54 +79,60 @@ public class ReplyBoard extends LinearLayout implements View.OnClickListener, Te
 
     @Override
     public void afterTextChanged(Editable s) {
-        if (s.length() > 1) {
-            mTextView.setTextColor(
-                    getContext().getResources().getColor(R.color.colorClickableText)
-            );
+        if (s.length() > 0) {
+            mTextView.setTextColor(getContext().getResources().getColor(R.color.colorClickableText));
             mTextView.setEnabled(true);
         } else {
-            mTextView.setTextColor(
-                    getContext().getResources().getColor(R.color.colorDefaultText)
-            );
+            mTextView.setTextColor(getContext().getResources().getColor(R.color.colorDefaultText));
             mTextView.setEnabled(false);
         }
     }
 
-    public void open(String hint) {
-        mEditText.requestFocus();
-        mEditText.setHint(hint);
-        KeyBoardUtils.openKeybord(mEditText);
+    public void openAndAttach(Object tag, @NonNull CreateCommentModel model) {
+//        CreateCommentModel createCommentModel = cache.get(tag);
+//        if (createCommentModel == null) {
+//            createCommentModel = model;
+//        }
+//        String fromName = createCommentModel.getFromName();
+//        String content = createCommentModel.getContent();
+//        mEditText.setHint(String.format(getContext().getString(R.string.reply_to), fromName));
+//        mEditText.setText(content);
+//        mEditText.requestFocus();
+//        KeyBoardUtils.openKeybord(mEditText);
     }
 
     public void close() {
         mEditText.clearFocus();
-        mEditText.setHint(mHint);
-        KeyBoardUtils.closeKeybord(mEditText);
     }
 
     public void clear() {
-        mEditText.setText("");
+        mDefaultModel.setContent("");
     }
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         if (!hasFocus) {
             KeyBoardUtils.closeKeybord(mEditText);
+            mDefaultModel.setContent(getContent());
+            mEditText.setText("");
+        } else {
+            mEditText.setText(mDefaultModel.getContent());
         }
     }
 
-    public void setOnSendKeyListener(OnSendKeyListener onSendKeyListener) {
-        mOnSendKeyListener = onSendKeyListener;
-    }
-
-    public String getContent() {
+    private String getContent() {
         return String.valueOf(mEditText.getText());
     }
 
-    public interface OnSendKeyListener {
-        void onSendKeyClick();
+
+    public void setDefaultModel(@NonNull CreateCommentModel model) {
+        mDefaultModel.setFromId(model.getFromId());
+        mDefaultModel.setPostId(model.getPostId());
     }
 
+    public void setPublisher(@NonNull Publisher publisher) {
+        mPublisher = publisher;
+    }
 }
 
 

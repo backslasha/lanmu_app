@@ -1,23 +1,24 @@
 package slasha.lanmu.business.post_detail;
 
+import slasha.lanmu.LoadingProvider;
+import slasha.lanmu.entity.api.base.RspModelWrapper;
+import slasha.lanmu.entity.api.comment.CreateCommentModel;
+import slasha.lanmu.entity.card.CommentCard;
+import slasha.lanmu.net.Network;
 import slasha.lanmu.utils.AppUtils;
+import slasha.lanmu.utils.PresenterHelper;
 import slasha.lanmu.widget.reply.Publisher;
-import slasha.lanmu.widget.reply.ReplyPublisher;
 
-public class PostDetailPresenterImpl implements PostDetailContract.PostDetailPresenter {
+public class PostDetailPresenterImpl implements PostDetailContract.Presenter {
 
-    private PostDetailContract.PostDetailView mView;
+    private static final String TAG = "lanmu.comment";
+    private PostDetailContract.View mView;
     private PostDetailContract.PostDetailModel mModel;
-    private ReplyPublisher mReplyPublisher;
 
-    PostDetailPresenterImpl(PostDetailContract.PostDetailView postDetailView,
-                            PostDetailContract.PostDetailModel postDetailModel,
-                            ReplyPublisher.ReplyStatusListener replyStatusListener
-    ) {
+    PostDetailPresenterImpl(PostDetailContract.View postDetailView,
+                            PostDetailContract.PostDetailModel postDetailModel) {
         mView = postDetailView;
         mModel = postDetailModel;
-        mReplyPublisher = new ReplyPublisher();
-        mReplyPublisher.setStatusListener(replyStatusListener);
     }
 
     @Override
@@ -37,12 +38,19 @@ public class PostDetailPresenterImpl implements PostDetailContract.PostDetailPre
     }
 
     @Override
-    public void performPublishComment(Publisher.CommentData commentData, String content) {
-        mReplyPublisher.publishComment((Publisher.CommentData) commentData.clone(), content);
+    public void performPublishComment(CreateCommentModel model, LoadingProvider loadingProvider) {
+        PresenterHelper.requestAndHandleResponse(
+                TAG,
+                Network.remote()::createComment,
+                model,
+                mView::showCreateCommentSuccess,
+                mView::showActionFail,
+                loadingProvider
+        );
     }
 
     @Override
     public void performPublishCommentReply(Publisher.CommentReplyData commentReplyData, String content) {
-        mReplyPublisher.publishCommentReply((Publisher.CommentReplyData) commentReplyData.clone(), content);
+
     }
 }

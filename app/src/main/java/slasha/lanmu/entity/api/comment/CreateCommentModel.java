@@ -1,38 +1,33 @@
-package slasha.lanmu.entity.card;
-
+package slasha.lanmu.entity.api.comment;
 
 import com.google.gson.annotations.Expose;
 
-import java.util.Date;
-
-
-public class CommentCard {
-    @Expose
-    private long id;
-
+public class CreateCommentModel {
     @Expose
     private long postId;
-
-    @Expose
-    private UserCard from;
-
     @Expose
     private long fromId;
-
     @Expose
     private String content;
 
-    @Expose
-    private Date time;
+    private String fromName;
 
-    public long getId() {
-        return id;
+    public CreateCommentModel() {
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public CreateCommentModel(long postId, long fromId) {
+        this.postId = postId;
+        this.fromId = fromId;
     }
 
+
+    public String getFromName() {
+        return fromName;
+    }
+
+    public void setFromName(String fromName) {
+        this.fromName = fromName;
+    }
 
     public long getPostId() {
         return postId;
@@ -41,7 +36,6 @@ public class CommentCard {
     public void setPostId(long postId) {
         this.postId = postId;
     }
-
 
     public long getFromId() {
         return fromId;
@@ -57,21 +51,5 @@ public class CommentCard {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public UserCard getFrom() {
-        return from;
-    }
-
-    public void setFrom(UserCard from) {
-        this.from = from;
-    }
-
-    public Date getTime() {
-        return time;
-    }
-
-    public void setTime(Date time) {
-        this.time = time;
     }
 }

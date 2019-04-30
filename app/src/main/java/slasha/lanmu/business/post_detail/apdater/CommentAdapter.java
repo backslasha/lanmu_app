@@ -8,6 +8,7 @@ import java.util.List;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import slasha.lanmu.R;
+import slasha.lanmu.entity.card.CommentCard;
 import slasha.lanmu.entity.card.UserCard;
 import slasha.lanmu.entity.local.Comment;
 import slasha.lanmu.entity.local.CommentReply;
@@ -15,7 +16,7 @@ import slasha.lanmu.entity.local.User;
 import yhb.chorus.common.adapter.SimpleAdapter;
 import yhb.chorus.common.adapter.base.SimpleHolder;
 
-public class CommentAdapter extends SimpleAdapter<Comment> {
+public class CommentAdapter extends SimpleAdapter<CommentCard> {
 
     private final Context mContext;
 
@@ -24,7 +25,7 @@ public class CommentAdapter extends SimpleAdapter<Comment> {
         mContext = context;
     }
 
-    protected CommentAdapter(Context context, List<Comment> comments) {
+    protected CommentAdapter(Context context, List<CommentCard> comments) {
         super(context, comments);
         mContext = context;
     }
@@ -37,7 +38,7 @@ public class CommentAdapter extends SimpleAdapter<Comment> {
     }
 
     @Override
-    public void bind(SimpleHolder holder, Comment comment) {
+    public void bind(SimpleHolder holder, CommentCard comment) {
         holder.setImage(R.id.iv_avatar, comment.getFrom().getAvatarUrl());
         holder.setText(R.id.tv_username, comment.getFrom().getName());
         holder.setText(R.id.tv_comment_content, comment.getContent());
@@ -59,21 +60,21 @@ public class CommentAdapter extends SimpleAdapter<Comment> {
         holder.getView(R.id.iv_avatar).setOnClickListener(listener);
 
 
-        RecyclerView recyclerView
-                = (RecyclerView) holder.getView(R.id.recycler_view_replies);
-        recyclerView.setNestedScrollingEnabled(false);
-        recyclerView.setLayoutManager(
-                new LinearLayoutManager(mContext)
-        );
-
-        CommentReplyAdapter commentReplyAdapter = new CommentReplyAdapter(mContext, comment,
-                2, true);
-        commentReplyAdapter.setOnItemClickListener((isExpandableItem, reply) -> {
-            if (mCommentClickListener != null) {
-                mCommentClickListener.onCommentReplyClick(isExpandableItem, reply);
-            }
-        });
-        recyclerView.setAdapter(commentReplyAdapter);
+//        RecyclerView recyclerView
+//                = (RecyclerView) holder.getView(R.id.recycler_view_replies);
+//        recyclerView.setNestedScrollingEnabled(false);
+//        recyclerView.setLayoutManager(
+//                new LinearLayoutManager(mContext)
+//        );
+//
+//        CommentReplyAdapter commentReplyAdapter = new CommentReplyAdapter(mContext, comment,
+//                2, true);
+//        commentReplyAdapter.setOnItemClickListener((isExpandableItem, reply) -> {
+//            if (mCommentClickListener != null) {
+//                mCommentClickListener.onCommentReplyClick(isExpandableItem, reply);
+//            }
+//        });
+//        recyclerView.setAdapter(commentReplyAdapter);
     }
 
     public void setCommentClickListener(CommentClickListener commentClickListener) {
@@ -81,7 +82,7 @@ public class CommentAdapter extends SimpleAdapter<Comment> {
     }
 
     public interface CommentClickListener {
-        void onContentClick(Comment comment);
+        void onContentClick(CommentCard comment);
 
         void onCommentReplyClick(boolean isExpandableItem, CommentReply reply);
 

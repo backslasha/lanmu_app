@@ -1,7 +1,9 @@
 package slasha.lanmu.widget.reply;
 
+import slasha.lanmu.entity.api.comment.CreateCommentModel;
+
 public interface Publisher {
-    void publishComment(CommentData commentData, String content);
+    void publishComment(CreateCommentModel model);
 
     void publishCommentReply(CommentReplyData commentReplyData, String content);
 

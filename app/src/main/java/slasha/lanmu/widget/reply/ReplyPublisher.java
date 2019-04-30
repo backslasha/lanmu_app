@@ -2,6 +2,7 @@ package slasha.lanmu.widget.reply;
 
 import android.util.Log;
 
+import slasha.lanmu.entity.api.comment.CreateCommentModel;
 import slasha.lanmu.persistence.Global;
 import slasha.lanmu.utils.AppUtils;
 import slasha.lanmu.utils.common.ThreadUtils;
@@ -16,7 +17,7 @@ public class ReplyPublisher implements Publisher {
     }
 
     @Override
-    public void publishComment(CommentData commentData, String content) {
+    public void publishComment(CreateCommentModel model) {
         ThreadUtils.execute(() -> {
             try {
                 Thread.sleep(Global.Debug.sLoadingTime);
@@ -25,14 +26,12 @@ public class ReplyPublisher implements Publisher {
                 AppUtils.runOnUiThread(() -> {
                     if (mStatusListener != null) {
                         mStatusListener.onPublishFailed();
-                        Log.d(TAG,"fail/data=" + commentData + ", content=\"" + content + "\".");
                     }
                 });
             }
             AppUtils.runOnUiThread(() -> {
                 if (mStatusListener != null) {
                     mStatusListener.onPublishSucceed();
-                    Log.d(TAG,"success/data=" + commentData + ", content=\"" + content + "\".");
                 }
             });
 

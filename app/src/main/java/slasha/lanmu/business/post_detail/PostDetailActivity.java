@@ -18,46 +18,65 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import butterknife.BindView;
+import slasha.lanmu.BaseActivity;
+import slasha.lanmu.LoadingProvider;
 import slasha.lanmu.R;
 import slasha.lanmu.SameStyleActivity;
 import slasha.lanmu.business.post_detail.apdater.CommentAdapter;
+import slasha.lanmu.entity.api.comment.CreateCommentModel;
 import slasha.lanmu.entity.card.BookCard;
 import slasha.lanmu.entity.card.BookPostCard;
+import slasha.lanmu.entity.card.CommentCard;
 import slasha.lanmu.entity.card.UserCard;
-import slasha.lanmu.entity.local.Comment;
 import slasha.lanmu.entity.local.CommentReply;
 import slasha.lanmu.persistence.Global;
 import slasha.lanmu.persistence.UserInfo;
 import slasha.lanmu.utils.AppUtils;
 import slasha.lanmu.utils.CommonUtils;
+import slasha.lanmu.utils.common.LogUtil;
 import slasha.lanmu.utils.common.ToastUtils;
 import slasha.lanmu.widget.AppBarStateChangeListener;
 import slasha.lanmu.widget.reply.Publisher;
 import slasha.lanmu.widget.reply.ReplyBoard;
-import slasha.lanmu.widget.reply.ReplyPublisher;
 import yhb.chorus.common.adapter.SimpleAdapter;
 
 public class PostDetailActivity extends SameStyleActivity
-        implements PostDetailContract.PostDetailView {
+        implements PostDetailContract.View {
 
-
-    private static final CharSequence EMPTY_TITLE = " ";
     private static final String EXTRA_BOOK_POST = "extra_book_post";
-    private RecyclerView mRecyclerViewComments;
-    private SwipeRefreshLayout mSwipeRefreshLayoutComments;
-    private TextView mTvTitle, mTvDescription, mTvPostContent;
-    private ImageView mIvCover;
-    private SimpleAdapter<Comment> mAdapter;
-    private BookPostCard mBookPost;
-    private PostDetailContract.PostDetailPresenter mPostDetailPresenter;
-    private ImageView mIvAvatar;
-    private CardView mCardView;
-    private TextView mTvCreatorName;
+    private static final String TAG = "lanmu.detail";
 
-    private ReplyBoard mReplyBoard;
+    @BindView(R.id.recycler_view)
+    RecyclerView mRecyclerViewComments;
+    @BindView(R.id.swipe_refresh_layout_comments)
+    SwipeRefreshLayout mSwipeRefreshLayoutComments;
+    @BindView(R.id.tv_title)
+    TextView mTvTitle;
+    @BindView(R.id.tv_description)
+    TextView mTvDescription;
+    @BindView(R.id.tv_post_content)
+    TextView mTvPostContent;
+    @BindView(R.id.iv_cover)
+    ImageView mIvCover;
+    @BindView(R.id.iv_avatar)
+    ImageView mIvAvatar;
+    @BindView(R.id.cv_book_info)
+    CardView mCardView;
+    @BindView(R.id.tv_username)
+    TextView mTvCreatorName;
+    @BindView(R.id.tv_comment_count)
+    TextView mTvCommentCount;
+    @BindView(R.id.reply_board)
+    ReplyBoard mReplyBoard;
+
+
+    private SimpleAdapter<CommentCard> mAdapter;
+    private BookPostCard mBookPost;
+    private PostDetailContract.Presenter mPostDetailPresenter;
+
     private Publisher.CommentData mCommentData;
     private Publisher.CommentReplyData mCommentReplyData;
-    private TextView mTvCommentCount;
 
     public static Intent newIntent(Context context, BookPostCard bookPost) {
         Intent intent = new Intent(context, PostDetailActivity.class);
@@ -66,26 +85,28 @@ public class PostDetailActivity extends SameStyleActivity
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected boolean initArgs(Bundle bundle) {
+        mBookPost = (BookPostCard) bundle.getSerializable(EXTRA_BOOK_POST);
+        if (mBookPost == null) {
+            ToastUtils.showToast("Open post detail activity with empty book post.");
+            LogUtil.e(TAG, "Open post detail activity with empty book post.");
+            return false;
+        }
+        return true;
+    }
 
-        // handle ui style
-        getWindow().setStatusBarColor(
-                getResources().getColor(android.R.color.white)
-        );
+
+    @Override
+    protected void initWindow() {
+        getWindow().setStatusBarColor(getResources().getColor(android.R.color.white));
+    }
+
+    @Override
+    protected void initWidget() {
+        super.initWidget();
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.icon_less);
-
-        mIvAvatar = findViewById(R.id.iv_avatar);
-        mTvCreatorName = findViewById(R.id.tv_username);
-
-        // book info
-        mIvCover = findViewById(R.id.iv_cover);
-        mTvTitle = findViewById(R.id.tv_title);
-        mTvDescription = findViewById(R.id.tv_description);
-        mTvPostContent = findViewById(R.id.tv_post_content);
-        mCardView = findViewById(R.id.cv_book_info);
-        mTvCommentCount = findViewById(R.id.tv_comment_count);
 
         CollapsingToolbarLayout collapsingToolbarLayout =
                 findViewById(R.id.collapsing_toolbar_layout);
@@ -112,10 +133,8 @@ public class PostDetailActivity extends SameStyleActivity
             }
         });
 
-
         // comments
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        mRecyclerViewComments = findViewById(R.id.recycler_view);
         mRecyclerViewComments.setLayoutManager(linearLayoutManager);
         mRecyclerViewComments.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -124,7 +143,6 @@ public class PostDetailActivity extends SameStyleActivity
                 mReplyBoard.close();
             }
         });
-        mSwipeRefreshLayoutComments = findViewById(R.id.swipe_refresh_layout_comments);
         mSwipeRefreshLayoutComments.setOnRefreshListener(() -> {
             mReplyBoard.close();
             ToastUtils.showToast("onRefreshing...");
@@ -133,32 +151,26 @@ public class PostDetailActivity extends SameStyleActivity
                     Global.Debug.sLoadingTime
             );
         });
+        mReplyBoard.setPublisher(new Publisher() {
+            @Override
+            public void publishComment(CreateCommentModel model) {
+                myPresenter().performPublishComment(model,
+                        new CommentLoadingProvider(PostDetailActivity.this));
+            }
 
-
-        mReplyBoard = findViewById(R.id.reply_board);
-        mReplyBoard.setOnSendKeyListener(() -> {
-            if (mCommentReplyData.prepared()) {
-                myPresenter().performPublishCommentReply(mCommentReplyData, mReplyBoard.getContent());
-                mCommentReplyData.clean();
-            } else if (mCommentData.prepared()) {
-                myPresenter().performPublishComment(mCommentData, mReplyBoard.getContent());
-                mCommentData.clean();
+            @Override
+            public void publishCommentReply(CommentReplyData commentReplyData, String content) {
+                ToastUtils.showToast("todo publish comment reply!");
             }
         });
-
-        handleIntent(getIntent());
-
     }
 
-    private void handleIntent(Intent intent) {
-        if (intent == null) {
-            return;
-        }
-        mBookPost = (BookPostCard) intent.getSerializableExtra(EXTRA_BOOK_POST);
+
+    @Override
+    protected void initData() {
+        myPresenter().performPullComments(mBookPost.getId());
         showDetail(mBookPost);
-
         setTitle(mBookPost.getBook().getName());
-
         mCommentData = new Publisher.CommentData(
                 mBookPost.getId(),
                 UserInfo.self().getId()
@@ -167,8 +179,7 @@ public class PostDetailActivity extends SameStyleActivity
                 mBookPost.getId(),
                 UserInfo.self().getId()
         );
-
-        myPresenter().performPullComments(mBookPost.getId());
+        mReplyBoard.setDefaultModel(new CreateCommentModel(mBookPost.getId(), UserInfo.id()));
     }
 
     @Override
@@ -205,7 +216,7 @@ public class PostDetailActivity extends SameStyleActivity
     }
 
     @Override
-    public void showComments(List<Comment> comments) {
+    public void showComments(List<CommentCard> comments) {
         if (CommonUtils.isEmpty(comments)) {
             ToastUtils.showToast("no comments found!");
         } else {
@@ -215,10 +226,10 @@ public class PostDetailActivity extends SameStyleActivity
                 ((CommentAdapter) mAdapter).setCommentClickListener(
                         new CommentAdapter.CommentClickListener() {
                             @Override
-                            public void onContentClick(Comment comment) {
-                                mCommentData.clean();
-                                mCommentReplyData.prepare(comment.getId(), -1);
-                                mReplyBoard.open(getString(R.string.reply_comment));
+                            public void onContentClick(CommentCard comment) {
+//                                mCommentData.clean();
+//                                mCommentReplyData.prepare(comment.getId(), -1);
+//                                mReplyBoard.openAndAttach(CreateCommentModel.);
                             }
 
                             @Override
@@ -230,9 +241,9 @@ public class PostDetailActivity extends SameStyleActivity
                                     mCommentData.clean();
                                     mCommentReplyData.prepare(reply.getCommentId(),
                                             reply.getFrom().getId());
-                                    mReplyBoard.open(String.format(getString(R.string.reply_to),
-                                            reply.getFrom().getName()
-                                    ));
+//                                    mReplyBoard.openAndAttach(String.format(getString(R.string.reply_to),
+//                                            reply.getFrom().getName()
+//                                    ));
                                 }
                             }
 
@@ -258,32 +269,16 @@ public class PostDetailActivity extends SameStyleActivity
     }
 
     @Override
-    public PostDetailContract.PostDetailPresenter myPresenter() {
+    public void showCreateCommentSuccess(CommentCard card) {
+        ToastUtils.showToast(R.string.tip_create_comment_success);
+        mReplyBoard.close();
+        mAdapter.performSingleDataAdded(card);
+    }
+
+    @Override
+    public PostDetailContract.Presenter myPresenter() {
         if (mPostDetailPresenter == null) {
-            mPostDetailPresenter = new PostDetailPresenterImpl(
-                    this,
-                    new PostDetailModelImpl(),
-                    new ReplyPublisher.ReplyStatusListener() {
-                        @Override
-                        public void onPublishSucceed() {
-                            hideProgressDialog();
-                            mReplyBoard.clear();
-                            mReplyBoard.close();
-                            ToastUtils.showToast(R.string.publish_succeed);
-                        }
-
-                        @Override
-                        public void onPublishFailed() {
-                            hideProgressDialog();
-                            ToastUtils.showToast(R.string.publish_failed);
-                        }
-
-                        @Override
-                        public void onPublishStarted() {
-                            showProgressDialog();
-                        }
-                    }
-            );
+            mPostDetailPresenter = new PostDetailPresenterImpl(this, new PostDetailModelImpl());
         }
         return mPostDetailPresenter;
     }
@@ -300,6 +295,26 @@ public class PostDetailActivity extends SameStyleActivity
 
     @Override
     public void showActionFail(String message) {
-
+        ToastUtils.showToast(getString(R.string.tip_info_load_failed) + "：" + message);
     }
+
+    private static class CommentLoadingProvider implements LoadingProvider {
+
+        private BaseActivity mBaseActivity;
+
+        public CommentLoadingProvider(BaseActivity baseActivity) {
+            mBaseActivity = baseActivity;
+        }
+
+        @Override
+        public void showLoadingIndicator() {
+            mBaseActivity.showProgressDialog();
+        }
+
+        @Override
+        public void hideLoadingIndicator() {
+            mBaseActivity.hideProgressDialog();
+        }
+    }
+
 }
