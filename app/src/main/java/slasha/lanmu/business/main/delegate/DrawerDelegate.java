@@ -1,31 +1,26 @@
 package slasha.lanmu.business.main.delegate;
 
-import androidx.annotation.NonNull;
-
-import com.google.android.material.navigation.NavigationView;
-
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.widget.Toolbar;
-
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.google.android.material.navigation.NavigationView;
 
-import slasha.lanmu.entity.card.UserCard;
-import slasha.lanmu.persistence.AccountInfo;
-import slasha.lanmu.persistence.Global;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import slasha.lanmu.R;
-import slasha.lanmu.entity.local.User;
 import slasha.lanmu.business.account.AccountActivity;
 import slasha.lanmu.business.main.MainActivity;
+import slasha.lanmu.entity.card.UserCard;
+import slasha.lanmu.persistence.AccountInfo;
 import slasha.lanmu.persistence.UserInfo;
 import slasha.lanmu.utils.AppUtils;
 import slasha.lanmu.utils.CommonUtils;
+import slasha.lanmu.utils.common.ToastUtils;
 
 public class DrawerDelegate implements NavigationView.OnNavigationItemSelectedListener,
         UserInfo.UserInfoChangeListener {
@@ -52,7 +47,7 @@ public class DrawerDelegate implements NavigationView.OnNavigationItemSelectedLi
 
         mNavigationView = activity.findViewById(R.id.nav_view);
         mNavigationView.setNavigationItemSelectedListener(this);
-        mNavigationView.setCheckedItem(R.id.nav_gallery);
+        mNavigationView.setCheckedItem(R.id.nav_main_page);
         updateNavHeaderUI(UserInfo.self());
         UserInfo.registerLoginStatusListener(this);
     }
@@ -64,19 +59,17 @@ public class DrawerDelegate implements NavigationView.OnNavigationItemSelectedLi
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action            // 使用本地假数据
+        if (id == R.id.nav_main_page) {
 
-            Global.Debug.sUseFakeData = true;
-        } else if (id == R.id.nav_gallery) {
-            Global.Debug.sUseFakeData = false;
-        } else if (id == R.id.nav_slideshow) {
-            Global.Debug.sUseFakeData = false;
-        } else if (id == R.id.nav_manage) {
-            Global.Debug.sUseFakeData = false;
+        } else if (id == R.id.nav_my_message) {
+            ToastUtils.showToast("todo");
+        } else if (id == R.id.nav_my_contract) {
+            ToastUtils.showToast("todo");
+        } else if (id == R.id.nav_setting) {
+            ToastUtils.showToast("todo");
         } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_loggout) {
+            ToastUtils.showToast("todo");
+        } else if (id == R.id.nav_logout) {
             // 清除账户信息
             AccountInfo.clear(activity);
             UserInfo.clear();

@@ -5,31 +5,31 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/nav_main_page"
             android:icon="@drawable/ic_menu_camera"
-            android:title="使用本地假数据" />
+            android:title="@string/menu_main_page" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_my_message"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="不使用本地假数据" />
+            android:title="@string/menu_my_message" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_my_contract"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="不使用本地假数据" />
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="不使用本地假数据" />
+            android:title="@string/menu_my_contract" />
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="@string/menu_other">
         <menu>
             <item
                 android:id="@+id/nav_share"
                 android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:title="@string/menu_share" />
             <item
-                android:id="@+id/nav_loggout"
+                android:id="@+id/nav_setting"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="@string/menu_setting" />
+            <item
+                android:id="@+id/nav_logout"
                 android:icon="@drawable/ic_menu_send"
                 android:title="@string/logout" />
         </menu>
