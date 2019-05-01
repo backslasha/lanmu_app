@@ -6,6 +6,8 @@ import java.util.Date;
 
 public class MessageCard {
 
+    public static final int TYPE_TEXT = 0;
+
     @Expose
     private long id;
     @Expose
@@ -15,9 +17,19 @@ public class MessageCard {
     @Expose
     private String content;
     @Expose
-    private long fromId;
+    private UserCard from;
     @Expose
-    private long toId;
+    private UserCard to;
+    @Expose
+    private int received;
+
+    public int getReceived() {
+        return received;
+    }
+
+    public void setReceived(int received) {
+        this.received = received;
+    }
 
     public long getId() {
         return id;
@@ -51,20 +63,19 @@ public class MessageCard {
         this.content = content;
     }
 
-    public long getFromId() {
-        return fromId;
+    public UserCard getFrom() {
+        return from;
     }
 
-    public void setFromId(long fromId) {
-        this.fromId = fromId;
+    public void setFrom(UserCard from) {
+        this.from = from;
     }
 
-    public long getToId() {
-        return toId;
+    public UserCard getTo() {
+        return to;
     }
 
-    public void setToId(long toId) {
-        this.toId = toId;
+    public void setTo(UserCard to) {
+        this.to = to;
     }
-
 }

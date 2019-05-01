@@ -5,19 +5,24 @@ import java.util.List;
 import slasha.lanmu.BaseModel;
 import slasha.lanmu.BasePresenter;
 import slasha.lanmu.BaseView;
+import slasha.lanmu.entity.api.message.CreateMsgModel;
+import slasha.lanmu.entity.api.message.PullMsgModel;
+import slasha.lanmu.entity.card.MessageCard;
 import slasha.lanmu.entity.local.Message;
 
 public interface ChatContract {
 
-    interface ChatView extends BaseView<ChatPresenter> {
-        void showMessages(List<Message> messages);
+    interface View extends BaseView<Presenter> {
+        void showMessages(List<MessageCard> messages);
+
+        void showSendMsgSuccess(MessageCard card);
+
+        void showSendMsgFail(String info);
     }
 
-    interface ChatPresenter extends BasePresenter {
-        void performPullMessages(long myId, long otherId);
-    }
+    interface Presenter extends BasePresenter {
+        void performPullMessages(PullMsgModel msgModel);
 
-    interface ChatModel extends BaseModel {
-        List<Message> offer(long myId, long otherId);
+        void performSendMessage(CreateMsgModel model);
     }
 }

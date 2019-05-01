@@ -1,32 +1,42 @@
 package slasha.lanmu.business.chat;
 
 import androidx.annotation.NonNull;
+import slasha.lanmu.entity.api.message.CreateMsgModel;
+import slasha.lanmu.entity.api.message.PullMsgModel;
+import slasha.lanmu.net.Network;
+import slasha.lanmu.utils.PresenterHelper;
 
-import java.util.List;
+class ChatPresenterImpl implements ChatContract.Presenter {
 
-import slasha.lanmu.persistence.Global;
-import slasha.lanmu.entity.local.Message;
-import slasha.lanmu.debug.ArtificialProductFactory;
+    private static final String TAG = "lanmu.message";
 
-class ChatPresenterImpl implements ChatContract.ChatPresenter {
+    private final ChatContract.View mView;
 
-    private final ChatContract.ChatModel mChatModel;
-    private final ChatContract.ChatView mChatView;
-
-    ChatPresenterImpl(@NonNull ChatContract.ChatModel chatModel,
-                      @NonNull ChatContract.ChatView chatView) {
-        mChatModel = chatModel;
-        mChatView = chatView;
+    ChatPresenterImpl(@NonNull ChatContract.View view) {
+        mView = view;
     }
 
     @Override
-    public void performPullMessages(long myId, long otherId) {
-        List<Message> result;
-        if (Global.Debug.sUseFakeData) {
-            result = ArtificialProductFactory.messages();
-        } else {
-            result = mChatModel.offer(myId, otherId);
-        }
-        mChatView.showMessages(result);
+    public void performPullMessages(PullMsgModel model) {
+        PresenterHelper.requestAndHandleResponse(
+                TAG,
+                Network.remote()::pullMsgRecords,
+                model,
+                mView::showMessages,
+                mView::showActionFail,
+                mView
+        );
+    }
+
+    @Override
+    public void performSendMessage(CreateMsgModel model) {
+        PresenterHelper.requestAndHandleResponse(
+                TAG,
+                Network.remote()::createMsg,
+                model,
+                mView::showSendMsgSuccess,
+                mView::showSendMsgFail,
+                mView
+        );
     }
 }

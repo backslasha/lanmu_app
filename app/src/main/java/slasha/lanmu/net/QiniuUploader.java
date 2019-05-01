@@ -101,7 +101,7 @@ public class QiniuUploader implements Uploader {
 
         } catch (Exception ex) {
 
-            LogUtil.e(TAG, ex.getCause().toString());
+            LogUtil.e(TAG, String.valueOf(ex.getCause()));
         }
         return null;
     }
