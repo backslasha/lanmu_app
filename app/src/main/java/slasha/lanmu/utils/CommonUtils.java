@@ -35,8 +35,9 @@ public class CommonUtils {
     }
 
     public static void setImage(ImageView view, String url) {
-        if (url == null) {
+        if (url == null || url.length() == 0) {
             view.setImageResource(R.drawable.default_place_holder);
+            return;
         }
         Picasso.with(LanmuApplication.instance())
                 .load(url)
@@ -46,8 +47,9 @@ public class CommonUtils {
     }
 
     public static void setAvatar(ImageView view, String url) {
-        if (url == null) {
+        if (url == null || url.length() == 0) {
             view.setImageResource(R.drawable.ic_default_avatar);
+            return;
         }
         Picasso.with(LanmuApplication.instance())
                 .load(url)
@@ -57,8 +59,9 @@ public class CommonUtils {
     }
 
     public static void setCover(ImageView view, String coverUrl) {
-        if (coverUrl == null) {
+        if (coverUrl == null || coverUrl.length() == 0) {
             view.setImageResource(R.drawable.default_place_holder);
+            return;
         }
         Picasso.with(LanmuApplication.instance())
                 .load(coverUrl)

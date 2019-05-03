@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.widget.NestedScrollView;
@@ -38,7 +39,7 @@ import slasha.lanmu.widget.reply.ReplyBoard;
 public class PostDetailActivity extends SameStyleActivity
         implements PostDetailContract.View {
 
-    private static final String EXTRA_BOOK_POST = "extra_book_post";
+    private static final String EXTRA_BOOK_POST_ID = "extra_book_post_id";
     private static final String TAG = "lanmu.detail";
 
     @BindView(R.id.recycler_view)
@@ -66,23 +67,22 @@ public class PostDetailActivity extends SameStyleActivity
     @BindView(R.id.scroll_view)
     NestedScrollView mScrollView;
 
-
     private CommentAdapter mCommentAdapter;
-    private BookPostCard mBookPost;
+    private long mPostId;
     private PostDetailContract.Presenter mPostDetailPresenter;
 
-    public static Intent newIntent(Context context, BookPostCard bookPost) {
+    public static Intent newIntent(Context context, long postId) {
         Intent intent = new Intent(context, PostDetailActivity.class);
-        intent.putExtra(EXTRA_BOOK_POST, bookPost);
+        intent.putExtra(EXTRA_BOOK_POST_ID, postId);
         return intent;
     }
 
     @Override
     protected boolean initArgs(Bundle bundle) {
-        mBookPost = (BookPostCard) bundle.getSerializable(EXTRA_BOOK_POST);
-        if (mBookPost == null) {
-            ToastUtils.showToast("Open post detail activity with empty book post.");
-            LogUtil.e(TAG, "Open post detail activity with empty book post.");
+        mPostId = bundle.getLong(EXTRA_BOOK_POST_ID, -1);
+        if (mPostId == -1) {
+            ToastUtils.showToast("Open post detail activity with -1 postId.");
+            LogUtil.e(TAG, "Open post detail activity with -1 postId.");
             return false;
         }
         return true;
@@ -104,7 +104,7 @@ public class PostDetailActivity extends SameStyleActivity
                 v, scrollX, scrollY, oldScrollX, oldScrollY) -> mReplyBoard.close());
 
         mSwipeRefreshLayoutComments.setOnRefreshListener(() ->
-                myPresenter().performPullComments(mBookPost.getId()));
+                myPresenter().performPullComments(mPostId));
 
         mRecyclerViewComments.setLayoutManager(new LinearLayoutManager(this));
 
@@ -118,16 +118,13 @@ public class PostDetailActivity extends SameStyleActivity
             public void publishCommentReply(CreateReplyModel model) {
                 myPresenter().performPublishCommentReply(model, new CommentLoadingProvider());
             }
-
         });
     }
 
     @Override
     protected void initData() {
-        myPresenter().performPullComments(mBookPost.getId());
-        showDetail(mBookPost);
-        setTitle(mBookPost.getBook().getName());
-        mReplyBoard.setCommentModel(new CreateCommentModel(mBookPost.getId(), UserInfo.id()));
+        myPresenter().performPullPostDetail(mPostId);
+        mReplyBoard.setCommentModel(new CreateCommentModel(mPostId, UserInfo.id()));
     }
 
     @Override
@@ -136,11 +133,12 @@ public class PostDetailActivity extends SameStyleActivity
     }
 
     @Override
-    public void showDetail(BookPostCard bookPost) {
-
+    public void showDetail(@NonNull List<BookPostCard> bookPosts) {
+        BookPostCard bookPost = bookPosts.get(0);
         if (bookPost == null) {
             return;
         }
+        setTitle(bookPost.getBook().getName());
         mTvPostContent.setText(bookPost.getContent());
         BookCard book = bookPost.getBook();
         if (book != null) {
@@ -163,6 +161,7 @@ public class PostDetailActivity extends SameStyleActivity
             CommonUtils.setAvatar(mIvAvatar, creator.getAvatarUrl());
             mTvCreatorName.setText(creator.getName());
         }
+        myPresenter().performPullComments(mPostId);
     }
 
     @Override
@@ -228,7 +227,6 @@ public class PostDetailActivity extends SameStyleActivity
     public void showActionFail(String message) {
         ToastUtils.showToast(getString(R.string.tip_info_load_failed) + "：" + message);
     }
-
 
     private class CommentLoadingProvider implements LoadingProvider {
 

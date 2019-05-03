@@ -15,6 +15,7 @@ import slasha.lanmu.application.LanmuApplication;
 import slasha.lanmu.business.chat.ChatActivity;
 import slasha.lanmu.business.conversation.ConversationActivity;
 import slasha.lanmu.business.main.MainActivity;
+import slasha.lanmu.business.notification.NotificationActivity;
 import slasha.lanmu.business.post_detail.PostDetailActivity;
 import slasha.lanmu.business.profile.UserProfileActivity;
 import slasha.lanmu.business.profile.edit.EditProfileActivity;
@@ -50,9 +51,9 @@ public class AppUtils {
         sMainHandler.postDelayed(runnable, delayMillis);
     }
 
-    public static void jumpToPostDetail(@NonNull Context context, BookPostCard bookPost) {
+    public static void jumpToPostDetail(@NonNull Context context, long postId) {
         context.startActivity(
-                PostDetailActivity.newIntent(context, bookPost)
+                PostDetailActivity.newIntent(context, postId)
         );
     }
 
@@ -79,9 +80,16 @@ public class AppUtils {
                 EditProfileActivity.newIntent(context, userCard)
         );
     }
-    public static void jumpToCoversationPage(Context context) {
+
+    public static void jumpToConversationPage(Context context) {
         context.startActivity(
                 ConversationActivity.newIntent(context)
+        );
+    }
+
+    public static void jumpToNotificationPage(Context context) {
+        context.startActivity(
+                NotificationActivity.newIntent(context)
         );
     }
 }

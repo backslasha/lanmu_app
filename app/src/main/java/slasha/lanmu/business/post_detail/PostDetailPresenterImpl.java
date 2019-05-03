@@ -31,8 +31,15 @@ public class PostDetailPresenterImpl implements PostDetailContract.Presenter {
     }
 
     @Override
-    public void performPullPostDetail() {
-        // load nothing because data are from last activity
+    public void performPullPostDetail(long postId) {
+        PresenterHelper.requestAndHandleResponse(
+                TAG,
+                Network.remote()::searchPostById,
+                postId,
+                mView::showDetail,
+                mView::showActionFail,
+                mView
+        );
     }
 
     @Override

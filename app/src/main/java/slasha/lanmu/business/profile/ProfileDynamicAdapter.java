@@ -74,7 +74,7 @@ public class ProfileDynamicAdapter extends SimpleAdapter<DynamicCard> {
             ));
             holder.setText(R.id.tv_comment_count, String.valueOf(card.getCommentCount()));
             holder.setText(R.id.tv_date, FormatUtils.format(card.getCreateDate(), "MM月\ndd日"));
-            holder.itemView.setOnClickListener(v -> AppUtils.jumpToPostDetail(mContext, card));
+            holder.itemView.setOnClickListener(v -> AppUtils.jumpToPostDetail(mContext, card.getId()));
         }
     }
 

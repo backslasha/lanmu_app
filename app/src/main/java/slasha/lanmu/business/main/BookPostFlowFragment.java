@@ -6,8 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.squareup.picasso.Picasso;
-
 import java.io.Serializable;
 
 import androidx.annotation.NonNull;
@@ -17,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import slasha.lanmu.R;
-import slasha.lanmu.application.LanmuApplication;
 import slasha.lanmu.entity.card.BookCard;
 import slasha.lanmu.entity.card.BookPostCard;
 import slasha.lanmu.entity.response.BookPostFlow;
@@ -52,7 +49,7 @@ public class BookPostFlowFragment extends Fragment
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View inflate = inflater.inflate(
-                R.layout.fragment_book_post_flow, container, false);
+                R.layout.fragment_refresh_recycler_view, container, false);
         mRecyclerView = inflate.findViewById(R.id.recycler_view);
         mSwipeRefreshLayout = inflate.findViewById(R.id.swipe_refresh_layout);
         mSwipeRefreshLayout.setOnRefreshListener(this);
@@ -89,7 +86,7 @@ public class BookPostFlowFragment extends Fragment
                     }
 
                     holder.itemView.setOnClickListener(v ->
-                            jumpToPostDetail(getActivity(), bookPost)
+                            jumpToPostDetail(getActivity(), bookPost.getId())
                     );
                 }
 

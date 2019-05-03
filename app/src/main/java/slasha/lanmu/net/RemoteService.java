@@ -15,6 +15,7 @@ import slasha.lanmu.entity.api.account.RegisterModel;
 import slasha.lanmu.entity.api.base.RspModelWrapper;
 import slasha.lanmu.entity.api.comment.CreateCommentModel;
 import slasha.lanmu.entity.api.comment.CreateReplyModel;
+import slasha.lanmu.entity.api.comment.NotifyRspModel;
 import slasha.lanmu.entity.api.message.CreateMsgModel;
 import slasha.lanmu.entity.api.message.PullMsgModel;
 import slasha.lanmu.entity.api.post.CreatePostModel;
@@ -65,6 +66,12 @@ public interface RemoteService {
     Call<RspModelWrapper<List<BookPostCard>>> searchPosts(@Query("value") String keyword);
 
     /**
+     * postId 搜索书帖
+     */
+    @GET("posts/search?type=1")
+    Call<RspModelWrapper<List<BookPostCard>>> searchPostById(@Query("value") long postId);
+
+    /**
      * 修改用户信息
      */
     @POST("account/profile")
@@ -111,6 +118,10 @@ public interface RemoteService {
      */
     @POST("msg/conversations")
     Call<RspModelWrapper<List<MessageCard>>> pullConversations(@Body long userId);
+
+
+    @GET("comment/resemble/{userId}/")
+    Call<RspModelWrapper<NotifyRspModel>> pullNotifications(@Path("userId") long userId);
 
     // 用户关注接口
     @PUT("user/follow/{userId}")

@@ -118,5 +118,6 @@
     <string name="hint_say_something">说点什么吧......</string>
     <string name="tip_send_fail">消息发送失败：</string>
     <string name="title_conversation">聊天列表</string>
+    <string name="title_received_interact">收到的评论和点赞</string>
 
 </resources>

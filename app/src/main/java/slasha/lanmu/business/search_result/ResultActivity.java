@@ -19,6 +19,7 @@ import slasha.lanmu.business.create_post.CreatePostActivity;
 import slasha.lanmu.business.post_detail.PostDetailActivity;
 import slasha.lanmu.entity.card.BookCard;
 import slasha.lanmu.entity.card.BookPostCard;
+import slasha.lanmu.utils.AppUtils;
 import slasha.lanmu.utils.CommonUtils;
 import slasha.lanmu.utils.common.ToastUtils;
 import yhb.chorus.common.adapter.SimpleAdapter;
@@ -128,7 +129,8 @@ public class ResultActivity extends SameStyleActivity implements
                         holder.setText(R.id.tv_introduction, book.getIntroduction());
                     }
 
-                    holder.itemView.setOnClickListener(v -> jumpToPostDetail(bookPost));
+                    holder.itemView.setOnClickListener(v -> AppUtils.jumpToPostDetail(
+                            ResultActivity.this, bookPost.getId()));
                 }
 
             };
@@ -163,9 +165,4 @@ public class ResultActivity extends SameStyleActivity implements
         );
     }
 
-    private void jumpToPostDetail(BookPostCard bookPost) {
-        startActivity(
-                PostDetailActivity.newIntent(this, bookPost)
-        );
-    }
 }

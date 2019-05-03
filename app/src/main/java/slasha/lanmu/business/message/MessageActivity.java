@@ -17,7 +17,7 @@ public class MessageActivity extends SameStyleActivity {
 
     @Override
     protected int getContentViewResId() {
-        return R.layout.activity_message;
+        return R.layout.activity_notification;
     }
 
 
