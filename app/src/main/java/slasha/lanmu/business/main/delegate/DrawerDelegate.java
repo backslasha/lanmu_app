@@ -62,7 +62,7 @@ public class DrawerDelegate implements NavigationView.OnNavigationItemSelectedLi
         if (id == R.id.nav_main_page) {
 
         } else if (id == R.id.nav_my_message) {
-            ToastUtils.showToast("todo");
+            AppUtils.jumpToCoversationPage(activity);
         } else if (id == R.id.nav_my_contract) {
             ToastUtils.showToast("todo");
         } else if (id == R.id.nav_setting) {

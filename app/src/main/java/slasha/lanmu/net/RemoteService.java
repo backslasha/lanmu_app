@@ -106,6 +106,12 @@ public interface RemoteService {
     @POST("msg/create")
     Call<RspModelWrapper<MessageCard>> createMsg(@Body CreateMsgModel msgModel);
 
+    /**
+     * 拉取最近和20个人的最后一条聊天消息
+     */
+    @POST("msg/conversations")
+    Call<RspModelWrapper<List<MessageCard>>> pullConversations(@Body long userId);
+
     // 用户关注接口
     @PUT("user/follow/{userId}")
     Call<RspModelWrapper<UserCard>> userFollow(@Path("userId") String userId);

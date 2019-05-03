@@ -101,13 +101,14 @@
     <string name="update_info">修改信息</string>
     <string name="tip_info_updated">信息已更新</string>
     <string name="tip_info_update_failed">信息更新失败：</string>
-    <string name="tip_info_load_failed">数据加载失败</string>
+    <string name="tip_info_load_failed">数据加载失败：</string>
     <string name="his_dynamic">个人动态</string>
     <string name="tip_create_comment_success">发表成功</string>
     <string name="tip_create_reply_success">回复成功</string>
     <string name="menu_main_page">主页</string>
-    <string name="menu_my_message">我的消息</string>
-    <string name="menu_my_contract">我的好友</string>
+    <string name="menu_my_message">私信</string>
+    <string name="menu_my_notification">通知</string>
+    <string name="menu_my_contract">好友</string>
     <string name="menu_setting">设置</string>
     <string name="menu_other">其他</string>
     <string name="menu_share">分享</string>
@@ -116,5 +117,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="hint_say_something">说点什么吧......</string>
     <string name="tip_send_fail">消息发送失败：</string>
+    <string name="title_conversation">聊天列表</string>
 
 </resources>

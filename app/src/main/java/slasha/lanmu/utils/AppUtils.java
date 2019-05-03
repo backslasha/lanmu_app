@@ -13,6 +13,7 @@ import java.io.InputStreamReader;
 import androidx.annotation.NonNull;
 import slasha.lanmu.application.LanmuApplication;
 import slasha.lanmu.business.chat.ChatActivity;
+import slasha.lanmu.business.conversation.ConversationActivity;
 import slasha.lanmu.business.main.MainActivity;
 import slasha.lanmu.business.post_detail.PostDetailActivity;
 import slasha.lanmu.business.profile.UserProfileActivity;
@@ -76,6 +77,11 @@ public class AppUtils {
     public static void jumpToEditProfilePage(Context context, UserCard userCard) {
         context.startActivity(
                 EditProfileActivity.newIntent(context, userCard)
+        );
+    }
+    public static void jumpToCoversationPage(Context context) {
+        context.startActivity(
+                ConversationActivity.newIntent(context)
         );
     }
 }

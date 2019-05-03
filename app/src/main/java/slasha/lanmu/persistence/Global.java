@@ -48,7 +48,7 @@ public class Global {
                                 JsonDeserializationContext arg2) throws JsonParseException {
             String date = element.getAsString();
             SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT, Locale.CHINA);
-            format.setTimeZone(TimeZone.getTimeZone("GMT"));
+//            format.setTimeZone(TimeZone.getTimeZone("GMT"));
             try {
                 return format.parse(date);
             } catch (ParseException e) {
