@@ -78,6 +78,12 @@ public interface RemoteService {
     Call<RspModelWrapper<UserCard>> updateProfile(@Body UserCard userCard);
 
     /**
+     * 拉取用户信息
+     */
+    @GET("account/{userId}/profile")
+    Call<RspModelWrapper<UserCard>> searchProfile(@Path("userId") long userId);
+
+    /**
      * 拉取用户个人动态
      */
     @GET("account/dynamic/{id}")
@@ -130,7 +136,7 @@ public interface RemoteService {
      */
     @GET("comment/thumbsup")
     Call<RspModelWrapper> doThumbsUp(@Query("commentId") long commentId,
-                                                            @Query("fromId") long fromId);
+                                     @Query("fromId") long fromId);
 
     // 用户关注接口
     @PUT("user/follow/{userId}")

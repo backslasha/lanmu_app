@@ -18,6 +18,8 @@ public interface ProfileContract {
     interface Presenter extends BasePresenter {
 
         void performPullDynamics(long userId);
+
+        void performPullProfile(long userId);
     }
 
 }

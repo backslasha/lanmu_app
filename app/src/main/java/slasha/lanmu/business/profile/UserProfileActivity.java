@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.material.appbar.AppBarLayout;
-import com.squareup.picasso.Picasso;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 import java.util.List;
 
@@ -33,9 +33,9 @@ import slasha.lanmu.utils.common.ToastUtils;
 public class UserProfileActivity extends SameStyleActivity
         implements ProfileContract.View, UserInfo.UserInfoChangeListener {
 
-    private static final String EXTRA_USER = "extra_user";
+    private static final String EXTRA_USER_ID = "extra_user_id";
     private static final String TAG = "lanmu.profile";
-    private UserCard mUserCard;
+    private long mUserId;
 
     @BindView(R.id.iv_avatar)
     ImageView mAvatar;
@@ -58,29 +58,26 @@ public class UserProfileActivity extends SameStyleActivity
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
-    private ProfileContract.Presenter mUserPresenterImpl;
+    @BindView(R.id.collapsing_toolbar_layout)
+    CollapsingToolbarLayout mCollapsingToolbarLayout;
 
-    public static Intent newIntent(Context context, UserCard user) {
+    private ProfileContract.Presenter mUserPresenterImpl;
+    private UserCard mUserCard;
+
+    public static Intent newIntent(Context context, long userId) {
         Intent intent = new Intent(context, UserProfileActivity.class);
-        intent.putExtra(EXTRA_USER, user);
+        intent.putExtra(EXTRA_USER_ID, userId);
         return intent;
     }
 
     @Override
     protected boolean initArgs(Bundle bundle) {
-        mUserCard = (UserCard) bundle.getSerializable(EXTRA_USER);
-        if (mUserCard == null) {
-            LogUtil.e(TAG, "[UserProfileActivity] empty user card!");
+        mUserId = bundle.getLong(EXTRA_USER_ID, -1);
+        if (-1 == mUserId) {
+            LogUtil.e(TAG, "[UserProfileActivity] -1 user id!");
             return false;
         }
-        setTitle(mUserCard.getName());
         return true;
-    }
-
-    @Override
-    protected void initWindow() {
-        super.initWindow();
-//        AppUtils.makeFullScreen(getWindow());
     }
 
     @Override
@@ -92,11 +89,9 @@ public class UserProfileActivity extends SameStyleActivity
             if (scrollView.getTop() < mToolbar.getHeight()) {
                 scrollView.setElevation(0);
                 appbarLayout.setElevation(10);
-                LogUtil.d(TAG, "scrollView.setElevation(0):" + (scrollView.getTop() - mToolbar.getHeight()));
             } else {
                 scrollView.setElevation(10);
                 appbarLayout.setElevation(0);
-                LogUtil.d(TAG, "scrollView.setElevation(10):" + (scrollView.getTop() - mToolbar.getHeight()));
             }
         });
 
@@ -104,37 +99,31 @@ public class UserProfileActivity extends SameStyleActivity
 
     @Override
     protected void initData() {
-        initOrUpdateProfileUI();
-        initOrUpdateDynamics();
-        UserInfo.registerLoginStatusListener(this);
+        myPresenter().performPullProfile(mUserId);
     }
 
-    private void initOrUpdateDynamics() {
-        myPresenter().performPullDynamics(mUserCard.getId());
-    }
+    private void initOrUpdateProfileUI(UserCard card) {
+        CommonUtils.setAvatar(mAvatar, card.getAvatarUrl());
+        mUsername.setText(card.getName());
+        mPhone.setText(card.getPhone());
 
-    private void initOrUpdateProfileUI() {
-        CommonUtils.setAvatar(mAvatar, mUserCard.getAvatarUrl());
-        mUsername.setText(mUserCard.getName());
-        mPhone.setText(mUserCard.getPhone());
-
-        boolean aBoy = "1".equals(mUserCard.getGender());
+        boolean aBoy = "1".equals(card.getGender());
         Drawable drawable = getResources()
                 .getDrawable(aBoy ? R.drawable.ic_sex_woman : R.drawable.ic_sex_man);
         mGender.setImageDrawable(drawable);
         mGender.getBackground().setLevel(aBoy ? 0 : 1);// 设置背景的层级，切换颜色
 
-        String introduction = mUserCard.getIntroduction();
+        String introduction = card.getIntroduction();
         if (TextUtils.isEmpty(introduction)) {
             mDescription.setText(R.string.default_user_description);
         } else {
             mDescription.setText(introduction);
         }
+        mCollapsingToolbarLayout.setTitle(card.getName());
     }
 
-
     private boolean myself() {
-        return mUserCard.getId() == UserInfo.id();
+        return mUserId == UserInfo.id();
     }
 
     @Override
@@ -171,7 +160,11 @@ public class UserProfileActivity extends SameStyleActivity
 
     @Override
     public void showProfile(UserCard user) {
-        setTitle(user.getName());
+        initOrUpdateProfileUI(user);
+        mUserCard = user;
+        showLoadingIndicator();
+        myPresenter().performPullDynamics(mUserId);
+        UserInfo.registerLoginStatusListener(this);
     }
 
     @Override
@@ -210,7 +203,7 @@ public class UserProfileActivity extends SameStyleActivity
     @Override
     public void onUserInfoLoaded(UserCard user) {
         mUserCard = user;
-        initOrUpdateProfileUI();
+        initOrUpdateProfileUI(mUserCard);
     }
 
     @Override
@@ -221,7 +214,7 @@ public class UserProfileActivity extends SameStyleActivity
     @Override
     public void onUserInfoUpdated(UserCard user) {
         mUserCard = user;
-        initOrUpdateProfileUI();
+        initOrUpdateProfileUI(mUserCard);
     }
 
     @Override

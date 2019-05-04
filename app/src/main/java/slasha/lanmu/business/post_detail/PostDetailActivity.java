@@ -274,7 +274,7 @@ public class PostDetailActivity extends SameStyleActivity
 
         @Override
         public void onAvatarClick(UserCard user) {
-            AppUtils.jumpToUserProfile(PostDetailActivity.this, user);
+            AppUtils.jumpToUserProfile(PostDetailActivity.this, user.getId());
         }
 
         @Override

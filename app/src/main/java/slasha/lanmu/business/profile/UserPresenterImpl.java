@@ -23,4 +23,16 @@ public class UserPresenterImpl implements ProfileContract.Presenter {
                 mView
         );
     }
+
+    @Override
+    public void performPullProfile(long userId) {
+        PresenterHelper.requestAndHandleResponse(
+                TAG,
+                Network.remote()::searchProfile,
+                userId,
+                mView::showProfile,
+                mView::showActionFail,
+                mView
+        );
+    }
 }

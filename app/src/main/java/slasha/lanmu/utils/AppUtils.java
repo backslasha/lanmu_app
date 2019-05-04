@@ -63,9 +63,9 @@ public class AppUtils {
         );
     }
 
-    public static void jumpToUserProfile(@NonNull Context context, UserCard userCard) {
+    public static void jumpToUserProfile(@NonNull Context context, long userId) {
         context.startActivity(
-                UserProfileActivity.newIntent(context, userCard)
+                UserProfileActivity.newIntent(context, userId)
         );
     }
 

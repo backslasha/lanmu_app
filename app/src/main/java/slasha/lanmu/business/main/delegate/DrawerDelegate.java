@@ -47,7 +47,6 @@ public class DrawerDelegate implements NavigationView.OnNavigationItemSelectedLi
 
         mNavigationView = activity.findViewById(R.id.nav_view);
         mNavigationView.setNavigationItemSelectedListener(this);
-        mNavigationView.setCheckedItem(R.id.nav_main_page);
         updateNavHeaderUI(UserInfo.self());
         UserInfo.registerLoginStatusListener(this);
     }
@@ -59,9 +58,7 @@ public class DrawerDelegate implements NavigationView.OnNavigationItemSelectedLi
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_main_page) {
-
-        } else if (id == R.id.nav_my_message) {
+        if (id == R.id.nav_my_message) {
             AppUtils.jumpToConversationPage(activity);
         } else if (id == R.id.nav_my_contract) {
             ToastUtils.showToast("todo");
@@ -104,7 +101,7 @@ public class DrawerDelegate implements NavigationView.OnNavigationItemSelectedLi
 
     private void updateNavHeaderUI(UserCard user) {
         View root = mNavigationView.getHeaderView(0);
-        root.setOnClickListener(v -> AppUtils.jumpToUserProfile(activity, UserInfo.self()));
+        root.setOnClickListener(v -> AppUtils.jumpToUserProfile(activity, UserInfo.id()));
         if (user == null) {
             ((ImageView) root.findViewById(R.id.iv_avatar)).setImageResource(R.mipmap.ic_launcher);
             ((TextView) root.findViewById(R.id.tv_nav_header_title)).setText(R.string.nav_header_title);

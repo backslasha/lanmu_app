@@ -17,7 +17,7 @@
         tools:ignore="GoogleAppIndexingWarning"
         tools:targetApi="n">
         <activity android:name=".business.conversation.ConversationActivity"></activity>
-        <activity android:name=".business.message.MessageActivity" />
+        <activity android:name=".business.contract.ContractActivity" />
         <activity android:name=".business.profile.edit.EditProfileActivity" />
         <activity
             android:name=".business.account.AccountActivity"
