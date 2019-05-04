@@ -8,6 +8,7 @@ public class NotifyCard {
 
     public static final int TYPE_NEW_COMMENT = 1;
     public static final int TYPE_NEW_REPLY = 2;
+    public static final int TYPE_NEW_THUMBS_UP = 3;
 
     @Expose
     private int type;

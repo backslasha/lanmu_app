@@ -4,6 +4,7 @@
     android:id="@+id/swipe_refresh_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginBottom="?attr/actionBarSize"
     tools:context=".business.conversation.ConversationFragment">
 
     <androidx.recyclerview.widget.RecyclerView

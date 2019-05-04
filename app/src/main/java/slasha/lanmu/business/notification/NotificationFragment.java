@@ -101,6 +101,7 @@ public class NotificationFragment extends BaseFragment implements NotificationCo
             switch (viewType) {
                 case NotifyCard.TYPE_NEW_COMMENT:
                 case NotifyCard.TYPE_NEW_REPLY:
+                case NotifyCard.TYPE_NEW_THUMBS_UP:
                     return R.layout.item_notify_new_comment;
             }
             return 0;
@@ -124,24 +125,29 @@ public class NotificationFragment extends BaseFragment implements NotificationCo
                     notifyCard.getBook().getAuthor(),
                     FormatUtils.format(notifyCard.getBook().getPublishDate(), "yyyy-MM")
             ));
+            holder.setText(R.id.tv_content, notifyCard.getContent1());
 
             final View ivReplyContent = holder.getView(R.id.iv_reply_content);
-
+            final View tvReply = holder.getView(R.id.tv_reply);
             if (notifyCard.getType() == NotifyCard.TYPE_NEW_COMMENT) {
-                holder.setText(R.id.tv_content, notifyCard.getContent1());
                 holder.setText(R.id.tv_reply_content, notifyCard.getContent2());
-                holder.getView(R.id.tv_reply).setOnClickListener(v -> {
+                tvReply.setVisibility(View.VISIBLE);
+                tvReply.setOnClickListener(v -> {
                     ToastUtils.showToast("reply!");
                 });
                 ivReplyContent.setVisibility(View.VISIBLE);
                 CommonUtils.setCover((ImageView) ivReplyContent, notifyCard.getCover());
-            } else {
-                holder.setText(R.id.tv_content, notifyCard.getContent1());
+            } else if (notifyCard.getType() == NotifyCard.TYPE_NEW_REPLY) {
                 holder.setText(R.id.tv_reply_content, "我：" + notifyCard.getContent2());
                 ivReplyContent.setVisibility(View.GONE);
-                holder.getView(R.id.tv_reply).setOnClickListener(v -> {
+                tvReply.setVisibility(View.VISIBLE);
+                tvReply.setOnClickListener(v -> {
                     ToastUtils.showToast("reply2!");
                 });
+            } else {
+                holder.setText(R.id.tv_reply_content, "我：" + notifyCard.getContent2());
+                ivReplyContent.setVisibility(View.GONE);
+                tvReply.setVisibility(View.INVISIBLE);
             }
             holder.itemView.setOnClickListener(v ->
                     AppUtils.jumpToPostDetail(mContext, notifyCard.getPostId()));

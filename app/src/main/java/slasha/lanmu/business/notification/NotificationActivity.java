@@ -19,41 +19,18 @@ public class NotificationActivity extends SameStyleActivity {
         return new Intent(context, NotificationActivity.class);
     }
 
-    @BindView(R.id.tab_layout)
-    TabLayout mTabLayout;
-
-    @BindView(R.id.view_pager)
-    ViewPager mViewPager;
-
     @Override
     protected int getContentViewResId() {
-        return R.layout.activity_notification;
+        return R.layout.activity_container;
     }
 
     @Override
     protected void initWidget() {
         super.initWidget();
-        mViewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
-
-            private final String[] TITLES = {"评论", "点赞"};
-
-            @Override
-            public Fragment getItem(int position) {
-                return NotificationFragment.newInstance();
-            }
-
-            @Override
-            public int getCount() {
-                return 2;
-            }
-
-            @Nullable
-            @Override
-            public CharSequence getPageTitle(int position) {
-                return TITLES[position];
-            }
-        });
-        mTabLayout.setupWithViewPager(mViewPager);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.fl_container, NotificationFragment.newInstance(), "notification")
+                .commit();
     }
 
     @Override

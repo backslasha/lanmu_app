@@ -45,7 +45,7 @@ public class ConversationFragment extends BaseFragment
 
     @Override
     protected int getContentLayoutId() {
-        return R.layout.fragment_coversation;
+        return R.layout.fragment_refresh_recycler_view;
     }
 
     @Override
