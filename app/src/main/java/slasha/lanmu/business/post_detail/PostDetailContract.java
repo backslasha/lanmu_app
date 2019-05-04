@@ -43,6 +43,8 @@ public interface PostDetailContract {
         void performPublishComment(CreateCommentModel model, LoadingProvider loadingProvider);
 
         void performPublishCommentReply(CreateReplyModel model, LoadingProvider loadingProvider);
+
+        void performThumbsUp(long fromId, long commentId);
     }
 
     interface PostDetailModel extends BaseModel {

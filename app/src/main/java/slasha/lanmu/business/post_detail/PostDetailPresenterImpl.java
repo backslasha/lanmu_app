@@ -1,10 +1,15 @@
 package slasha.lanmu.business.post_detail;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import slasha.lanmu.LoadingProvider;
+import slasha.lanmu.entity.api.base.RspModelWrapper;
 import slasha.lanmu.entity.api.comment.CreateCommentModel;
 import slasha.lanmu.entity.api.comment.CreateReplyModel;
 import slasha.lanmu.net.Network;
 import slasha.lanmu.utils.PresenterHelper;
+import slasha.lanmu.utils.common.LogUtil;
 
 public class PostDetailPresenterImpl implements PostDetailContract.Presenter {
 
@@ -64,6 +69,23 @@ public class PostDetailPresenterImpl implements PostDetailContract.Presenter {
                 mView::showActionFail,
                 loadingProvider
         );
+    }
+
+    @Override
+    public void performThumbsUp(long fromId, long commentId) {
+        Call<RspModelWrapper> rspModelWrapperCall
+                = Network.remote().doThumbsUp(commentId, fromId);
+        rspModelWrapperCall.enqueue(new Callback<RspModelWrapper>() {
+            @Override
+            public void onResponse(Call<RspModelWrapper> call, Response<RspModelWrapper> response) {
+                LogUtil.i(TAG, "thumbs up succeed: " + response.body());
+            }
+
+            @Override
+            public void onFailure(Call<RspModelWrapper> call, Throwable t) {
+                LogUtil.e(TAG, "thumbs up failed: " + t.getCause());
+            }
+        });
     }
 
 }

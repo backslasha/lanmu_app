@@ -28,7 +28,28 @@ public class CommentCard {
     @Expose
     private List<CommentReplyCard> replies;
     @Expose
+    private int thumbsUpCount;
+    @Expose
     private int replyCount;
+    @Expose
+    private boolean thumbsUp;
+
+    public boolean getThumbsUp() {
+        return thumbsUp;
+    }
+
+    public void setThumbsUp(boolean thumbsUp) {
+        this.thumbsUp = thumbsUp;
+    }
+
+
+    public int getThumbsUpCount() {
+        return thumbsUpCount;
+    }
+
+    public void setThumbsUpCount(int thumbsUpCount) {
+        this.thumbsUpCount = thumbsUpCount;
+    }
 
     public List<CommentReplyCard> getReplies() {
         return replies;

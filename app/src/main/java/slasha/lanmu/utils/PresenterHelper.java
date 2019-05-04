@@ -82,7 +82,7 @@ public class PresenterHelper {
         });
     }
 
-    private static <Result> void handleSuccessAction(String TAG,
+    public static <Result> void handleSuccessAction(String TAG,
                                                      Response<RspModelWrapper<Result>> response,
                                                      ResponseHandler<Result> successRspHandler,
                                                      ResponseHandler<String> exceptionHandler,
@@ -106,7 +106,7 @@ public class PresenterHelper {
         }
     }
 
-    private static void handleFailAction(String TAG, Throwable throwable,
+    public static void handleFailAction(String TAG, Throwable throwable,
                                          ResponseHandler<String> failRspHandler,
                                          LoadingProvider loadingProvider) {
         LogUtil.i(TAG, "onFailure -> " + throwable.getMessage());

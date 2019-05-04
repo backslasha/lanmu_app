@@ -162,6 +162,7 @@ public class PostDetailActivity extends SameStyleActivity
             mTvCreatorName.setText(creator.getName());
         }
         myPresenter().performPullComments(mPostId);
+        showLoadingIndicator();
     }
 
     @Override
@@ -274,6 +275,12 @@ public class PostDetailActivity extends SameStyleActivity
         @Override
         public void onAvatarClick(UserCard user) {
             AppUtils.jumpToUserProfile(PostDetailActivity.this, user);
+        }
+
+        @Override
+        public void onThumbsUpClick(CommentCard comment) {
+            // send a request to insert a record of thumbs up
+            myPresenter().performThumbsUp(UserInfo.id(), comment.getId());
         }
     }
 

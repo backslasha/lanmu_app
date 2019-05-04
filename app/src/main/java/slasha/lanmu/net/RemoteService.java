@@ -119,9 +119,18 @@ public interface RemoteService {
     @POST("msg/conversations")
     Call<RspModelWrapper<List<MessageCard>>> pullConversations(@Body long userId);
 
-
+    /**
+     * 拉取我的帖子评论、评论回复信息
+     */
     @GET("comment/resemble/{userId}/")
     Call<RspModelWrapper<NotifyRspModel>> pullNotifications(@Path("userId") long userId);
+
+    /**
+     * 点赞评论
+     */
+    @GET("comment/thumbsup")
+    Call<RspModelWrapper> doThumbsUp(@Query("commentId") long commentId,
+                                                            @Query("fromId") long fromId);
 
     // 用户关注接口
     @PUT("user/follow/{userId}")
