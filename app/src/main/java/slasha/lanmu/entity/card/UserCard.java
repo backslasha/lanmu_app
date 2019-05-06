@@ -19,6 +19,15 @@ public class UserCard implements Serializable {
     private String gender;
     @Expose
     private String phone;
+    @Expose
+    private boolean isFriend;
+
+    public boolean isFriend() {
+        return isFriend;
+    }
+    public void setFriend(boolean friend) {
+        isFriend = friend;
+    }
 
 
     public String getGender() {

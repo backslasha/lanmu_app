@@ -25,13 +25,14 @@ import slasha.lanmu.entity.api.message.PullMsgModel;
 import slasha.lanmu.entity.card.MessageCard;
 import slasha.lanmu.entity.card.UserCard;
 import slasha.lanmu.persistence.UserInfo;
+import slasha.lanmu.utils.AppUtils;
 import slasha.lanmu.utils.common.KeyBoardUtils;
 import slasha.lanmu.utils.common.ToastUtils;
 import yhb.chorus.common.adapter.SimpleAdapter;
 import yhb.chorus.common.adapter.base.SimpleHolder;
 
 public class ChatActivity extends SameStyleActivity
-        implements View.OnClickListener, View.OnLongClickListener, ChatContract.View {
+        implements View.OnLongClickListener, ChatContract.View {
 
     private static final String EXTRA_OTHER_USER = "extra_other_user";
     private static final String TAG = "lanmu.chat";
@@ -150,17 +151,6 @@ public class ChatActivity extends SameStyleActivity
         return R.layout.activity_chat;
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.iv_avatar:
-                ToastUtils.showToast("you click iv avatar.");
-                break;
-            case R.id.tv_bubble_username:
-                ToastUtils.showToast("you click username.");
-                break;
-        }
-    }
 
     @Override
     public boolean onLongClick(View v) {
@@ -232,8 +222,10 @@ public class ChatActivity extends SameStyleActivity
             if (from != null) {
                 holder.setImage(R.id.iv_avatar, from.getAvatarUrl());
                 holder.setText(R.id.tv_bubble_username, from.getName());
-                holder.setOnClickListener(R.id.iv_avatar, ChatActivity.this);
-                holder.setOnClickListener(R.id.tv_bubble_username, ChatActivity.this);
+                holder.setOnClickListener(R.id.iv_avatar,
+                        v -> AppUtils.jumpToUserProfile(ChatActivity.this, from.getId()));
+                holder.setOnClickListener(R.id.tv_bubble_username,
+                        v -> AppUtils.jumpToUserProfile(ChatActivity.this, from.getId()));
             }
             holder.setText(R.id.tv_bubble_content, message.getContent());
             holder.setOnLongClickListener(R.id.tv_bubble_content, ChatActivity.this);

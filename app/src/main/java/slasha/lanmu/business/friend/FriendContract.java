@@ -1,4 +1,4 @@
-package slasha.lanmu.business.contract;
+package slasha.lanmu.business.friend;
 
 import java.util.List;
 
@@ -7,11 +7,12 @@ import slasha.lanmu.BaseView;
 import slasha.lanmu.entity.card.UserCard;
 
 public interface FriendContract {
+
     interface View extends BaseView<Presenter> {
         void showPullFriendsSuccess(List<UserCard> cards);
     }
 
     interface Presenter extends BasePresenter {
-        void performPullFirends(long userId);
+        void performPullFriends(long userId);
     }
 }

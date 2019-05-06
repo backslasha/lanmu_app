@@ -19,6 +19,7 @@ import slasha.lanmu.entity.api.comment.NotifyRspModel;
 import slasha.lanmu.entity.api.message.CreateMsgModel;
 import slasha.lanmu.entity.api.message.PullMsgModel;
 import slasha.lanmu.entity.api.post.CreatePostModel;
+import slasha.lanmu.entity.card.ApplyCard;
 import slasha.lanmu.entity.card.BookPostCard;
 import slasha.lanmu.entity.card.CommentCard;
 import slasha.lanmu.entity.card.CommentReplyCard;
@@ -80,7 +81,7 @@ public interface RemoteService {
     /**
      * 拉取用户信息
      */
-    @GET("account/{userId}/profile")
+    @GET("user/{userId}/profile")
     Call<RspModelWrapper<UserCard>> searchProfile(@Path("userId") long userId);
 
     /**
@@ -138,17 +139,36 @@ public interface RemoteService {
     Call<RspModelWrapper> doThumbsUp(@Query("commentId") long commentId,
                                      @Query("fromId") long fromId);
 
-    // 用户关注接口
-    @PUT("user/follow/{userId}")
-    Call<RspModelWrapper<UserCard>> userFollow(@Path("userId") String userId);
+    /**
+     * 用户关注接口
+     */
+    @GET("user/add_friend/{toId}")
+    Call<RspModelWrapper<UserCard>> doAddFriend(@Path("toId") long toId, @Query("fromId") long fromId);
 
-    // 获取联系人列表
-    @GET("user/contact")
-    Call<RspModelWrapper<List<UserCard>>> userContacts();
-
-    // 查询某人的信息
-    @GET("user/{userId}")
-    Call<RspModelWrapper<UserCard>> userFind(@Path("userId") String userId);
+    /**
+     * 发送好友申请
+     */
+    @GET("user/apply/{toId}")
+    Call<RspModelWrapper> doApply(@Path("toId") long toId, @Query("fromId") long fromId);
 
 
+    /**
+     * 拉取好友申请列表
+     */
+    @GET("user/applies")
+    Call<RspModelWrapper<List<ApplyCard>>> pullApplies(@Query("userId") long userId);
+
+
+    /**
+     * 获取联系人列表
+     */
+    @GET("user/friends")
+    Call<RspModelWrapper<List<UserCard>>> pullFriends(@Query("userId") long userId);
+
+
+    /**
+     * 忽略好友申请
+     */
+    @POST("user/apply/reject")
+    Call<RspModelWrapper<ApplyCard>> doRejectApply(@Body long applyId);
 }

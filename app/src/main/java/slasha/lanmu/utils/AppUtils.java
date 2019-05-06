@@ -1,11 +1,8 @@
 package slasha.lanmu.utils;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.View;
-import android.view.Window;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -14,12 +11,13 @@ import androidx.annotation.NonNull;
 import slasha.lanmu.application.LanmuApplication;
 import slasha.lanmu.business.chat.ChatActivity;
 import slasha.lanmu.business.conversation.ConversationActivity;
+import slasha.lanmu.business.friend.apply.ApplyActivity;
+import slasha.lanmu.business.friend.FriendActivity;
 import slasha.lanmu.business.main.MainActivity;
 import slasha.lanmu.business.notification.NotificationActivity;
 import slasha.lanmu.business.post_detail.PostDetailActivity;
 import slasha.lanmu.business.profile.UserProfileActivity;
 import slasha.lanmu.business.profile.edit.EditProfileActivity;
-import slasha.lanmu.entity.card.BookPostCard;
 import slasha.lanmu.entity.card.UserCard;
 
 public class AppUtils {
@@ -90,6 +88,18 @@ public class AppUtils {
     public static void jumpToNotificationPage(Context context) {
         context.startActivity(
                 NotificationActivity.newIntent(context)
+        );
+    }
+
+    public static void jumpToFriendPage(Context context) {
+        context.startActivity(
+                FriendActivity.newIntent(context)
+        );
+    }
+
+    public static void jumpToApplyPage(Context context) {
+        context.startActivity(
+                ApplyActivity.newIntent(context)
         );
     }
 }

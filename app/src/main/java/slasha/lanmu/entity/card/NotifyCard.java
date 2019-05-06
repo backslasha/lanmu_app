@@ -31,6 +31,16 @@ public class NotifyCard {
     private String cover;
     @Expose
     private BookCard book;
+    @Expose
+    private boolean received;
+
+    public boolean isReceived() {
+        return received;
+    }
+
+    public void setReceived(boolean received) {
+        this.received = received;
+    }
 
     public int getType() {
         return type;

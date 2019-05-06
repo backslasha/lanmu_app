@@ -17,7 +17,7 @@
         tools:ignore="GoogleAppIndexingWarning"
         tools:targetApi="n">
         <activity android:name=".business.conversation.ConversationActivity"></activity>
-        <activity android:name=".business.contract.ContractActivity" />
+        <activity android:name=".business.friend.FriendActivity" />
         <activity android:name=".business.profile.edit.EditProfileActivity" />
         <activity
             android:name=".business.account.AccountActivity"
@@ -52,6 +52,7 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity android:name=".business.notification.NotificationActivity" />
+        <activity android:name=".business.friend.apply.ApplyActivity" />
     </application>
 
 </manifest>

@@ -118,5 +118,13 @@
     <string name="tip_send_fail">消息发送失败：</string>
     <string name="title_conversation">聊天列表</string>
     <string name="title_received_interact">收到的评论和点赞</string>
+    <string name="title_friends">我的好友</string>
+    <string name="new_friend">新朋友</string>
+    <string name="agree">同意</string>
+    <string name="ignore">忽略</string>
+    <string name="apply_add_friend">请求加为好友</string>
+    <string name="title_applies">申请列表</string>
+    <string name="already_agreed">已同意</string>
+    <string name="already_rejected">已拒绝</string>
 
 </resources>

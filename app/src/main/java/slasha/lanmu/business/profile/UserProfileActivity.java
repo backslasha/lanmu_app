@@ -1,6 +1,7 @@
 package slasha.lanmu.business.profile;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -24,9 +25,11 @@ import slasha.lanmu.R;
 import slasha.lanmu.SameStyleActivity;
 import slasha.lanmu.entity.card.DynamicCard;
 import slasha.lanmu.entity.card.UserCard;
+import slasha.lanmu.entity.db.User;
 import slasha.lanmu.persistence.UserInfo;
 import slasha.lanmu.utils.AppUtils;
 import slasha.lanmu.utils.CommonUtils;
+import slasha.lanmu.utils.DialogUtils;
 import slasha.lanmu.utils.common.LogUtil;
 import slasha.lanmu.utils.common.ToastUtils;
 
@@ -149,10 +152,31 @@ public class UserProfileActivity extends SameStyleActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_start_chat:
-                AppUtils.jumpToChatPage(this, mUserCard);
+                if (mUserCard != null) {
+                    // not friend then open a dialog to send a request
+                    if (!mUserCard.isFriend()) {
+                        DialogUtils.createConfirmDialog(this,
+                                "发送好友申请",
+                                "只有成为好友之后才能发送私信，点击确认向对方发送添加好友申请",
+                                "确定",
+                                "取消",
+                                (dialog, which) -> myPresenter()
+                                        .performSendFriendApply(UserInfo.id(), mUserId),
+                                null
+                        ).show();
+                    } else {
+                        AppUtils.jumpToChatPage(this, mUserCard);
+                    }
+                } else {
+                    LogUtil.e(TAG, "mUserCard=null!");
+                }
                 break;
             case R.id.action_edit_mode:
-                AppUtils.jumpToEditProfilePage(this, mUserCard);
+                if (mUserCard != null) {
+                    AppUtils.jumpToEditProfilePage(this, mUserCard);
+                } else {
+                    LogUtil.e(TAG, "mUserCard=null!");
+                }
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -174,6 +198,11 @@ public class UserProfileActivity extends SameStyleActivity
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(adapter);
         adapter.performDataSetAdded(dynamics);
+    }
+
+    @Override
+    public void showSendApplySuccess() {
+        ToastUtils.showToast("发送请求成功.");
     }
 
     @Override

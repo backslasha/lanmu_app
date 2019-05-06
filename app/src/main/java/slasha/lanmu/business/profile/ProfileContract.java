@@ -13,6 +13,8 @@ public interface ProfileContract {
         void showProfile(UserCard user);
 
         void showPullDynamicsSuccess(List<DynamicCard> dynamics);
+
+        void showSendApplySuccess();
     }
 
     interface Presenter extends BasePresenter {
@@ -20,6 +22,8 @@ public interface ProfileContract {
         void performPullDynamics(long userId);
 
         void performPullProfile(long userId);
+
+        void performSendFriendApply(long fromId, long toId);
     }
 
 }
