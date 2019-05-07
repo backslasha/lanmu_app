@@ -84,11 +84,30 @@ public interface RemoteService {
     @GET("user/{userId}/profile")
     Call<RspModelWrapper<UserCard>> searchProfile(@Path("userId") long userId);
 
+
     /**
-     * 拉取用户个人动态
+     * 拉取用户创建书帖动态
      */
-    @GET("account/dynamic/{id}")
-    Call<RspModelWrapper<List<DynamicCard>>> pullDynamics(@Path("id") long userId);
+    @GET("user/dynamic/posts/{userId}")
+    Call<RspModelWrapper<List<DynamicCard>>> pullPostsDynamics(@Path("userId") long userId);
+
+    /**
+     * 拉取用户回复帖子动态
+     */
+    @GET("user/dynamic/comments/{userId}")
+    Call<RspModelWrapper<List<DynamicCard>>> pullCommentsDynamics(@Path("userId") long userId);
+
+    /**
+     * 拉取用户评论动态
+     */
+    @GET("user/dynamic/replies/{userId}")
+    Call<RspModelWrapper<List<DynamicCard>>> pullRepliesDynamics(@Path("userId") long userId);
+
+    /**
+     * 拉取用户点赞帖子动态
+     */
+    @GET("user/dynamic/thumbsup/{userId}")
+    Call<RspModelWrapper<List<DynamicCard>>> pullThumbsUpDynamics(@Path("userId") long userId);
 
     /**
      * 发表对帖评论
@@ -171,4 +190,19 @@ public interface RemoteService {
      */
     @POST("user/apply/reject")
     Call<RspModelWrapper<ApplyCard>> doRejectApply(@Body long applyId);
+
+
+    /**
+     * 拉取热门20条
+     */
+    @GET("posts/hot")
+    Call<RspModelWrapper<List<BookPostCard>>> hotList(@Query("dummy") int dummy);
+
+    /**
+     * 拉取最新20条
+     */
+    @GET("posts/latest")
+    Call<RspModelWrapper<List<BookPostCard>>> latestList(@Query("dummy") int dummy);
+
+
 }

@@ -45,8 +45,8 @@ public class MainActivity extends AppCompatActivity {
 
         mViewPager.setAdapter(new BookPostFlowPagerAdapter(
                 getSupportFragmentManager(), new BookPostFlowFragment.FlowType[]{
-                        BookPostFlowFragment.FlowType.SUGGESTION,
-                        BookPostFlowFragment.FlowType.MY_TRACK,
+                        BookPostFlowFragment.FlowType.HOT,
+                        BookPostFlowFragment.FlowType.LATEST,
         }));
         mTabLayout.setupWithViewPager(mViewPager);
     }

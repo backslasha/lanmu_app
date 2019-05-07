@@ -53,6 +53,7 @@
         </activity>
         <activity android:name=".business.notification.NotificationActivity" />
         <activity android:name=".business.friend.apply.ApplyActivity" />
+        <activity android:name=".business.profile.dynamic.DynamicActivity" />
     </application>
 
 </manifest>

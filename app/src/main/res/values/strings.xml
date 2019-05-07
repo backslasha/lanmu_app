@@ -126,5 +126,7 @@
     <string name="title_applies">申请列表</string>
     <string name="already_agreed">已同意</string>
     <string name="already_rejected">已拒绝</string>
+    <string name="track">全部动态 &gt;</string>
+    <string name="title_dynamic">全部动态</string>
 
 </resources>

@@ -2,7 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/cl_item_dynamics_created_post"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?attr/selectableItemBackground"
@@ -21,6 +20,7 @@
         android:textColor="@color/black"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="04月\n24号" />
 
@@ -36,36 +36,55 @@
         tools:text="回复了海标2333的评论" />
 
     <TextView
-        android:id="@+id/tv_introduction"
+        android:id="@+id/tv_content"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
-        android:ellipsize="end"
-        android:maxLines="5"
+        android:layout_marginEnd="16dp"
         android:paddingStart="4dp"
         android:paddingEnd="4dp"
         android:textColor="@color/black"
-        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/tv_date"
-        app:layout_constraintTop_toBottomOf="@+id/tv_action"
-        tools:text="现代人内心流失的东西，这家杂货店能帮你找回——僻静的街道旁有一家杂货店，只要写下烦恼投进卷帘门的投信口，第二天就会在店后的牛奶箱里得到回答。因男友身患绝症，年轻女孩静子在爱情与梦想间徘徊；克郎为了音乐梦想离家漂泊，却在现实中寸步难行；少年浩介面临家庭巨变，挣扎在亲情与未来的迷茫中……他们将困惑写成信投进杂货店，随即奇妙的事情竟不断发生。生命中的一次偶然交会，将如何演绎出截然不同的人生？如今回顾写作过程，我发现自己始终在思考一个问题：站在人生的岔路口，人究竟应该怎么做？我希望读者能在掩卷时喃喃自语：我从未读过这样的小说。——东野圭吾" />
+        app:layout_constraintTop_toBottomOf="@id/tv_action"
+        tools:text="生活就像海洋，只有意志坚强的人才能到达彼岸" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="tv_action,tv_content" />
 
     <ImageView
-        android:id="@+id/iv_cover"
-        android:layout_width="0dp"
-        android:layout_height="149dp"
+        android:id="@+id/iv_reply_content"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
         android:contentDescription="@string/app_name"
         android:scaleType="centerCrop"
-        android:src="@drawable/cover_sample"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/tv_action"
-        app:layout_constraintTop_toBottomOf="@id/tv_introduction" />
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="@id/tv_action"
+        app:layout_constraintTop_toBottomOf="@+id/barrier"
+        app:srcCompat="@drawable/cover_sample" />
 
+    <TextView
+        android:id="@+id/tv_reply_content"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:background="@color/color_bg_gray"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:maxLines="2"
+        android:padding="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/iv_reply_content"
+        app:layout_constraintTop_toTopOf="@+id/barrier"
+        tools:text="我：我玩的时候，都是5毛钱10张卡钳的，什么其神奇啊什么绝对魔法神界吗熬时间哦我按时炯炯奥ISP吉安帕" />
 
     <TextView
         android:id="@+id/tv_book_info"
@@ -73,10 +92,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:textSize="12sp"
-        app:layout_constraintBottom_toTopOf="@+id/v_divider"
-        app:layout_constraintStart_toStartOf="@+id/tv_action"
-        app:layout_constraintTop_toBottomOf="@+id/iv_cover"
-        tools:text="解忧杂化店/东野圭吾/199601" />
+        app:layout_constraintStart_toStartOf="@id/tv_action"
+        app:layout_constraintTop_toBottomOf="@+id/tv_reply_content"
+        tools:text="广东工业大学吧" />
 
 
     <View
@@ -86,9 +104,7 @@
         android:layout_marginTop="8dp"
         android:background="@color/color_bg_gray"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_book_info"
-        app:layout_goneMarginTop="8dp" />
+        app:layout_constraintTop_toBottomOf="@id/tv_book_info" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,6 +10,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import slasha.lanmu.entity.card.BookCard;
+import slasha.lanmu.entity.card.UserCard;
 import slasha.lanmu.persistence.Global;
 
 public class FormatUtils {
@@ -65,4 +67,12 @@ public class FormatUtils {
         }
     }
 
+    public static String bookInfo(BookCard card) {
+        return String.format(
+                "《%s》/%s/%s",
+                card.getName(),
+                card.getAuthor(),
+                FormatUtils.format(card.getPublishDate(), "yyyy-MM")
+        );
+    }
 }

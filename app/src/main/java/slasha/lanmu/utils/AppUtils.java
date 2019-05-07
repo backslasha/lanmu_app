@@ -17,6 +17,7 @@ import slasha.lanmu.business.main.MainActivity;
 import slasha.lanmu.business.notification.NotificationActivity;
 import slasha.lanmu.business.post_detail.PostDetailActivity;
 import slasha.lanmu.business.profile.UserProfileActivity;
+import slasha.lanmu.business.profile.dynamic.DynamicActivity;
 import slasha.lanmu.business.profile.edit.EditProfileActivity;
 import slasha.lanmu.entity.card.UserCard;
 
@@ -100,6 +101,12 @@ public class AppUtils {
     public static void jumpToApplyPage(Context context) {
         context.startActivity(
                 ApplyActivity.newIntent(context)
+        );
+    }
+
+    public static void jumpToDynamicPage(Context context, long userId) {
+        context.startActivity(
+                DynamicActivity.newIntent(context, userId)
         );
     }
 }

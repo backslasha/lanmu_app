@@ -1,25 +1,38 @@
 package slasha.lanmu.business.main;
 
-import slasha.lanmu.utils.AppUtils;
+import slasha.lanmu.net.Network;
+import slasha.lanmu.utils.PresenterHelper;
 
 class MainPresenterImpl implements MainContract.MainPresenter {
 
     private MainContract.MainView mMainView;
-    private MainContract.MainModel mMainModel;
+    private static final String TAG = "lanmu.main";
 
-    MainPresenterImpl(MainContract.MainView mainView, MainContract.MainModel mainModel) {
+    MainPresenterImpl(MainContract.MainView mainView) {
         mMainView = mainView;
-        mMainModel = mainModel;
     }
 
     @Override
-    public void performPullBookPostFlow(BookPostFlowFragment.FlowType flowType) {
-        mMainView.showLoadingIndicator();
-        mMainModel.offerPostFlow(flowType.getType(), bookPostFlow ->
-                AppUtils.runOnUiThread(() -> {
-                    mMainView.showBookPostFlow(bookPostFlow);
-                    mMainView.hideLoadingIndicator();
-                })
-        );
+    public void performPullBookPosts(BookPostFlowFragment.FlowType flowType) {
+        if (flowType == BookPostFlowFragment.FlowType.LATEST) {
+            PresenterHelper.requestAndHandleResponse(
+                    TAG,
+                    Network.remote()::latestList,
+                    0,
+                    mMainView::showBookPosts,
+                    mMainView::showActionFail,
+                    mMainView
+            );
+
+        } else if (flowType == BookPostFlowFragment.FlowType.HOT) {
+            PresenterHelper.requestAndHandleResponse(
+                    TAG,
+                    Network.remote()::hotList,
+                    0,
+                    mMainView::showBookPosts,
+                    mMainView::showActionFail,
+                    mMainView
+            );
+        }
     }
 }

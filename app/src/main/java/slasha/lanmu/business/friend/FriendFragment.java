@@ -13,7 +13,6 @@ import android.widget.ImageView;
 
 import java.util.List;
 
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -140,9 +139,8 @@ public class FriendFragment extends BaseFragment implements FriendContract.View 
         protected void bind(SimpleHolder holder, UserCard userCard) {
             holder.setText(R.id.tv_description, userCard.getIntroduction());
             holder.setText(R.id.tv_username, userCard.getName());
-            ImageView ivAvatar = (ImageView) holder.getView(R.id.iv_avatar);
-            ivAvatar.setOnClickListener(v ->
-                            AppUtils.jumpToUserProfile(mContext, userCard.getId()));
+            holder.itemView.setOnClickListener(v ->
+                    AppUtils.jumpToUserProfile(mContext, userCard.getId()));
             CommonUtils.setAvatar((ImageView) holder.getView(R.id.iv_avatar),
                     userCard.getAvatarUrl());
         }

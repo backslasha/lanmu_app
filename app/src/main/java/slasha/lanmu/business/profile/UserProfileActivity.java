@@ -1,7 +1,6 @@
 package slasha.lanmu.business.profile;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -21,11 +20,11 @@ import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
+import butterknife.OnClick;
 import slasha.lanmu.R;
 import slasha.lanmu.SameStyleActivity;
 import slasha.lanmu.entity.card.DynamicCard;
 import slasha.lanmu.entity.card.UserCard;
-import slasha.lanmu.entity.db.User;
 import slasha.lanmu.persistence.UserInfo;
 import slasha.lanmu.utils.AppUtils;
 import slasha.lanmu.utils.CommonUtils;
@@ -129,6 +128,11 @@ public class UserProfileActivity extends SameStyleActivity
         return mUserId == UserInfo.id();
     }
 
+    @OnClick(R.id.tv_all_dynamic)
+    void viewAllDynamics() {
+        AppUtils.jumpToDynamicPage(this, mUserId);
+    }
+
     @Override
     protected int getContentViewResId() {
         return R.layout.activity_user_profile;
@@ -194,10 +198,10 @@ public class UserProfileActivity extends SameStyleActivity
     @Override
     public void showPullDynamicsSuccess(List<DynamicCard> dynamics) {
         ProfileDynamicAdapter adapter
-                = new ProfileDynamicAdapter(this);
+                = new ProfileDynamicAdapter(this, mUserId);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(adapter);
-        adapter.performDataSetAdded(dynamics);
+        adapter.performDataSetChanged(dynamics);
     }
 
     @Override

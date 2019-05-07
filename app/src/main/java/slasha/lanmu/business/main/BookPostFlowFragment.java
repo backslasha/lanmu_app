@@ -7,17 +7,18 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import java.io.Serializable;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import slasha.lanmu.R;
 import slasha.lanmu.entity.card.BookCard;
 import slasha.lanmu.entity.card.BookPostCard;
-import slasha.lanmu.entity.response.BookPostFlow;
 import slasha.lanmu.utils.AppUtils;
 import slasha.lanmu.utils.CommonUtils;
 import slasha.lanmu.utils.common.ToastUtils;
@@ -57,13 +58,13 @@ public class BookPostFlowFragment extends Fragment
         if (getArguments() != null) {
             mFlowType = (FlowType) getArguments().getSerializable(ARGS_BOOK_POST_FLOW);
         }
-        myPresenter().performPullBookPostFlow(mFlowType);
+        myPresenter().performPullBookPosts(mFlowType);
         return inflate;
     }
 
 
     @Override
-    public void showBookPostFlow(BookPostFlow bookPostFlow) {
+    public void showBookPosts(List<BookPostCard> bookPostCards) {
         if (mAdapter == null) {
             mAdapter = new SimpleAdapter<BookPostCard>(
                     getContext()) {
@@ -85,8 +86,11 @@ public class BookPostFlowFragment extends Fragment
                                 String.valueOf(bookPost.getCommentCount()));
                     }
 
-                    holder.itemView.setOnClickListener(v ->
-                            jumpToPostDetail(getActivity(), bookPost.getId())
+                    holder.itemView.setOnClickListener(v -> {
+                                FragmentActivity context = getActivity();
+                                if (context != null)
+                                    jumpToPostDetail(context, bookPost.getId());
+                            }
                     );
                 }
 
@@ -95,22 +99,18 @@ public class BookPostFlowFragment extends Fragment
             mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             mRecyclerView.setVisibility(View.VISIBLE);
         }
-        mAdapter.performDataSetChanged(bookPostFlow.getBookPosts());
+        mAdapter.performDataSetChanged(bookPostCards);
     }
 
     @Override
     public void onRefresh() {
-        ToastUtils.showToast("onRefreshing...");
-        AppUtils.postOnUiThread(
-                () -> mSwipeRefreshLayout.setRefreshing(false),
-                2000
-        );
+        myPresenter().performPullBookPosts(mFlowType);
     }
 
     @Override
     public MainContract.MainPresenter myPresenter() {
         if (mMainPresenter == null) {
-            mMainPresenter = new MainPresenterImpl(this, new MainModelImpl());
+            mMainPresenter = new MainPresenterImpl(this);
         }
         return mMainPresenter;
     }
@@ -133,8 +133,8 @@ public class BookPostFlowFragment extends Fragment
 
     enum FlowType implements Serializable {
 
-        SUGGESTION(1, "推荐"),
-        MY_TRACK(2, "参与");
+        LATEST(1, "最新"),
+        HOT(2, "热门");
 
         private final int mType;
         private final String mName;

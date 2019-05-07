@@ -21,7 +21,7 @@ public class UserPresenterImpl implements ProfileContract.Presenter {
     public void performPullDynamics(long userId) {
         PresenterHelper.requestAndHandleResponse(
                 TAG,
-                Network.remote()::pullDynamics,
+                Network.remote()::pullPostsDynamics,
                 userId,
                 mView::showPullDynamicsSuccess,
                 mView::showActionFail,

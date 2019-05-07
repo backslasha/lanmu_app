@@ -3,8 +3,7 @@ package slasha.lanmu.entity.card;
 import com.google.gson.annotations.Expose;
 
 import java.io.Serializable;
-
-import androidx.annotation.Nullable;
+import java.util.Date;
 
 public class DynamicCard implements Serializable {
 
@@ -12,48 +11,24 @@ public class DynamicCard implements Serializable {
     public static final int TYPE_COMMENT = 2; // 回复帖子
     public static final int TYPE_COMMENT_REPLY = 3; // 回复评论（回复评论+回复评论下他人的评论）
     public static final int TYPE_THUMB_UP = 4; // 点赞评论
-
-
-
     @Expose
     private int type;
-
     @Expose
-    private BookPostCard bookPostCard;
-
+    private long postId;
     @Expose
-    @Nullable
-    private CommentCard commentCard;
-
+    private long id;
     @Expose
-    @Nullable
-    private CommentReplyCard commentReplyCard;
-
-    public BookPostCard getBookPostCard() {
-        return bookPostCard;
-    }
-
-    public void setBookPostCard(BookPostCard bookPostCard) {
-        this.bookPostCard = bookPostCard;
-    }
-
-    @Nullable
-    public CommentCard getCommentCard() {
-        return commentCard;
-    }
-
-    public void setCommentCard(@Nullable CommentCard commentCard) {
-        this.commentCard = commentCard;
-    }
-
-    @Nullable
-    public CommentReplyCard getCommentReplyCard() {
-        return commentReplyCard;
-    }
-
-    public void setCommentReplyCard(@Nullable CommentReplyCard commentReplyCard) {
-        this.commentReplyCard = commentReplyCard;
-    }
+    private UserCard to;
+    @Expose
+    private Date time;
+    @Expose
+    private String content1;
+    @Expose
+    private String content2;
+    @Expose
+    private String cover;
+    @Expose
+    private BookCard book;
 
     public int getType() {
         return type;
@@ -63,19 +38,92 @@ public class DynamicCard implements Serializable {
         this.type = type;
     }
 
+    public long getPostId() {
+        return postId;
+    }
+
+    public void setPostId(long postId) {
+        this.postId = postId;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public UserCard getTo() {
+        return to;
+    }
+
+    public void setTo(UserCard to) {
+        this.to = to;
+    }
+
+    public Date getTime() {
+        return time;
+    }
+
+    public void setTime(Date time) {
+        this.time = time;
+    }
 
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("{");
         sb.append("\"type\":")
                 .append(type);
-        sb.append(",\"bookPostCard\":")
-                .append(bookPostCard);
-        sb.append(",\"commentCard\":")
-                .append(commentCard);
-        sb.append(",\"commentReplyCard\":")
-                .append(commentReplyCard);
+        sb.append(",\"postId\":")
+                .append(postId);
+        sb.append(",\"id\":")
+                .append(id);
+        sb.append(",\"from\":")
+                .append(to);
+        sb.append(",\"time\":\"")
+                .append(time).append('\"');
+        sb.append(",\"content1\":\"")
+                .append(content1).append('\"');
+        sb.append(",\"content2\":\"")
+                .append(content2).append('\"');
+        sb.append(",\"cover\":\"")
+                .append(cover).append('\"');
+        sb.append(",\"book\":")
+                .append(book);
         sb.append('}');
         return sb.toString();
+    }
+
+    public String getContent1() {
+        return content1;
+    }
+
+    public void setContent1(String content1) {
+        this.content1 = content1;
+    }
+
+    public String getContent2() {
+        return content2;
+    }
+
+    public void setContent2(String content2) {
+        this.content2 = content2;
+    }
+
+    public String getCover() {
+        return cover;
+    }
+
+    public void setCover(String cover) {
+        this.cover = cover;
+    }
+
+    public BookCard getBook() {
+        return book;
+    }
+
+    public void setBook(BookCard book) {
+        this.book = book;
     }
 }
