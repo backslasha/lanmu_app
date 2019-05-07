@@ -82,6 +82,45 @@ public class PresenterHelper {
         });
     }
 
+
+    /**
+     * 处理常规的业务请求流程，包括 发请求、收请求、处理响应、回调 View 层的成功/失败、
+     * 显示/取消加载符号、打印 log
+     * @param TAG 打印 log 使用的 TAG
+     * @param call 发送 retrofit 请求得到 call
+     * @param successRspHandler 响应成功解析到 result 时回调的函数
+     * @param failRspHandler 响应解析失败时回调的函数
+     * @param loadingProvider 提供显示/取消指示符的接口，其实现直接控制 View 层
+     * @param <Result> // 响应成功解析到 result 的类型
+     */
+    public static <Result> void requestAndHandleResponse(
+            String TAG, Call<RspModelWrapper<Result>> call,
+            ResponseHandler<Result> successRspHandler,
+            ResponseHandler<String> failRspHandler,
+            LoadingProvider loadingProvider) {
+
+        loadingProvider.showLoadingIndicator();
+        call.enqueue(new Callback<RspModelWrapper<Result>>() {
+            @Override
+            public void onResponse(Call<RspModelWrapper<Result>> call,
+                                   Response<RspModelWrapper<Result>> response) {
+                PresenterHelper.handleSuccessAction(
+                        TAG,
+                        response,
+                        successRspHandler,
+                        failRspHandler,
+                        loadingProvider
+                );
+            }
+
+            @Override
+            public void onFailure(Call<RspModelWrapper<Result>> call, Throwable t) {
+                PresenterHelper.handleFailAction(TAG, t, failRspHandler, loadingProvider);
+            }
+        });
+    }
+
+
     public static <Result> void handleSuccessAction(String TAG,
                                                      Response<RspModelWrapper<Result>> response,
                                                      ResponseHandler<Result> successRspHandler,

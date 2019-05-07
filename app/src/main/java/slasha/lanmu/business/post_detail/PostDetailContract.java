@@ -36,7 +36,6 @@ public interface PostDetailContract {
     }
 
     interface Presenter extends BasePresenter {
-        void performPullComments(long postId);
 
         void performPullPostDetail(long postId);
 
@@ -45,10 +44,8 @@ public interface PostDetailContract {
         void performPublishCommentReply(CreateReplyModel model, LoadingProvider loadingProvider);
 
         void performThumbsUp(long fromId, long commentId);
+
+        void performPullComments(long postId, int order, LoadingProvider loadingProvider);
     }
 
-    interface PostDetailModel extends BaseModel {
-        @WorkerThread
-        void offerComments(long postId, Callback<List<CommentCard>> listCallback);
-    }
 }

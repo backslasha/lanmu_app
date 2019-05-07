@@ -7,6 +7,7 @@ import slasha.lanmu.LoadingProvider;
 import slasha.lanmu.entity.api.base.RspModelWrapper;
 import slasha.lanmu.entity.api.comment.CreateCommentModel;
 import slasha.lanmu.entity.api.comment.CreateReplyModel;
+import slasha.lanmu.entity.card.CommentCard;
 import slasha.lanmu.net.Network;
 import slasha.lanmu.utils.PresenterHelper;
 import slasha.lanmu.utils.common.LogUtil;
@@ -15,25 +16,11 @@ public class PostDetailPresenterImpl implements PostDetailContract.Presenter {
 
     private static final String TAG = "lanmu.comment";
     private PostDetailContract.View mView;
-    private PostDetailContract.PostDetailModel mModel;
 
-    PostDetailPresenterImpl(PostDetailContract.View postDetailView,
-                            PostDetailContract.PostDetailModel postDetailModel) {
+    PostDetailPresenterImpl(PostDetailContract.View postDetailView) {
         mView = postDetailView;
-        mModel = postDetailModel;
     }
 
-    @Override
-    public void performPullComments(long postId) {
-        PresenterHelper.requestAndHandleResponse(
-                TAG,
-                Network.remote()::pullComments,
-                postId,
-                mView::showComments,
-                mView::showActionFail,
-                mView
-        );
-    }
 
     @Override
     public void performPullPostDetail(long postId) {
@@ -86,6 +73,17 @@ public class PostDetailPresenterImpl implements PostDetailContract.Presenter {
                 LogUtil.e(TAG, "thumbs up failed: " + t.getCause());
             }
         });
+    }
+
+    @Override
+    public void performPullComments(long postId, int order, LoadingProvider loadingProvider) {
+        PresenterHelper.requestAndHandleResponse(
+                TAG,
+                Network.remote().pullComments(postId, order),
+                mView::showComments,
+                mView::showActionFail,
+                loadingProvider
+        );
     }
 
 }

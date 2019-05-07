@@ -122,10 +122,10 @@ public interface RemoteService {
     Call<RspModelWrapper<CommentReplyCard>> createCommentReply(@Body CreateReplyModel model);
 
     /**
-     * 拉取用户个人动态
+     * 拉取帖子评论列表
      */
     @GET("comment/{postId}")
-    Call<RspModelWrapper<List<CommentCard>>> pullComments(@Path("postId") long postId);
+    Call<RspModelWrapper<List<CommentCard>>> pullComments(@Path("postId") long postId, @Query("order") int order);
 
     /**
      * 拉取聊天列表

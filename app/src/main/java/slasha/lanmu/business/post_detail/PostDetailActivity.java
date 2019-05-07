@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import butterknife.BindView;
+import butterknife.OnClick;
 import slasha.lanmu.LoadingProvider;
 import slasha.lanmu.R;
 import slasha.lanmu.SameStyleActivity;
@@ -35,6 +36,10 @@ import slasha.lanmu.utils.common.LogUtil;
 import slasha.lanmu.utils.common.ToastUtils;
 import slasha.lanmu.widget.reply.Publisher;
 import slasha.lanmu.widget.reply.ReplyBoard;
+
+import static slasha.lanmu.entity.card.CommentCard.ORDER_COMMENT_THUMBS_UP_FIRST;
+import static slasha.lanmu.entity.card.CommentCard.ORDER_DEFAULT;
+import static slasha.lanmu.entity.card.CommentCard.ORDER_TIME_REMOTEST_FIRST;
 
 public class PostDetailActivity extends SameStyleActivity
         implements PostDetailContract.View {
@@ -62,6 +67,8 @@ public class PostDetailActivity extends SameStyleActivity
     TextView mTvCreatorName;
     @BindView(R.id.tv_comment_count)
     TextView mTvCommentCount;
+    @BindView(R.id.tv_order)
+    TextView mTvOrder;
     @BindView(R.id.reply_board)
     ReplyBoard mReplyBoard;
     @BindView(R.id.scroll_view)
@@ -69,6 +76,7 @@ public class PostDetailActivity extends SameStyleActivity
 
     private CommentAdapter mCommentAdapter;
     private long mPostId;
+    private int mCommentOrder = ORDER_DEFAULT;
     private PostDetailContract.Presenter mPostDetailPresenter;
 
     public static Intent newIntent(Context context, long postId) {
@@ -104,7 +112,7 @@ public class PostDetailActivity extends SameStyleActivity
                 v, scrollX, scrollY, oldScrollX, oldScrollY) -> mReplyBoard.close());
 
         mSwipeRefreshLayoutComments.setOnRefreshListener(() ->
-                myPresenter().performPullComments(mPostId));
+                myPresenter().performPullComments(mPostId, mCommentOrder, PostDetailActivity.this));
 
         mRecyclerViewComments.setLayoutManager(new LinearLayoutManager(this));
 
@@ -126,6 +134,22 @@ public class PostDetailActivity extends SameStyleActivity
         myPresenter().performPullPostDetail(mPostId);
         mReplyBoard.setCommentModel(new CreateCommentModel(mPostId, UserInfo.id()));
     }
+
+    @OnClick(R.id.tv_order)
+    void switchOrder() {
+        if (mCommentOrder == ORDER_DEFAULT) {
+            mCommentOrder = ORDER_TIME_REMOTEST_FIRST;
+            mTvOrder.setText(R.string.order_reverse);
+        } else if (mCommentOrder == ORDER_TIME_REMOTEST_FIRST) {
+            mCommentOrder = ORDER_COMMENT_THUMBS_UP_FIRST;
+            mTvOrder.setText(R.string.order_comment_count);
+        } else if (mCommentOrder == ORDER_COMMENT_THUMBS_UP_FIRST) {
+            mCommentOrder = ORDER_DEFAULT;
+            mTvOrder.setText(R.string.order_default);
+        }
+        myPresenter().performPullComments(mPostId, mCommentOrder, new CommentLoadingProvider());
+    }
+
 
     @Override
     protected int getContentViewResId() {
@@ -161,7 +185,7 @@ public class PostDetailActivity extends SameStyleActivity
             CommonUtils.setAvatar(mIvAvatar, creator.getAvatarUrl());
             mTvCreatorName.setText(creator.getName());
         }
-        myPresenter().performPullComments(mPostId);
+        myPresenter().performPullComments(mPostId, mCommentOrder, this);
         showLoadingIndicator();
     }
 
@@ -209,7 +233,7 @@ public class PostDetailActivity extends SameStyleActivity
     @Override
     public PostDetailContract.Presenter myPresenter() {
         if (mPostDetailPresenter == null) {
-            mPostDetailPresenter = new PostDetailPresenterImpl(this, new PostDetailModelImpl());
+            mPostDetailPresenter = new PostDetailPresenterImpl(this);
         }
         return mPostDetailPresenter;
     }
