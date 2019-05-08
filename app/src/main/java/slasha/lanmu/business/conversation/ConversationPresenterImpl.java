@@ -1,5 +1,6 @@
 package slasha.lanmu.business.conversation;
 
+import slasha.lanmu.LoadingProvider;
 import slasha.lanmu.net.Network;
 import slasha.lanmu.utils.PresenterHelper;
 
@@ -24,5 +25,17 @@ class ConversationPresenterImpl implements ConversationContract.Presenter{
                 mView
         );
 
+    }
+
+    @Override
+    public void performPullUnreadMessages(long userId) {
+        PresenterHelper.requestAndHandleResponse(
+                TAG,
+                Network.remote()::pullUnreadMessages,
+                userId,
+                mView::showPullUnreadMessagesSuccess,
+                mView::showActionFail,
+                mView
+        );
     }
 }

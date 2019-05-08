@@ -6,7 +6,6 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
-import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import slasha.lanmu.entity.api.account.AccountRspModel;
@@ -19,15 +18,16 @@ import slasha.lanmu.entity.api.comment.CreateReplyModel;
 import slasha.lanmu.entity.api.comment.NotifyRspModel;
 import slasha.lanmu.entity.api.message.CreateMsgModel;
 import slasha.lanmu.entity.api.message.PullMsgModel;
+import slasha.lanmu.entity.api.notify.GlobalNotifyRspModel;
 import slasha.lanmu.entity.api.post.CreatePostModel;
 import slasha.lanmu.entity.card.ApplyCard;
 import slasha.lanmu.entity.card.BookPostCard;
 import slasha.lanmu.entity.card.CommentCard;
 import slasha.lanmu.entity.card.CommentReplyCard;
+import slasha.lanmu.entity.card.UnreadMessagesCard;
 import slasha.lanmu.entity.card.DynamicCard;
 import slasha.lanmu.entity.card.MessageCard;
 import slasha.lanmu.entity.card.UserCard;
-import slasha.lanmu.entity.local.CommentReply;
 
 /**
  * 网络请求的所有的接口
@@ -127,8 +127,8 @@ public interface RemoteService {
      */
     @GET("comment/{postId}")
     Call<RspModelWrapper<PageModel<CommentCard>>> pullComments(@Path("postId") long postId,
-                                                                          @Query("order") int order,
-                                                                          @Query("page") int page);
+                                                               @Query("order") int order,
+                                                               @Query("page") int page);
 
     /**
      * 拉取聊天列表
@@ -147,6 +147,12 @@ public interface RemoteService {
      */
     @POST("msg/conversations")
     Call<RspModelWrapper<List<MessageCard>>> pullConversations(@Body long userId);
+
+    /**
+     * 拉取未读私信
+     */
+    @POST("msg/unread")
+    Call<RspModelWrapper<List<UnreadMessagesCard>>> pullUnreadMessages(@Body long userId);
 
     /**
      * 拉取我的帖子评论、评论回复信息
@@ -207,5 +213,10 @@ public interface RemoteService {
     @GET("posts/latest")
     Call<RspModelWrapper<List<BookPostCard>>> latestList(@Query("dummy") int dummy);
 
+    /**
+     * 查询各种未读消息数
+     */
+    @GET("user/notify_count/{userId}")
+    Call<RspModelWrapper<GlobalNotifyRspModel>> globalNotifyCount(@Path("userId") long userId);
 
 }

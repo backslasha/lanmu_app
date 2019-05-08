@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,6 +16,7 @@ import butterknife.BindView;
 import slasha.lanmu.BaseFragment;
 import slasha.lanmu.R;
 import slasha.lanmu.entity.card.MessageCard;
+import slasha.lanmu.entity.card.UnreadMessagesCard;
 import slasha.lanmu.entity.card.UserCard;
 import slasha.lanmu.persistence.UserInfo;
 import slasha.lanmu.utils.AppUtils;
@@ -54,17 +56,34 @@ public class ConversationFragment extends BaseFragment
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setAdapter(mConversationAdapter = new ConversationAdapter(getContext()));
         mSwipeRefreshLayout.setOnRefreshListener(() ->
-                myPresenter().performPullConversations(UserInfo.id()));
+                myPresenter().performPullUnreadMessages(UserInfo.id()));
     }
 
     @Override
     protected void initData() {
-        myPresenter().performPullConversations(UserInfo.id());
+        myPresenter().performPullUnreadMessages(UserInfo.id());
     }
 
     @Override
     public void showPullConversationSuccess(List<MessageCard> cards) {
         mConversationAdapter.performDataSetChanged(cards);
+    }
+
+    @Override
+    public void showPullUnreadMessagesSuccess(List<UnreadMessagesCard> cards) {
+        if (cards.size() == 0) {
+            ToastUtils.showToast("暂无新消息");
+            return;
+        }
+        // 将未读消息插入本地数据库
+        // myPresenter().performPullConversations(UserInfo.id());
+
+        // mock old state
+        List<MessageCard> messagesTemp = new ArrayList<>();
+        for (UnreadMessagesCard card : cards) {
+            messagesTemp.add(card.getUnreadMsgCards().get(0));
+        }
+        showPullConversationSuccess(messagesTemp);
     }
 
     @Override

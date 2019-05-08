@@ -6,17 +6,13 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
-
 import java.util.List;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import slasha.lanmu.R;
 import slasha.lanmu.SameStyleActivity;
-import slasha.lanmu.application.LanmuApplication;
 import slasha.lanmu.business.create_post.CreatePostActivity;
-import slasha.lanmu.business.post_detail.PostDetailActivity;
 import slasha.lanmu.entity.card.BookCard;
 import slasha.lanmu.entity.card.BookPostCard;
 import slasha.lanmu.utils.AppUtils;
@@ -76,10 +72,7 @@ public class ResultActivity extends SameStyleActivity implements
     @Override
     public SearchContract.SearchPresenter myPresenter() {
         if (mPresenter == null) {
-            mPresenter = new SearchPresenterImpl(
-                    new SearchModel(),
-                    this
-            );
+            mPresenter = new SearchPresenterImpl(this);
         }
         return mPresenter;
     }

@@ -17,23 +17,25 @@ import slasha.lanmu.business.account.AccountActivity;
 import slasha.lanmu.business.main.MainActivity;
 import slasha.lanmu.entity.card.UserCard;
 import slasha.lanmu.persistence.AccountInfo;
+import slasha.lanmu.persistence.UnreadInfo;
 import slasha.lanmu.persistence.UserInfo;
 import slasha.lanmu.utils.AppUtils;
 import slasha.lanmu.utils.CommonUtils;
 import slasha.lanmu.utils.common.ToastUtils;
 
 public class DrawerDelegate implements NavigationView.OnNavigationItemSelectedListener,
-        UserInfo.UserInfoChangeListener {
+        UserInfo.UserInfoChangeListener, UnreadInfo.UnreadInfoChangeListener {
 
     private MainActivity activity;
     private NavigationView mNavigationView;
+    private Toolbar toolbar;
 
     public DrawerDelegate(MainActivity activity) {
         this.activity = activity;
     }
 
     public void delegate() {
-        Toolbar toolbar = activity.findViewById(R.id.toolbar);
+        toolbar = activity.findViewById(R.id.toolbar);
         DrawerLayout drawer = activity.findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 activity,
@@ -44,11 +46,12 @@ public class DrawerDelegate implements NavigationView.OnNavigationItemSelectedLi
         );
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
+        toolbar.setNavigationIcon(R.drawable.menu_with_badge);
         mNavigationView = activity.findViewById(R.id.nav_view);
         mNavigationView.setNavigationItemSelectedListener(this);
         updateNavHeaderUI(UserInfo.self());
         UserInfo.registerLoginStatusListener(this);
+        UnreadInfo.registerLoginStatusListener(this);
     }
 
 
@@ -131,5 +134,46 @@ public class DrawerDelegate implements NavigationView.OnNavigationItemSelectedLi
 
     public void onDestroy() {
         UserInfo.unregisterLoginStatusListener(this);
+        UnreadInfo.unregisterLoginStatusListener(this);
+    }
+
+    @Override
+    public void onApplyCountChanged(int count) {
+        updateToolbarIcon();
+        updateNavItem(R.id.nav_my_contract, R.string.menu_my_contract, count);
+    }
+
+    @Override
+    public void onNotificationCountChanged(int count) {
+        updateToolbarIcon();
+        updateNavItem(R.id.nav_my_notification, R.string.menu_my_notification, count);
+    }
+
+
+    @Override
+    public void onMessageCountChanged(int count) {
+        updateToolbarIcon();
+        updateNavItem(R.id.nav_my_message, R.string.menu_my_message, count);
+    }
+
+    private void updateToolbarIcon() {
+        if (toolbar != null) {
+            if (UnreadInfo.getTotalCount() == 0) {
+                toolbar.setNavigationIcon(R.drawable.ic_menu_white_24dp);
+            } else {
+                toolbar.setNavigationIcon(R.drawable.menu_with_badge);
+            }
+        }
+    }
+
+    private void updateNavItem(int menuId, int titleId, int count) {
+        MenuItem item = mNavigationView.getMenu().findItem(menuId);
+        String rear = String.format(activity.getString(R.string.unread), count);
+        String title = activity.getString(titleId);
+        if (count > 0) {
+            item.setTitle(title + rear);
+        } else {
+            item.setTitle(title);
+        }
     }
 }

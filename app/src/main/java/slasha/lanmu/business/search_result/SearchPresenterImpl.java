@@ -16,8 +16,7 @@ public class SearchPresenterImpl implements SearchContract.SearchPresenter {
     private static final String TAG = "lanmu.search";
     private SearchContract.View mView;
 
-    SearchPresenterImpl(SearchContract.SearchModel searchModel,
-                        SearchContract.View view) {
+    SearchPresenterImpl(SearchContract.View view) {
         mView = view;
     }
 

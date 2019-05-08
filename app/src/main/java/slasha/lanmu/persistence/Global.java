@@ -12,7 +12,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.TimeZone;
 
 public class Global {
 
@@ -23,7 +22,6 @@ public class Global {
 
     static {
         gson = new GsonBuilder()
-//                .setDateFormat(DATE_FORMAT)
                 .excludeFieldsWithoutExposeAnnotation()
                 .registerTypeAdapter(Date.class, new DateDeserializer())
                 .create();
@@ -31,14 +29,6 @@ public class Global {
 
     public static Gson gson() {
         return gson;
-    }
-
-    public static class Debug {
-        public static boolean sUseFakeData = false;
-        public static boolean sUserFakeLoginResult = true;
-        public static boolean sUserFakeBookPostFlow = true;
-        public static boolean sUserFakeComments = true;
-        public static long sLoadingTime = 2000;
     }
 
     static class DateDeserializer implements JsonDeserializer<Date> {
@@ -57,5 +47,7 @@ public class Global {
             }
         }
     }
+
+
 
 }

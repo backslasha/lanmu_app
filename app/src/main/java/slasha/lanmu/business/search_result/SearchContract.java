@@ -18,7 +18,4 @@ public interface SearchContract {
         void performQuery(String keyword);
     }
 
-    interface SearchModel extends BaseModel {
-        List<BookPost> offer(String keyword);
-    }
 }

@@ -1,8 +1,7 @@
-package slasha.lanmu.business.main;
+package slasha.lanmu.business.main.flow;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
@@ -19,27 +18,25 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import slasha.lanmu.R;
 import slasha.lanmu.entity.card.BookCard;
 import slasha.lanmu.entity.card.BookPostCard;
-import slasha.lanmu.utils.AppUtils;
 import slasha.lanmu.utils.CommonUtils;
-import slasha.lanmu.utils.common.ToastUtils;
 import yhb.chorus.common.adapter.SimpleAdapter;
 import yhb.chorus.common.adapter.base.SimpleHolder;
 
 import static slasha.lanmu.utils.AppUtils.jumpToPostDetail;
 
-public class BookPostFlowFragment extends Fragment
-        implements MainContract.MainView, SwipeRefreshLayout.OnRefreshListener {
+public class FlowFragment extends Fragment
+        implements FlowContract.View, SwipeRefreshLayout.OnRefreshListener {
 
     private static final String ARGS_BOOK_POST_FLOW = "bookPostFlow";
     private RecyclerView mRecyclerView;
     private SimpleAdapter<BookPostCard> mAdapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private MainContract.MainPresenter mMainPresenter;
+    private FlowContract.Presenter mPresenter;
     private FlowType mFlowType;
 
-    static BookPostFlowFragment newInstance(FlowType flowType) {
+    static FlowFragment newInstance(FlowType flowType) {
         Bundle args = new Bundle();
-        BookPostFlowFragment fragment = new BookPostFlowFragment();
+        FlowFragment fragment = new FlowFragment();
         args.putSerializable(ARGS_BOOK_POST_FLOW, flowType);
         fragment.setArguments(args);
         return fragment;
@@ -47,9 +44,9 @@ public class BookPostFlowFragment extends Fragment
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View inflate = inflater.inflate(
+    public android.view.View onCreateView(@NonNull LayoutInflater inflater,
+                                          @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        android.view.View inflate = inflater.inflate(
                 R.layout.fragment_refresh_recycler_view, container, false);
         mRecyclerView = inflate.findViewById(R.id.recycler_view);
         mSwipeRefreshLayout = inflate.findViewById(R.id.swipe_refresh_layout);
@@ -97,7 +94,7 @@ public class BookPostFlowFragment extends Fragment
             };
             mRecyclerView.setAdapter(mAdapter);
             mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-            mRecyclerView.setVisibility(View.VISIBLE);
+            mRecyclerView.setVisibility(android.view.View.VISIBLE);
         }
         mAdapter.performDataSetChanged(bookPostCards);
     }
@@ -108,11 +105,11 @@ public class BookPostFlowFragment extends Fragment
     }
 
     @Override
-    public MainContract.MainPresenter myPresenter() {
-        if (mMainPresenter == null) {
-            mMainPresenter = new MainPresenterImpl(this);
+    public FlowContract.Presenter myPresenter() {
+        if (mPresenter == null) {
+            mPresenter = new FlowPresenterImpl(this);
         }
-        return mMainPresenter;
+        return mPresenter;
     }
 
     @Override
@@ -131,7 +128,7 @@ public class BookPostFlowFragment extends Fragment
     }
 
 
-    enum FlowType implements Serializable {
+    public enum FlowType implements Serializable {
 
         LATEST(1, "最新"),
         HOT(2, "热门");
