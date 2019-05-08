@@ -21,6 +21,7 @@ import slasha.lanmu.LoadingProvider;
 import slasha.lanmu.R;
 import slasha.lanmu.SameStyleActivity;
 import slasha.lanmu.business.post_detail.apdater.CommentAdapter;
+import slasha.lanmu.entity.api.base.PageModel;
 import slasha.lanmu.entity.api.comment.CreateCommentModel;
 import slasha.lanmu.entity.api.comment.CreateReplyModel;
 import slasha.lanmu.entity.card.BookCard;
@@ -36,13 +37,13 @@ import slasha.lanmu.utils.common.LogUtil;
 import slasha.lanmu.utils.common.ToastUtils;
 import slasha.lanmu.widget.reply.Publisher;
 import slasha.lanmu.widget.reply.ReplyBoard;
+import yhb.chorus.common.adapter.wrapper.LoadMoreWrapper;
 
 import static slasha.lanmu.entity.card.CommentCard.ORDER_COMMENT_THUMBS_UP_FIRST;
 import static slasha.lanmu.entity.card.CommentCard.ORDER_DEFAULT;
 import static slasha.lanmu.entity.card.CommentCard.ORDER_TIME_REMOTEST_FIRST;
 
-public class PostDetailActivity extends SameStyleActivity
-        implements PostDetailContract.View {
+public class PostDetailActivity extends SameStyleActivity implements PostDetailContract.View {
 
     private static final String EXTRA_BOOK_POST_ID = "extra_book_post_id";
     private static final String TAG = "lanmu.detail";
@@ -74,9 +75,10 @@ public class PostDetailActivity extends SameStyleActivity
     @BindView(R.id.scroll_view)
     NestedScrollView mScrollView;
 
-    private CommentAdapter mCommentAdapter;
+    private LoadMoreWrapper<CommentCard> mLoadingMoreAdapter;
     private long mPostId;
     private int mCommentOrder = ORDER_DEFAULT;
+    private int mPage = 1;
     private PostDetailContract.Presenter mPostDetailPresenter;
 
     public static Intent newIntent(Context context, long postId) {
@@ -108,11 +110,22 @@ public class PostDetailActivity extends SameStyleActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.icon_less);
 
-        mScrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (
-                v, scrollX, scrollY, oldScrollX, oldScrollY) -> mReplyBoard.close());
+        mScrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener)
+                (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+                    // Load More Data
+                    if (scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())) {
+                        if (!mLoadingMoreAdapter.isFinishLoadMore()) {
+                            doLoadMore();
+                        }
+                    }
+                    mReplyBoard.close();
+                });
 
-        mSwipeRefreshLayoutComments.setOnRefreshListener(() ->
-                myPresenter().performPullComments(mPostId, mCommentOrder, PostDetailActivity.this));
+        mSwipeRefreshLayoutComments.setOnRefreshListener(() -> {
+            mPage = 1;
+            mLoadingMoreAdapter.setFinishedLoadMore(false);
+            myPresenter().performPullComments(mPostId, mCommentOrder, mPage, PostDetailActivity.this);
+        });
 
         mRecyclerViewComments.setLayoutManager(new LinearLayoutManager(this));
 
@@ -127,6 +140,10 @@ public class PostDetailActivity extends SameStyleActivity
                 myPresenter().performPublishCommentReply(model, new CommentLoadingProvider());
             }
         });
+    }
+
+    private void doLoadMore() {
+        myPresenter().performPullComments(mPostId, mCommentOrder, mPage, new CommentLoadingProvider());
     }
 
     @Override
@@ -147,7 +164,10 @@ public class PostDetailActivity extends SameStyleActivity
             mCommentOrder = ORDER_DEFAULT;
             mTvOrder.setText(R.string.order_default);
         }
-        myPresenter().performPullComments(mPostId, mCommentOrder, new CommentLoadingProvider());
+        mPage = 1;
+        mLoadingMoreAdapter.setFinishedLoadMore(false);
+        myPresenter().performPullComments(mPostId,
+                mCommentOrder, mPage, new CommentLoadingProvider());
     }
 
 
@@ -185,27 +205,41 @@ public class PostDetailActivity extends SameStyleActivity
             CommonUtils.setAvatar(mIvAvatar, creator.getAvatarUrl());
             mTvCreatorName.setText(creator.getName());
         }
-        myPresenter().performPullComments(mPostId, mCommentOrder, this);
+        myPresenter().performPullComments(mPostId, mCommentOrder, mPage, this);
         showLoadingIndicator();
     }
 
     @Override
-    public void showComments(List<CommentCard> comments) {
+    public void showComments(PageModel<CommentCard> commentPage) {
+        List<CommentCard> comments = commentPage.getResult();
+        boolean end = commentPage.isEnd();
+        int page = commentPage.getPage();
+        int total = commentPage.getTotal();
+
         if (CommonUtils.isEmpty(comments)) {
             ToastUtils.showToast("no comments found!");
         } else {
-            if (mCommentAdapter == null) {
-                mCommentAdapter = new CommentAdapter(this);
-                mCommentAdapter.setCommentClickListener(new CommentClickListener());
-                mRecyclerViewComments.setAdapter(mCommentAdapter);
+            mTvCommentCount.setText(String.format(String.format("%s%s",
+                    getString(R.string.comments_title), getString(R.string.count)), total));
+            if (mLoadingMoreAdapter == null) {
+                CommentAdapter commentAdapter = new CommentAdapter(this);
+                commentAdapter.setCommentClickListener(new CommentClickListener());
+                mLoadingMoreAdapter = new LoadMoreWrapper<>(
+                        commentAdapter,
+                        R.layout.layout_loading_footer,
+                        R.layout.layout_finished_footer
+                );
+                mRecyclerViewComments.setAdapter(mLoadingMoreAdapter);
             }
-            mCommentAdapter.performDataSetChanged(comments);
-            int count = comments.size();
-            if (count > 0) {
-                mTvCommentCount.setText(String.format(String.format("%s%s",
-                        getString(R.string.comments_title),
-                        getString(R.string.count)), count));
+            if (end) {
+                mLoadingMoreAdapter.setFinishedLoadMore(true);
             }
+            if (page == 1) {
+                mLoadingMoreAdapter.performDataSetChanged(comments);
+            } else {
+                mLoadingMoreAdapter.performDataSetAdded(comments);
+            }
+            mPage = page + 1;
         }
     }
 
@@ -214,17 +248,17 @@ public class PostDetailActivity extends SameStyleActivity
         ToastUtils.showToast(R.string.tip_create_comment_success);
         mReplyBoard.close();
         mReplyBoard.clear();
-        mCommentAdapter.performSingleDataAdded(card);
+        mLoadingMoreAdapter.performSingleDataAdded(card);
     }
 
     @Override
     public void showCreateReplySuccess(CommentReplyCard card) {
         ToastUtils.showToast(R.string.tip_create_reply_success);
         int pos = (int) mReplyBoard.getTag();
-        if (pos < mCommentAdapter.getEntities().size()) {
-            CommentCard commentCard = mCommentAdapter.getEntities().get(pos);
+        if (pos < mLoadingMoreAdapter.getEntities().size()) {
+            CommentCard commentCard = mLoadingMoreAdapter.getEntities().get(pos);
             commentCard.getReplies().add(card);
-            mCommentAdapter.notifyItemChanged(pos);
+            mLoadingMoreAdapter.notifyItemChanged(pos);
         }
         mReplyBoard.close();
         mReplyBoard.clear();

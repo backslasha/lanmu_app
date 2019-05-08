@@ -1,16 +1,14 @@
 package yhb.chorus.common.adapter;
 
 import android.content.Context;
-
-import androidx.annotation.LayoutRes;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import yhb.chorus.common.adapter.base.SimpleHolder;
 
 
@@ -23,8 +21,6 @@ public abstract class SimpleAdapter<Entity> extends RecyclerView.Adapter<SimpleH
     private Context mContext;
 
     private List<Entity> mEntities;
-
-    private OnItemClickListener mOnItemClickListener;
 
     protected SimpleAdapter(Context context) {
         mContext = context;
@@ -112,11 +108,4 @@ public abstract class SimpleAdapter<Entity> extends RecyclerView.Adapter<SimpleH
         return mEntities;
     }
 
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-        this.mOnItemClickListener = onItemClickListener;
-    }
-
-    interface OnItemClickListener {
-        void onItemClick(int position);
-    }
 }

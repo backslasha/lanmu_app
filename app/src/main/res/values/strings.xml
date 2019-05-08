@@ -131,5 +131,6 @@
     <string name="order_default">默认排序</string>
     <string name="order_reverse">倒序查看</string>
     <string name="order_comment_count">按热度排序</string>
+    <string name="arrived_bottom">已经到底啦</string>
 
 </resources>

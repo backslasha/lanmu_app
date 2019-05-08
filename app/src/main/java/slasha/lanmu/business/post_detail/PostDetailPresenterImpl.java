@@ -76,10 +76,23 @@ public class PostDetailPresenterImpl implements PostDetailContract.Presenter {
     }
 
     @Override
-    public void performPullComments(long postId, int order, LoadingProvider loadingProvider) {
+    public void performPullComments(long postId, int order, int page, LoadingProvider loadingProvider) {
+        if (page > 1) {
+            loadingProvider = new LoadingProvider() {
+                @Override
+                public void showLoadingIndicator() {
+
+                }
+
+                @Override
+                public void hideLoadingIndicator() {
+
+                }
+            };
+        }
         PresenterHelper.requestAndHandleResponse(
                 TAG,
-                Network.remote().pullComments(postId, order),
+                Network.remote().pullComments(postId, order, page),
                 mView::showComments,
                 mView::showActionFail,
                 loadingProvider

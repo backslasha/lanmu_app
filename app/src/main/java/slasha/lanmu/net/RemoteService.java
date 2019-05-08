@@ -12,6 +12,7 @@ import retrofit2.http.Query;
 import slasha.lanmu.entity.api.account.AccountRspModel;
 import slasha.lanmu.entity.api.account.LoginModel;
 import slasha.lanmu.entity.api.account.RegisterModel;
+import slasha.lanmu.entity.api.base.PageModel;
 import slasha.lanmu.entity.api.base.RspModelWrapper;
 import slasha.lanmu.entity.api.comment.CreateCommentModel;
 import slasha.lanmu.entity.api.comment.CreateReplyModel;
@@ -125,7 +126,9 @@ public interface RemoteService {
      * 拉取帖子评论列表
      */
     @GET("comment/{postId}")
-    Call<RspModelWrapper<List<CommentCard>>> pullComments(@Path("postId") long postId, @Query("order") int order);
+    Call<RspModelWrapper<PageModel<CommentCard>>> pullComments(@Path("postId") long postId,
+                                                                          @Query("order") int order,
+                                                                          @Query("page") int page);
 
     /**
      * 拉取聊天列表

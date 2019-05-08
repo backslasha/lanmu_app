@@ -9,6 +9,7 @@ import slasha.lanmu.BaseModel;
 import slasha.lanmu.BasePresenter;
 import slasha.lanmu.BaseView;
 import slasha.lanmu.LoadingProvider;
+import slasha.lanmu.entity.api.base.PageModel;
 import slasha.lanmu.entity.api.comment.CreateCommentModel;
 import slasha.lanmu.entity.api.comment.CreateReplyModel;
 import slasha.lanmu.entity.card.BookPostCard;
@@ -26,7 +27,7 @@ public interface PostDetailContract {
         void showDetail(List<BookPostCard> bookPosts);
 
         @MainThread
-        void showComments(List<CommentCard> comments);
+        void showComments(PageModel<CommentCard> commentPage);
 
         @MainThread
         void showCreateCommentSuccess(CommentCard card);
@@ -45,7 +46,7 @@ public interface PostDetailContract {
 
         void performThumbsUp(long fromId, long commentId);
 
-        void performPullComments(long postId, int order, LoadingProvider loadingProvider);
+        void performPullComments(long postId, int order, int page, LoadingProvider loadingProvider);
     }
 
 }
