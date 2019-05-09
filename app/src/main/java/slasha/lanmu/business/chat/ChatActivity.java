@@ -24,6 +24,7 @@ import slasha.lanmu.entity.api.message.CreateMsgModel;
 import slasha.lanmu.entity.api.message.PullMsgModel;
 import slasha.lanmu.entity.card.MessageCard;
 import slasha.lanmu.entity.card.UserCard;
+import slasha.lanmu.entity.db.User;
 import slasha.lanmu.persistence.UserInfo;
 import slasha.lanmu.utils.AppUtils;
 import slasha.lanmu.utils.common.KeyBoardUtils;
@@ -139,11 +140,11 @@ public class ChatActivity extends SameStyleActivity
 
     @Override
     protected void initData() {
-        PullMsgModel model = new PullMsgModel();
-        model.setFromId(UserInfo.id());
-        model.setToId(mTalkTo.getId());
-        model.setPullCount(20);
-        myPresenter().performPullMessages(model);
+//        PullMsgModel model = new PullMsgModel();
+//        model.setFromId(UserInfo.id());
+//        model.setToId(mTalkTo.getId());
+//        model.setPullCount(20);
+        myPresenter().performPullMessagesLocally(mTalkTo.getId());
     }
 
     @Override

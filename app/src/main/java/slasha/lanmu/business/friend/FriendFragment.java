@@ -66,7 +66,7 @@ public class FriendFragment extends BaseFragment implements FriendContract.View 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mSwipeRefreshLayout.setOnRefreshListener(() ->
                 myPresenter().performPullFriends(UserInfo.id()));
-        myPresenter().performPullFriends(UserInfo.id());
+        myPresenter().performPullFriendLocally(UserInfo.id());
     }
 
     @Override
@@ -93,7 +93,13 @@ public class FriendFragment extends BaseFragment implements FriendContract.View 
     }
 
     @Override
+    public void showPullFriendsLocallySuccess(List<UserCard> cards) {
+        mFriendAdapter.performDataSetChanged(cards);
+    }
+
+    @Override
     public void showPullFriendsSuccess(List<UserCard> cards) {
+        myPresenter().performSyncFriends2Db(cards);
         mFriendAdapter.performDataSetChanged(cards);
     }
 

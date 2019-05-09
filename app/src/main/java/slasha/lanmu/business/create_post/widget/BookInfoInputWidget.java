@@ -183,7 +183,7 @@ public class BookInfoInputWidget extends ScrollView
         book.setLanguish(String.valueOf(mEdtLanguish.getText()));
         book.setName(String.valueOf(mEdtBookName.getText()));
         book.setPublishDate(
-                FormatUtils.toServerFormat(String.valueOf(mEdtPublishDate.getText()), "yyyy/MM/dd")
+                FormatUtils.dbFormat(String.valueOf(mEdtPublishDate.getText()), "yyyy/MM/dd")
         );
         book.setPublisher(String.valueOf(mEdtPublisher.getText()));
         book.setVersion(String.valueOf(mEdtVersion.getText()));

@@ -11,23 +11,35 @@ import java.util.List;
 import java.util.Locale;
 
 import slasha.lanmu.entity.card.BookCard;
-import slasha.lanmu.entity.card.UserCard;
 import slasha.lanmu.persistence.Global;
 
 public class FormatUtils {
-    private static final SimpleDateFormat dataFormatter
+    private static final SimpleDateFormat dbDateFormatter
             = new SimpleDateFormat(Global.DATE_FORMAT, Locale.CHINA);
     private static final SimpleDateFormat simpleFormatter
             = new SimpleDateFormat("yyyy/MM/dd", Locale.CHINA);
 
-    public static String toServerFormat(String date, String pattern) {
+    public static String dbFormat(String date, String pattern) {
         simpleFormatter.applyPattern(pattern);
         try {
-            return dataFormatter.format(simpleFormatter.parse(date));
+            return dbDateFormatter.format(simpleFormatter.parse(date));
         } catch (ParseException e) {
             e.printStackTrace();
         }
         return date;
+    }
+
+    public static String dbFormat(Date date) {
+        return dbDateFormatter.format(date);
+    }
+
+    public static Date dbFormat(String date) {
+        try {
+            return dbDateFormatter.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return new Date();
     }
 
     public static String format(Date date, String pattern) {

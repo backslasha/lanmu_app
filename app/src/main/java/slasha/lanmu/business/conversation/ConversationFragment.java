@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,7 +20,9 @@ import slasha.lanmu.R;
 import slasha.lanmu.entity.card.MessageCard;
 import slasha.lanmu.entity.card.UnreadMessagesCard;
 import slasha.lanmu.entity.card.UserCard;
+import slasha.lanmu.entity.db.Message;
 import slasha.lanmu.persistence.UserInfo;
+import slasha.lanmu.persistence.db.LanmuDB;
 import slasha.lanmu.utils.AppUtils;
 import slasha.lanmu.utils.CommonUtils;
 import slasha.lanmu.utils.FlexibleTimeFormat;
@@ -37,6 +41,7 @@ public class ConversationFragment extends BaseFragment
 
     private ConversationAdapter mConversationAdapter;
     private ConversationContract.Presenter mPresenter;
+    private boolean mHasSync = false;
 
     static ConversationFragment newInstance() {
         ConversationFragment fragment = new ConversationFragment();
@@ -60,8 +65,14 @@ public class ConversationFragment extends BaseFragment
     }
 
     @Override
-    protected void initData() {
-        myPresenter().performPullUnreadMessages(UserInfo.id());
+    public void onResume() {
+        super.onResume();
+        if (mHasSync) {
+            myPresenter().performPullConversations(UserInfo.id(), false);
+        } else {
+            myPresenter().performPullConversations(UserInfo.id(), true);
+            mHasSync = true;
+        }
     }
 
     @Override
@@ -75,15 +86,7 @@ public class ConversationFragment extends BaseFragment
             ToastUtils.showToast("暂无新消息");
             return;
         }
-        // 将未读消息插入本地数据库
-        // myPresenter().performPullConversations(UserInfo.id());
-
-        // mock old state
-        List<MessageCard> messagesTemp = new ArrayList<>();
-        for (UnreadMessagesCard card : cards) {
-            messagesTemp.add(card.getUnreadMsgCards().get(0));
-        }
-        showPullConversationSuccess(messagesTemp);
+        myPresenter().performPullConversations(UserInfo.id(), false);
     }
 
     @Override

@@ -15,7 +15,12 @@ public interface ConversationContract {
     }
 
     interface Presenter extends BasePresenter {
-        void performPullConversations(long userId);// from local db
+        /**
+         * @param userId     id of whom with the conversations.
+         * @param syncServer after load finished from the db, sync data with server with
+         *                   {@link Presenter#performPullUnreadMessages(long)}.
+         */
+        void performPullConversations(long userId, boolean syncServer);// from local db
 
         void performPullUnreadMessages(long userId);
     }

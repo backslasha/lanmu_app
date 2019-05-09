@@ -23,6 +23,8 @@ public interface ChatContract {
     interface Presenter extends BasePresenter {
         void performPullMessages(PullMsgModel msgModel);
 
+        void performPullMessagesLocally(long talk2Id);
+
         void performSendMessage(CreateMsgModel model);
     }
 }

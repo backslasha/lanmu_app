@@ -56,8 +56,6 @@ public class MainActivity extends AppCompatActivity implements UnreadMsgContract
                 FlowFragment.FlowType.LATEST,
         }));
         mTabLayout.setupWithViewPager(mViewPager);
-
-
         myPresenter().performQueryGlobalNotifyCount(UserInfo.id());
     }
 
