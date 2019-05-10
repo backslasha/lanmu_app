@@ -21,6 +21,17 @@ public class ApplyCard {
     @Expose
     private int handle = 0;
 
+    public int getReceived() {
+        return received;
+    }
+
+    public void setReceived(int received) {
+        this.received = received;
+    }
+
+    @Expose
+    private int received = 0;
+
     public UserCard getFrom() {
         return from;
     }

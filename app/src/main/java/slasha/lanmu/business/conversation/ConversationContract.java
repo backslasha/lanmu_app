@@ -4,12 +4,13 @@ import java.util.List;
 
 import slasha.lanmu.BasePresenter;
 import slasha.lanmu.BaseView;
-import slasha.lanmu.entity.card.UnreadMessagesCard;
+import slasha.lanmu.entity.api.base.UnreadModel;
 import slasha.lanmu.entity.card.MessageCard;
+import slasha.lanmu.entity.card.UnreadMessagesCard;
 
 public interface ConversationContract {
     interface View extends BaseView<Presenter> {
-        void showPullConversationSuccess(List<MessageCard> cards);
+        void showPullConversationLocallySuccess(List<UnreadModel<MessageCard>> cards);
 
         void showPullUnreadMessagesSuccess(List<UnreadMessagesCard> cards);
     }

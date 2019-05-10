@@ -5,10 +5,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,12 +15,12 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import butterknife.BindView;
 import slasha.lanmu.BaseFragment;
 import slasha.lanmu.R;
+import slasha.lanmu.entity.api.base.UnreadModel;
 import slasha.lanmu.entity.card.MessageCard;
 import slasha.lanmu.entity.card.UnreadMessagesCard;
 import slasha.lanmu.entity.card.UserCard;
-import slasha.lanmu.entity.db.Message;
+import slasha.lanmu.persistence.UnreadInfo;
 import slasha.lanmu.persistence.UserInfo;
-import slasha.lanmu.persistence.db.LanmuDB;
 import slasha.lanmu.utils.AppUtils;
 import slasha.lanmu.utils.CommonUtils;
 import slasha.lanmu.utils.FlexibleTimeFormat;
@@ -76,7 +74,8 @@ public class ConversationFragment extends BaseFragment
     }
 
     @Override
-    public void showPullConversationSuccess(List<MessageCard> cards) {
+    public void showPullConversationLocallySuccess(List<UnreadModel<MessageCard>> cards) {
+        UnreadInfo.setMessageCount(0); // mark all unread messages has been noticed by user
         mConversationAdapter.performDataSetChanged(cards);
     }
 
@@ -86,6 +85,7 @@ public class ConversationFragment extends BaseFragment
             ToastUtils.showToast("暂无新消息");
             return;
         }
+        // 数据库未读消息以经更新，重新拉取
         myPresenter().performPullConversations(UserInfo.id(), false);
     }
 
@@ -113,7 +113,7 @@ public class ConversationFragment extends BaseFragment
     }
 
 
-    class ConversationAdapter extends SimpleAdapter<MessageCard> {
+    class ConversationAdapter extends SimpleAdapter<UnreadModel<MessageCard>> {
 
         private Context mContext;
 
@@ -128,12 +128,21 @@ public class ConversationFragment extends BaseFragment
         }
 
         @Override
-        protected void bind(SimpleHolder holder, MessageCard recentMsg) {
+        protected void bind(SimpleHolder holder, UnreadModel<MessageCard> unreadMessagesCard) {
+            MessageCard recentMsg = unreadMessagesCard.getResult().get(0);
             final UserCard talkTo = (recentMsg.getTo().getId() == UserInfo.id()) ?
                     recentMsg.getFrom() : recentMsg.getTo();
             holder.setText(R.id.tv_username, talkTo.getName());
             holder.setText(R.id.tv_time, FlexibleTimeFormat.changeTimeToDesc(
                     recentMsg.getTime().getTime()));
+            TextView tvUnread = (TextView) holder.getView(R.id.tv_unread_count);
+            int unreadCount = unreadMessagesCard.getUnreadCount();
+            if (unreadCount > 0) {
+                tvUnread.setText(String.valueOf(Math.min(unreadCount, 99)));
+                tvUnread.setVisibility(View.VISIBLE);
+            }else {
+                tvUnread.setVisibility(View.GONE);
+            }
             holder.setText(R.id.tv_content, recentMsg.getContent());
             CommonUtils.setAvatar((ImageView) holder.getView(R.id.iv_avatar), talkTo.getAvatarUrl());
             holder.itemView.setOnClickListener(v -> AppUtils.jumpToChatPage(mContext, talkTo));

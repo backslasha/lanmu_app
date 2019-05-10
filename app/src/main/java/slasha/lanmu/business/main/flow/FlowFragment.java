@@ -33,8 +33,9 @@ public class FlowFragment extends Fragment
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private FlowContract.Presenter mPresenter;
     private FlowType mFlowType;
+    private FlowRefreshListener mFlowRefreshListener;
 
-    static FlowFragment newInstance(FlowType flowType) {
+    public static FlowFragment newInstance(FlowType flowType) {
         Bundle args = new Bundle();
         FlowFragment fragment = new FlowFragment();
         args.putSerializable(ARGS_BOOK_POST_FLOW, flowType);
@@ -102,6 +103,9 @@ public class FlowFragment extends Fragment
     @Override
     public void onRefresh() {
         myPresenter().performPullBookPosts(mFlowType);
+        if (mFlowRefreshListener != null) {
+            mFlowRefreshListener.onRefreshing();
+        }
     }
 
     @Override
@@ -127,6 +131,13 @@ public class FlowFragment extends Fragment
 
     }
 
+    public void setFlowRefreshListener(FlowRefreshListener flowRefreshListener) {
+        mFlowRefreshListener = flowRefreshListener;
+    }
+
+    public interface FlowRefreshListener{
+        void onRefreshing();
+    }
 
     public enum FlowType implements Serializable {
 

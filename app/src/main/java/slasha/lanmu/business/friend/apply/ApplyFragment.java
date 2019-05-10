@@ -18,6 +18,7 @@ import slasha.lanmu.LoadingProvider;
 import slasha.lanmu.R;
 import slasha.lanmu.entity.card.ApplyCard;
 import slasha.lanmu.entity.card.UserCard;
+import slasha.lanmu.persistence.UnreadInfo;
 import slasha.lanmu.persistence.UserInfo;
 import slasha.lanmu.utils.AppUtils;
 import slasha.lanmu.utils.CommonUtils;
@@ -68,6 +69,7 @@ public class ApplyFragment extends BaseFragment
     @Override
     public void showPullAppliesSuccess(List<ApplyCard> cards) {
         mApplyAdapter.performDataSetChanged(cards);
+        UnreadInfo.setApplyCount(0);
     }
 
     @Override

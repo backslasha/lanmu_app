@@ -4,6 +4,8 @@ import com.google.gson.annotations.Expose;
 
 import java.util.Date;
 
+import slasha.lanmu.persistence.UserInfo;
+
 public class MessageCard {
 
     public static final int TYPE_TEXT = 0;
@@ -77,5 +79,12 @@ public class MessageCard {
 
     public void setTo(UserCard to) {
         this.to = to;
+    }
+
+    public long getTalk2Id() {
+        if (UserInfo.id() == from.getId()) {
+            return to.getId();
+        }
+        return from.getId();
     }
 }

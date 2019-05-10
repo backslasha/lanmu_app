@@ -14,6 +14,7 @@ import slasha.lanmu.R;
 import slasha.lanmu.entity.api.comment.NotifyRspModel;
 import slasha.lanmu.entity.card.NotifyCard;
 import slasha.lanmu.entity.card.UserCard;
+import slasha.lanmu.persistence.UnreadInfo;
 import slasha.lanmu.persistence.UserInfo;
 import slasha.lanmu.utils.AppUtils;
 import slasha.lanmu.utils.CommonUtils;
@@ -70,6 +71,8 @@ public class NotificationFragment extends BaseFragment implements NotificationCo
     @Override
     public void showPullNotificationsSuccess(NotifyRspModel notifyRspModel) {
         mNotificationAdapter.performDataSetChanged(notifyRspModel.getNotifyCards());
+        UnreadInfo.setCommentCount(0);
+        UnreadInfo.setThumbsUpCount(0);
     }
 
     @Override

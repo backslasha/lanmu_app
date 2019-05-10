@@ -1,9 +1,6 @@
 package slasha.lanmu.business.friend;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,6 +17,7 @@ import butterknife.BindView;
 import slasha.lanmu.BaseFragment;
 import slasha.lanmu.R;
 import slasha.lanmu.entity.card.UserCard;
+import slasha.lanmu.persistence.UnreadInfo;
 import slasha.lanmu.persistence.UserInfo;
 import slasha.lanmu.utils.AppUtils;
 import slasha.lanmu.utils.CommonUtils;
@@ -27,7 +25,8 @@ import slasha.lanmu.utils.common.ToastUtils;
 import yhb.chorus.common.adapter.SimpleAdapter;
 import yhb.chorus.common.adapter.base.SimpleHolder;
 
-public class FriendFragment extends BaseFragment implements FriendContract.View {
+public class FriendFragment extends BaseFragment implements FriendContract.View,
+        UnreadInfo.UnreadInfoChangeListener {
 
     private static final String TAG = "lanmu.friend";
 
@@ -39,6 +38,7 @@ public class FriendFragment extends BaseFragment implements FriendContract.View 
 
     private FriendContract.Presenter mPresenter;
     private FriendAdapter mFriendAdapter;
+    private Menu mMenu;
 
     static FriendFragment newInstance() {
         Bundle args = new Bundle();
@@ -67,6 +67,13 @@ public class FriendFragment extends BaseFragment implements FriendContract.View 
         mSwipeRefreshLayout.setOnRefreshListener(() ->
                 myPresenter().performPullFriends(UserInfo.id()));
         myPresenter().performPullFriendLocally(UserInfo.id());
+        UnreadInfo.registerLoginStatusListener(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        UnreadInfo.unregisterLoginStatusListener(this);
     }
 
     @Override
@@ -106,10 +113,12 @@ public class FriendFragment extends BaseFragment implements FriendContract.View 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.friend, menu);
-        MenuItem item = menu.findItem(R.id.action_new_friend);
-        Drawable drawable = item.getIcon();
-        if (drawable != null) {
-            drawable.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+        mMenu = menu;
+        MenuItem menuItem = menu.findItem(R.id.action_new_friend);
+        if (UnreadInfo.getApplyCount() == 0) {
+            menuItem.setIcon(R.drawable.ic_person_add_white_24dp);
+        } else {
+            menuItem.setIcon(R.drawable.action_add_friend_with_badge);
         }
     }
 
@@ -126,6 +135,30 @@ public class FriendFragment extends BaseFragment implements FriendContract.View 
         return super.onOptionsItemSelected(item);
     }
 
+
+    @Override
+    public void onApplyCountChanged(int count) {
+        if (null == mMenu) {
+            return;
+        }
+        MenuItem menuItem = mMenu.findItem(R.id.action_new_friend);
+        if (count == 0) {
+            menuItem.setIcon(R.drawable.ic_person_add_white_24dp);
+        } else {
+            menuItem.setIcon(R.drawable.action_add_friend_with_badge);
+        }
+        onPrepareOptionsMenu(mMenu);
+    }
+
+    @Override
+    public void onNotificationCountChanged(int count) {
+
+    }
+
+    @Override
+    public void onMessageCountChanged(int count) {
+
+    }
 
     private static class FriendAdapter extends SimpleAdapter<UserCard> {
 

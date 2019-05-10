@@ -4,16 +4,22 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.LongSparseArray;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import slasha.lanmu.application.LanmuApplication;
+import slasha.lanmu.entity.api.base.UnreadModel;
 import slasha.lanmu.entity.card.MessageCard;
 import slasha.lanmu.entity.card.UserCard;
 import slasha.lanmu.persistence.UserInfo;
 import slasha.lanmu.utils.FormatUtils;
 import slasha.lanmu.utils.common.LogUtil;
+
+import static slasha.lanmu.persistence.db.LanmuDBOpenHelper.TB_MESSAGE;
 
 /**
  * 全局数据库工具类
@@ -87,7 +93,7 @@ public class LanmuDB implements UserInfo.UserInfoChangeListener {
         for (MessageCard message : messages) {
             ContentValues contentValues = cv(message);
             long id = writableDB.insertWithOnConflict(
-                    LanmuDBOpenHelper.TB_MESSAGE,
+                    TB_MESSAGE,
                     null,
                     contentValues,
                     SQLiteDatabase.CONFLICT_IGNORE
@@ -95,7 +101,7 @@ public class LanmuDB implements UserInfo.UserInfoChangeListener {
             if (id == -1) { // insert fail, then try to update
                 contentValues.remove("id");
                 writableDB.update(
-                        LanmuDBOpenHelper.TB_MESSAGE,
+                        TB_MESSAGE,
                         contentValues,
                         "id=?",
                         new String[]{String.valueOf(message.getId())}
@@ -130,7 +136,7 @@ public class LanmuDB implements UserInfo.UserInfoChangeListener {
         return cards;
     }
 
-    public static List<MessageCard> queryConversations() {
+    public static List<UnreadModel<MessageCard>> queryConversations() {
         SQLiteDatabase db = sINSTANCE.mDBOpenHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery(
                 "select * from " + LanmuDBOpenHelper.TB_MESSAGE +
@@ -139,14 +145,36 @@ public class LanmuDB implements UserInfo.UserInfoChangeListener {
                 null);
         List<MessageCard> cards = readMsgCards(cursor);
         LogUtil.i(TAG, "get " + cards.size() + " conversations from db.");
+        cursor = db.rawQuery(
+                "select talk2Id,count(received) as unread from tb_message where received=0 group by talk2Id;",
+                null
+        );
+        LongSparseArray<Integer> unReads = readUnReads(cursor);
+        List<UnreadModel<MessageCard>> result = new ArrayList<>();
+        for (MessageCard card : cards) {
+            Integer integer = unReads.get(card.getTalk2Id());
+            result.add(new UnreadModel<>(Collections.singletonList(card), integer == null ? 0 : integer));
+        }
         cursor.close();
-        return cards;
+        return result;
+    }
+
+    private static @NonNull
+    LongSparseArray<Integer> readUnReads(Cursor cursor) {
+        LongSparseArray<Integer> result = new LongSparseArray<>();
+        cursor.moveToPosition(-1);
+        while (cursor.moveToNext()) {
+            long talk2Id = cursor.getLong(cursor.getColumnIndex("talk2Id"));
+            int unread = cursor.getInt(cursor.getColumnIndex("unread"));
+            result.put(talk2Id, unread);
+        }
+        return result;
     }
 
     public static List<MessageCard> queryMessages(long talk2Id) {
         SQLiteDatabase db = sINSTANCE.mDBOpenHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery(
-                "select * from " + LanmuDBOpenHelper.TB_MESSAGE + " where talk2Id=? order by time ",
+                "select * from " + TB_MESSAGE + " where talk2Id=? order by time ",
                 new String[]{String.valueOf(talk2Id)}
         );
         List<MessageCard> cards = readMsgCards(cursor);
@@ -252,7 +280,7 @@ public class LanmuDB implements UserInfo.UserInfoChangeListener {
         SQLiteDatabase writableDB = sINSTANCE.mDBOpenHelper.getWritableDatabase();
         writableDB.beginTransaction();
         writableDB.update(
-                LanmuDBOpenHelper.TB_MESSAGE,
+                TB_MESSAGE,
                 cv("received", "1"),
                 "fromId=?",
                 new String[]{String.valueOf(userId)}

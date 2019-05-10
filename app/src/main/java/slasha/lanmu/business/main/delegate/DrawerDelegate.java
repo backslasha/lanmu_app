@@ -46,7 +46,7 @@ public class DrawerDelegate implements NavigationView.OnNavigationItemSelectedLi
         );
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-        toolbar.setNavigationIcon(R.drawable.menu_with_badge);
+        toolbar.setNavigationIcon(R.drawable.ic_menu_white_24dp);
         mNavigationView = activity.findViewById(R.id.nav_view);
         mNavigationView.setNavigationItemSelectedListener(this);
         updateNavHeaderUI(UserInfo.self());

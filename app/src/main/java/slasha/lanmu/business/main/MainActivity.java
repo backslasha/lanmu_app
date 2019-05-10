@@ -8,22 +8,24 @@ import android.view.MenuItem;
 
 import com.google.android.material.tabs.TabLayout;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import slasha.lanmu.R;
 import slasha.lanmu.business.main.delegate.ActionbarDelegate;
 import slasha.lanmu.business.main.delegate.DrawerDelegate;
 import slasha.lanmu.business.main.flow.FlowFragment;
-import slasha.lanmu.business.main.flow.FlowPagerAdapter;
 import slasha.lanmu.business.search_result.ResultActivity;
 import slasha.lanmu.entity.api.notify.GlobalNotifyRspModel;
-import slasha.lanmu.persistence.Global;
 import slasha.lanmu.persistence.UnreadInfo;
 import slasha.lanmu.persistence.UserInfo;
+import slasha.lanmu.utils.CommonUtils;
 import slasha.lanmu.utils.common.LogUtil;
-import slasha.lanmu.utils.common.ToastUtils;
 
-public class MainActivity extends AppCompatActivity implements UnreadMsgContract.View{
+public class MainActivity extends AppCompatActivity implements UnreadMsgContract.View {
 
     private DrawerDelegate mDrawerDelegate;
     private ActionbarDelegate mActionbarDelegate;
@@ -122,4 +124,35 @@ public class MainActivity extends AppCompatActivity implements UnreadMsgContract
 
     }
 
+    public class FlowPagerAdapter extends FragmentPagerAdapter {
+
+        private FlowFragment.FlowType[] mBookPostFlows;
+
+        FlowPagerAdapter(FragmentManager fm, FlowFragment.FlowType[] flowTypes) {
+            super(fm);
+            mBookPostFlows = flowTypes;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            FlowFragment flowFragment = FlowFragment.newInstance(
+                    CommonUtils.isEmpty(mBookPostFlows) ? null : mBookPostFlows[position]
+            );
+            flowFragment.setFlowRefreshListener(()
+                    -> myPresenter().performQueryGlobalNotifyCount(UserInfo.id()));
+
+            return flowFragment;
+        }
+
+        @Override
+        public int getCount() {
+            return CommonUtils.isEmpty(mBookPostFlows) ? 0 : mBookPostFlows.length;
+        }
+
+        @Nullable
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mBookPostFlows[position].getName();
+        }
+    }
 }

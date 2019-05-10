@@ -7,6 +7,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import slasha.lanmu.entity.api.base.RspModelWrapper;
+import slasha.lanmu.entity.api.base.UnreadModel;
 import slasha.lanmu.entity.card.MessageCard;
 import slasha.lanmu.entity.card.UnreadMessagesCard;
 import slasha.lanmu.net.Network;
@@ -30,14 +31,14 @@ class ConversationPresenterImpl implements ConversationContract.Presenter {
     public void performPullConversations(long userId, boolean syncServer) {
         mView.showLoadingIndicator();
         ThreadUtils.execute(() -> {
-            List<MessageCard> messageCards = LanmuDB.queryConversations();
+            List<UnreadModel<MessageCard>> messageCards = LanmuDB.queryConversations();
             AppUtils.runOnUiThread(() -> {
                 if (syncServer) {
                     performPullUnreadMessages(userId);
                 } else {
                     mView.hideLoadingIndicator();
                 }
-                mView.showPullConversationSuccess(messageCards);
+                mView.showPullConversationLocallySuccess(messageCards);
             });
         });
     }

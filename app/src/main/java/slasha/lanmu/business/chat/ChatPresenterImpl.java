@@ -29,14 +29,14 @@ class ChatPresenterImpl implements ChatContract.Presenter {
 
     @Override
     public void performPullMessages(PullMsgModel model) {
-        PresenterHelper.requestAndHandleResponse(
-                TAG,
-                Network.remote()::pullMsgRecords,
-                model,
-                mView::showMessages,
-                mView::showActionFail,
-                mView
-        );
+//        PresenterHelper.requestAndHandleResponse(
+//                TAG,
+//                Network.remote()::pullMsgRecords,
+//                model,
+//                mView::showMessages,
+//                mView::showActionFail,
+//                mView
+//        );
     }
 
     @Override
@@ -44,7 +44,7 @@ class ChatPresenterImpl implements ChatContract.Presenter {
         mView.showLoadingIndicator();
         ThreadUtils.execute(() -> {
             List<MessageCard> cards = LanmuDB.queryMessages(talk2Id);
-            LanmuDB.markMsgReceived(talk2Id);
+            LanmuDB.markMsgReceived(talk2Id); // 更新本地数据库该 talk2Id 所有私信为已读
             AppUtils.runOnUiThread(() -> {
                 mView.showMessages(cards);
                 mView.hideLoadingIndicator();
@@ -66,6 +66,7 @@ class ChatPresenterImpl implements ChatContract.Presenter {
                 if (rspModel != null && rspModel.success()) {
                     MessageCard result = rspModel.getResult();
                     LogUtil.i(TAG, "result -> " + result.toString());
+                    result.setReceived(1);
                     cacheMessage(result);
                     AppUtils.runOnUiThread(() -> {
                         mView.showSendMsgSuccess(result);

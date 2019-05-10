@@ -134,6 +134,7 @@ public interface RemoteService {
      * 拉取聊天列表
      */
     @POST("msg/record")
+    @Deprecated
     Call<RspModelWrapper<List<MessageCard>>> pullMsgRecords(@Body PullMsgModel model);
 
     /**
@@ -146,6 +147,7 @@ public interface RemoteService {
      * 拉取最近和20个人的最后一条聊天消息
      */
     @POST("msg/conversations")
+    @Deprecated
     Call<RspModelWrapper<List<MessageCard>>> pullConversations(@Body long userId);
 
     /**

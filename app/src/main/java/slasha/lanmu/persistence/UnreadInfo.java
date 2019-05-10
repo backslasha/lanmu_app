@@ -14,6 +14,7 @@ public class UnreadInfo {
     }
 
     public static void setApplyCount(int applyCount) {
+        if (mGlobalNotifyRspModel.getApplyCount() == applyCount) return;
         mGlobalNotifyRspModel.setApplyCount(applyCount);
         for (UnreadInfoChangeListener listener : sListeners) {
             listener.onApplyCountChanged(applyCount);
@@ -25,6 +26,7 @@ public class UnreadInfo {
     }
 
     public static void setMessageCount(int messageCount) {
+        if (mGlobalNotifyRspModel.getMessageCount() == messageCount) return;
         mGlobalNotifyRspModel.setMessageCount(messageCount);
         for (UnreadInfoChangeListener listener : sListeners) {
             listener.onMessageCountChanged(messageCount);
@@ -36,6 +38,7 @@ public class UnreadInfo {
     }
 
     public static void setCommentCount(int commentCount) {
+        if (mGlobalNotifyRspModel.getCommentCount() == commentCount) return;
         mGlobalNotifyRspModel.setCommentCount(commentCount);
         for (UnreadInfoChangeListener listener : sListeners) {
             listener.onNotificationCountChanged(commentCount + getThumbsUpCount());
@@ -47,6 +50,7 @@ public class UnreadInfo {
     }
 
     public static void setThumbsUpCount(int thumbsUpCount) {
+        if (mGlobalNotifyRspModel.getThumbsUpCount() == thumbsUpCount) return;
         mGlobalNotifyRspModel.setThumbsUpCount(thumbsUpCount);
         for (UnreadInfoChangeListener listener : sListeners) {
             listener.onNotificationCountChanged(thumbsUpCount + getCommentCount());
@@ -64,6 +68,11 @@ public class UnreadInfo {
     }
 
     public static void setUnreadInfo(GlobalNotifyRspModel model) {
+        if (model.getApplyCount() == mGlobalNotifyRspModel.getApplyCount()
+                && model.getMessageCount() == mGlobalNotifyRspModel.getMessageCount()
+                && model.getCommentCount() == mGlobalNotifyRspModel.getCommentCount()
+                && model.getThumbsUpCount() == mGlobalNotifyRspModel.getThumbsUpCount()
+        ) return;
         mGlobalNotifyRspModel.setApplyCount(model.getApplyCount());
         mGlobalNotifyRspModel.setMessageCount(model.getMessageCount());
         mGlobalNotifyRspModel.setCommentCount(model.getCommentCount());
