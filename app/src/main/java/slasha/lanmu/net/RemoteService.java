@@ -28,6 +28,7 @@ import slasha.lanmu.entity.card.UnreadMessagesCard;
 import slasha.lanmu.entity.card.DynamicCard;
 import slasha.lanmu.entity.card.MessageCard;
 import slasha.lanmu.entity.card.UserCard;
+import slasha.lanmu.entity.local.CommentReply;
 
 /**
  * 网络请求的所有的接口
@@ -129,6 +130,13 @@ public interface RemoteService {
     Call<RspModelWrapper<PageModel<CommentCard>>> pullComments(@Path("postId") long postId,
                                                                @Query("order") int order,
                                                                @Query("page") int page);
+
+    /**
+     * 拉取评论回复列表
+     */
+    @GET("comment/reply/{commentId}")
+    Call<RspModelWrapper<PageModel<CommentReplyCard>>> pullReplies(@Path("commentId") long commentId,
+                                                                @Query("page") int page);
 
     /**
      * 拉取聊天列表

@@ -21,6 +21,7 @@ import slasha.lanmu.LoadingProvider;
 import slasha.lanmu.R;
 import slasha.lanmu.SameStyleActivity;
 import slasha.lanmu.business.post_detail.apdater.CommentAdapter;
+import slasha.lanmu.business.post_detail.reply.ReplyFragment;
 import slasha.lanmu.entity.api.base.PageModel;
 import slasha.lanmu.entity.api.comment.CreateCommentModel;
 import slasha.lanmu.entity.api.comment.CreateReplyModel;
@@ -48,8 +49,10 @@ public class PostDetailActivity extends SameStyleActivity implements PostDetailC
     private static final String EXTRA_BOOK_POST_ID = "extra_book_post_id";
     private static final String TAG = "lanmu.detail";
 
-    @BindView(R.id.recycler_view)
-    RecyclerView mRecyclerViewComments;
+    @BindView(R.id.recycler_view_comment)
+    RecyclerView mRvComment;
+    @BindView(R.id.recycler_view_post_images)
+    RecyclerView mRvImage;
     @BindView(R.id.swipe_refresh_layout_comments)
     SwipeRefreshLayout mSwipeRefreshLayoutComments;
     @BindView(R.id.tv_title)
@@ -80,6 +83,7 @@ public class PostDetailActivity extends SameStyleActivity implements PostDetailC
     private int mCommentOrder = ORDER_DEFAULT;
     private int mPage = 1;
     private PostDetailContract.Presenter mPostDetailPresenter;
+    private ReplyFragment mReplyFragment;
 
     public static Intent newIntent(Context context, long postId) {
         Intent intent = new Intent(context, PostDetailActivity.class);
@@ -121,13 +125,19 @@ public class PostDetailActivity extends SameStyleActivity implements PostDetailC
                     mReplyBoard.close();
                 });
 
+
+        CommentAdapter commentAdapter = new CommentAdapter(this);
+        commentAdapter.setCommentClickListener(new CommentClickListener());
+        mLoadingMoreAdapter = new LoadMoreWrapper<>(commentAdapter,
+                R.layout.layout_loading_footer,
+                R.layout.layout_finished_footer);
+        mRvComment.setAdapter(mLoadingMoreAdapter);
         mSwipeRefreshLayoutComments.setOnRefreshListener(() -> {
             mPage = 1;
             mLoadingMoreAdapter.setFinishedLoadMore(false);
             myPresenter().performPullComments(mPostId, mCommentOrder, mPage, PostDetailActivity.this);
         });
-
-        mRecyclerViewComments.setLayoutManager(new LinearLayoutManager(this));
+        mRvComment.setLayoutManager(new LinearLayoutManager(this));
 
         mReplyBoard.setPublisher(new Publisher() {
             @Override
@@ -170,7 +180,6 @@ public class PostDetailActivity extends SameStyleActivity implements PostDetailC
                 mCommentOrder, mPage, new CommentLoadingProvider());
     }
 
-
     @Override
     protected int getContentViewResId() {
         return R.layout.activity_post_detail;
@@ -206,7 +215,6 @@ public class PostDetailActivity extends SameStyleActivity implements PostDetailC
             mTvCreatorName.setText(creator.getName());
         }
         myPresenter().performPullComments(mPostId, mCommentOrder, mPage, this);
-        showLoadingIndicator();
     }
 
     @Override
@@ -217,20 +225,14 @@ public class PostDetailActivity extends SameStyleActivity implements PostDetailC
         int total = commentPage.getTotal();
 
         if (CommonUtils.isEmpty(comments)) {
-            ToastUtils.showToast("no comments found!");
+            ToastUtils.showToast("一条评论也没有找到呀。。。");
+            mLoadingMoreAdapter.setFinishedLoadMore(true);
+            mLoadingMoreAdapter.notifyItemChanged(mLoadingMoreAdapter.getItemCount() - 1);
+            mTvCommentCount.setText(String.format(String.format("%s%s",
+                    getString(R.string.comments_title), getString(R.string.count)), 0));
         } else {
             mTvCommentCount.setText(String.format(String.format("%s%s",
                     getString(R.string.comments_title), getString(R.string.count)), total));
-            if (mLoadingMoreAdapter == null) {
-                CommentAdapter commentAdapter = new CommentAdapter(this);
-                commentAdapter.setCommentClickListener(new CommentClickListener());
-                mLoadingMoreAdapter = new LoadMoreWrapper<>(
-                        commentAdapter,
-                        R.layout.layout_loading_footer,
-                        R.layout.layout_finished_footer
-                );
-                mRecyclerViewComments.setAdapter(mLoadingMoreAdapter);
-            }
             if (end) {
                 mLoadingMoreAdapter.setFinishedLoadMore(true);
             }
@@ -314,21 +316,25 @@ public class PostDetailActivity extends SameStyleActivity implements PostDetailC
         }
 
         @Override
-        public void onCommentReplyClick(boolean isExpandableItem,
-                                        CommentReplyCard reply, int position) {
-            if (isExpandableItem) {
-                ToastUtils.showToast("jump to reply list!");
-            } else {
-                CreateReplyModel createReplyModel = new CreateReplyModel();
-                createReplyModel.setCommentId(reply.getCommentId());
-                createReplyModel.setFromId(UserInfo.id());
-                createReplyModel.setFromName(UserInfo.self().getName());
-                createReplyModel.setCommentOwnerName(null);
-                createReplyModel.setToId(reply.getFromId());
-                createReplyModel.setToName(reply.getFromName());
-                mReplyBoard.openAndAttach(createReplyModel, position);
-            }
+        public void onReplyItemClick(CommentReplyCard reply, int position) {
+            CreateReplyModel createReplyModel = new CreateReplyModel();
+            createReplyModel.setCommentId(reply.getCommentId());
+            createReplyModel.setFromId(UserInfo.id());
+            createReplyModel.setFromName(UserInfo.self().getName());
+            createReplyModel.setCommentOwnerName(null);
+            createReplyModel.setToId(reply.getFromId());
+            createReplyModel.setToName(reply.getFromName());
+            mReplyBoard.openAndAttach(createReplyModel, position);
         }
+
+        @Override
+        public void onReplyExpandedItemClick(long commentId, int position) {
+            if (mReplyFragment == null) {
+                mReplyFragment = ReplyFragment.newInstance(commentId);
+            }
+            mReplyFragment.show(getSupportFragmentManager(), "replies");
+        }
+
 
         @Override
         public void onAvatarClick(UserCard user) {

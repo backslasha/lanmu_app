@@ -19,7 +19,7 @@ public class CreateReplyModel {
 
     private String fromName;
 
-    private String commentOwnerName;
+    private String commentOwnerName; // for view's showing
 
     public static boolean check(CreateReplyModel model) {
         return !TextUtils.isEmpty(model.content);

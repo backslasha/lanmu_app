@@ -65,6 +65,7 @@ public class CommonUtils {
         }
         Picasso.with(LanmuApplication.instance())
                 .load(coverUrl)
+                .fit()
                 .placeholder(R.drawable.default_place_holder)
                 .error(R.drawable.default_place_holder)
                 .into(view);

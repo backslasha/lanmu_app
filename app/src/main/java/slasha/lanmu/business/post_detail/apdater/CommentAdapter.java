@@ -3,7 +3,6 @@ package slasha.lanmu.business.post_detail.apdater;
 import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import java.util.List;
 
@@ -16,7 +15,6 @@ import slasha.lanmu.entity.card.CommentReplyCard;
 import slasha.lanmu.entity.card.UserCard;
 import slasha.lanmu.utils.CommonUtils;
 import slasha.lanmu.utils.FormatUtils;
-import slasha.lanmu.utils.common.LogUtil;
 import yhb.chorus.common.adapter.SimpleAdapter;
 import yhb.chorus.common.adapter.base.SimpleHolder;
 
@@ -83,10 +81,19 @@ public class CommentAdapter extends SimpleAdapter<CommentCard> {
                 = (RecyclerView) holder.getView(R.id.recycler_view_replies);
         if (!CommonUtils.isEmpty(comment.getReplies())) {
             CommentReplyAdapter commentReplyAdapter = new CommentReplyAdapter(mContext, comment);
-            commentReplyAdapter.setOnItemClickListener((isExpandableItem, reply) -> {
-                if (mCommentClickListener != null) {
-                    mCommentClickListener.onCommentReplyClick(isExpandableItem, reply,
-                            holder.getAdapterPosition());
+            commentReplyAdapter.setOnItemClickListener(new CommentReplyAdapter.onItemClickListener() {
+                @Override
+                public void onItemClick(CommentReplyCard reply) {
+                    if (mCommentClickListener != null) {
+                        mCommentClickListener.onReplyItemClick(reply, holder.getAdapterPosition());
+                    }
+                }
+                @Override
+                public void onExpandedItemClick(long commentId) {
+                    if (mCommentClickListener != null) {
+                        mCommentClickListener.onReplyExpandedItemClick(commentId,
+                                holder.getAdapterPosition());
+                    }
                 }
             });
             recyclerView.setNestedScrollingEnabled(false);
@@ -115,7 +122,9 @@ public class CommentAdapter extends SimpleAdapter<CommentCard> {
     public interface CommentClickListener {
         void onContentClick(CommentCard comment, int position);
 
-        void onCommentReplyClick(boolean isExpandableItem, CommentReplyCard reply, int position);
+        void onReplyItemClick(CommentReplyCard reply, int position);
+
+        void onReplyExpandedItemClick(long commentId, int position);
 
         void onAvatarClick(UserCard user);
 
