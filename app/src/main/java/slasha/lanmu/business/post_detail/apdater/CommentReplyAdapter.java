@@ -51,7 +51,7 @@ public class CommentReplyAdapter extends SimpleAdapter<CommentReplyCard> {
         expandable = false;
     }
 
-    void setOnItemClickListener(onItemClickListener onItemClickListener) {
+    public void setOnItemClickListener(onItemClickListener onItemClickListener) {
         mOnItemClickListener = onItemClickListener;
     }
 

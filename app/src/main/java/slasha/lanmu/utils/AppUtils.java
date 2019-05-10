@@ -16,9 +16,11 @@ import slasha.lanmu.business.friend.FriendActivity;
 import slasha.lanmu.business.main.MainActivity;
 import slasha.lanmu.business.notification.NotificationActivity;
 import slasha.lanmu.business.post_detail.PostDetailActivity;
+import slasha.lanmu.business.post_detail.reply.ReplyActivity;
 import slasha.lanmu.business.profile.UserProfileActivity;
 import slasha.lanmu.business.profile.dynamic.DynamicActivity;
 import slasha.lanmu.business.profile.edit.EditProfileActivity;
+import slasha.lanmu.business.search_result.ResultActivity;
 import slasha.lanmu.entity.card.UserCard;
 
 public class AppUtils {
@@ -107,6 +109,12 @@ public class AppUtils {
     public static void jumpToDynamicPage(Context context, long userId) {
         context.startActivity(
                 DynamicActivity.newIntent(context, userId)
+        );
+    }
+
+    public static void jumpToReplyPage(Context context, long commentId) {
+        context.startActivity(
+                ReplyActivity.newIntent(context, commentId)
         );
     }
 }

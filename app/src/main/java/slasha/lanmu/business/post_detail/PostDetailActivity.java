@@ -21,7 +21,6 @@ import slasha.lanmu.LoadingProvider;
 import slasha.lanmu.R;
 import slasha.lanmu.SameStyleActivity;
 import slasha.lanmu.business.post_detail.apdater.CommentAdapter;
-import slasha.lanmu.business.post_detail.reply.ReplyFragment;
 import slasha.lanmu.entity.api.base.PageModel;
 import slasha.lanmu.entity.api.comment.CreateCommentModel;
 import slasha.lanmu.entity.api.comment.CreateReplyModel;
@@ -83,7 +82,6 @@ public class PostDetailActivity extends SameStyleActivity implements PostDetailC
     private int mCommentOrder = ORDER_DEFAULT;
     private int mPage = 1;
     private PostDetailContract.Presenter mPostDetailPresenter;
-    private ReplyFragment mReplyFragment;
 
     public static Intent newIntent(Context context, long postId) {
         Intent intent = new Intent(context, PostDetailActivity.class);
@@ -329,10 +327,7 @@ public class PostDetailActivity extends SameStyleActivity implements PostDetailC
 
         @Override
         public void onReplyExpandedItemClick(long commentId, int position) {
-            if (mReplyFragment == null) {
-                mReplyFragment = ReplyFragment.newInstance(commentId);
-            }
-            mReplyFragment.show(getSupportFragmentManager(), "replies");
+            AppUtils.jumpToReplyPage(PostDetailActivity.this, commentId);
         }
 
 
