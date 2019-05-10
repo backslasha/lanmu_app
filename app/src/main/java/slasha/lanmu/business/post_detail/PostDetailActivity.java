@@ -133,7 +133,7 @@ public class PostDetailActivity extends SameStyleActivity implements PostDetailC
         mSwipeRefreshLayoutComments.setOnRefreshListener(() -> {
             mPage = 1;
             mLoadingMoreAdapter.setFinishedLoadMore(false);
-            myPresenter().performPullComments(mPostId, mCommentOrder, mPage, PostDetailActivity.this);
+            myPresenter().performPullPostDetail(mPostId);
         });
         mRvComment.setLayoutManager(new LinearLayoutManager(this));
 
@@ -201,10 +201,8 @@ public class PostDetailActivity extends SameStyleActivity implements PostDetailC
                     book.getPublisher(),
                     FormatUtils.format2(book.getPublishDate())
             ));
-            mCardView.setOnClickListener(l -> {
-                // TODO: 2019/4/11  jump to complete book info page.
-                ToastUtils.showToast("jump to complete book info page.");
-            });
+            mCardView.setOnClickListener(l ->
+                    AppUtils.jumpToBookInfoPage(PostDetailActivity.this, bookPost.getBook()));
         }
 
         UserCard creator = bookPost.getCreator();
