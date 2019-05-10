@@ -126,12 +126,13 @@
     <string name="title_applies">申请列表</string>
     <string name="already_agreed">已同意</string>
     <string name="already_rejected">已拒绝</string>
-    <string name="track">全部动态 &gt;</string>
+    <string name="track">足迹 &gt;</string>
     <string name="title_dynamic">全部动态</string>
     <string name="order_default">默认排序</string>
     <string name="order_reverse">倒序查看</string>
     <string name="order_comment_count">按热度排序</string>
     <string name="arrived_bottom">已经到底啦</string>
     <string name="unread">（%d条未读）</string>
+    <string name="hint_empty_dynamics">还没有创建过任何书帖哟~</string>
 
 </resources>

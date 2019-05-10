@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -51,6 +52,9 @@ public class UserProfileActivity extends SameStyleActivity
     @BindView(R.id.tv_phone)
     TextView mPhone;
 
+    @BindView(R.id.tv_empty_hint)
+    TextView mTvEmpty;
+
     @BindView(R.id.iv_sex_tag)
     ImageView mGender;
 
@@ -65,6 +69,7 @@ public class UserProfileActivity extends SameStyleActivity
 
     private ProfileContract.Presenter mUserPresenterImpl;
     private UserCard mUserCard;
+    private ProfileDynamicAdapter mDynamicAdapter;
 
     public static Intent newIntent(Context context, long userId) {
         Intent intent = new Intent(context, UserProfileActivity.class);
@@ -96,7 +101,9 @@ public class UserProfileActivity extends SameStyleActivity
                 appbarLayout.setElevation(0);
             }
         });
-
+        mDynamicAdapter = new ProfileDynamicAdapter(this, mUserId);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setAdapter(mDynamicAdapter);
     }
 
     @Override
@@ -197,11 +204,14 @@ public class UserProfileActivity extends SameStyleActivity
 
     @Override
     public void showPullDynamicsSuccess(List<DynamicCard> dynamics) {
-        ProfileDynamicAdapter adapter
-                = new ProfileDynamicAdapter(this, mUserId);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(adapter);
-        adapter.performDataSetChanged(dynamics);
+        if (CommonUtils.isEmpty(dynamics)) {
+            mTvEmpty.setVisibility(View.VISIBLE);
+            mRecyclerView.setVisibility(View.GONE);
+        } else {
+            mTvEmpty.setVisibility(View.GONE);
+            mRecyclerView.setVisibility(View.VISIBLE);
+            mDynamicAdapter.performDataSetChanged(dynamics);
+        }
     }
 
     @Override

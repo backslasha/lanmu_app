@@ -50,6 +50,12 @@ public class CommentAdapter extends SimpleAdapter<CommentCard> {
                 mCommentClickListener.onContentClick(comment, holder.getAdapterPosition());
             }
         });
+        holder.setOnLongClickListener(R.id.tv_comment_content, l -> {
+            if (mCommentClickListener != null) {
+                return mCommentClickListener.onContentLongClick(comment, holder.getAdapterPosition());
+            }
+            return false;
+        });
 
         holder.setText(R.id.tv_publish_date, FormatUtils.format1(comment.getTime()));
         holder.setText(R.id.tv_thumb_up_count, String.valueOf(comment.getThumbsUpCount()));
@@ -88,6 +94,7 @@ public class CommentAdapter extends SimpleAdapter<CommentCard> {
                         mCommentClickListener.onReplyItemClick(reply, holder.getAdapterPosition());
                     }
                 }
+
                 @Override
                 public void onExpandedItemClick(long commentId) {
                     if (mCommentClickListener != null) {
@@ -129,5 +136,7 @@ public class CommentAdapter extends SimpleAdapter<CommentCard> {
         void onAvatarClick(UserCard user);
 
         void onThumbsUpClick(CommentCard comment);
+
+        boolean onContentLongClick(CommentCard comment, int position);
     }
 }

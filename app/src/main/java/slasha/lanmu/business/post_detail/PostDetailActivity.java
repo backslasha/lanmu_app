@@ -3,6 +3,7 @@ package slasha.lanmu.business.post_detail;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -37,6 +38,8 @@ import slasha.lanmu.utils.common.LogUtil;
 import slasha.lanmu.utils.common.ToastUtils;
 import slasha.lanmu.widget.reply.Publisher;
 import slasha.lanmu.widget.reply.ReplyBoard;
+import yhb.chorus.common.adapter.SimpleAdapter;
+import yhb.chorus.common.adapter.base.SimpleHolder;
 import yhb.chorus.common.adapter.wrapper.LoadMoreWrapper;
 
 import static slasha.lanmu.entity.card.CommentCard.ORDER_COMMENT_THUMBS_UP_FIRST;
@@ -82,6 +85,7 @@ public class PostDetailActivity extends SameStyleActivity implements PostDetailC
     private int mCommentOrder = ORDER_DEFAULT;
     private int mPage = 1;
     private PostDetailContract.Presenter mPostDetailPresenter;
+    private SimpleAdapter<String> mImageAdapter;
 
     public static Intent newIntent(Context context, long postId) {
         Intent intent = new Intent(context, PostDetailActivity.class);
@@ -136,6 +140,19 @@ public class PostDetailActivity extends SameStyleActivity implements PostDetailC
             myPresenter().performPullPostDetail(mPostId);
         });
         mRvComment.setLayoutManager(new LinearLayoutManager(this));
+        mRvImage.setLayoutManager(new LinearLayoutManager(this));
+        mRvImage.setAdapter(mImageAdapter = new SimpleAdapter<String>(this) {
+            @Override
+            protected int layoutResId(int viewType) {
+                return R.layout.item_post_image;
+            }
+
+            @Override
+            protected void bind(SimpleHolder holder, String s) {
+                CommonUtils.setCover((ImageView) holder.itemView, s);
+            }
+        });
+
 
         mReplyBoard.setPublisher(new Publisher() {
             @Override
@@ -204,6 +221,8 @@ public class PostDetailActivity extends SameStyleActivity implements PostDetailC
             mCardView.setOnClickListener(l ->
                     AppUtils.jumpToBookInfoPage(PostDetailActivity.this, bookPost.getBook()));
         }
+
+        mImageAdapter.performDataSetChanged(FormatUtils.asUrlList(bookPost.getImages()));
 
         UserCard creator = bookPost.getCreator();
         if (creator != null) {
@@ -338,6 +357,11 @@ public class PostDetailActivity extends SameStyleActivity implements PostDetailC
         public void onThumbsUpClick(CommentCard comment) {
             // send a request to insert a record of thumbs up
             myPresenter().performThumbsUp(UserInfo.id(), comment.getId());
+        }
+
+        @Override
+        public boolean onContentLongClick(CommentCard comment, int position) {
+            return false;
         }
     }
 
