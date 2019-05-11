@@ -15,7 +15,8 @@ import java.util.Locale;
 
 public class Global {
 
-    public static final String API_URL = "http://192.168.43.160:8080/api/";
+//    public static final String API_URL = "http://192.168.43.160:8080/api/";
+    public static final String API_URL = "http://123.207.59.126:8080/lanmu1.0/api/";
     public static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS";
 
     private static Gson gson;

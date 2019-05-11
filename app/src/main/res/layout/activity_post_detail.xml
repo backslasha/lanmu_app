@@ -147,7 +147,7 @@
                     </RelativeLayout>
                 </androidx.cardview.widget.CardView>
 
-                <TextView
+                <slasha.lanmu.widget.AutoCopyTextView
                     android:id="@+id/tv_post_content"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

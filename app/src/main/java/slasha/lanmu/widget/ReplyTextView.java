@@ -6,7 +6,7 @@ import android.util.AttributeSet;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatTextView;
 
-public class ReplyTextView extends AppCompatTextView {
+public class ReplyTextView extends AutoCopyTextView {
 
     public ReplyTextView(Context context) {
         this(context, null);

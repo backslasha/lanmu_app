@@ -3,7 +3,6 @@ package slasha.lanmu.business.post_detail;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.ContextMenu;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -359,10 +358,6 @@ public class PostDetailActivity extends SameStyleActivity implements PostDetailC
             myPresenter().performThumbsUp(UserInfo.id(), comment.getId());
         }
 
-        @Override
-        public boolean onContentLongClick(CommentCard comment, int position) {
-            return false;
-        }
     }
 
 

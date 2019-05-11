@@ -70,4 +70,8 @@ public class CommonUtils {
                 .error(R.drawable.default_place_holder)
                 .into(view);
     }
+
+    public static boolean isEmpty(CharSequence text) {
+        return text == null || text.length() == 0;
+    }
 }

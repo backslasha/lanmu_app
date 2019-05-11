@@ -28,7 +28,7 @@
             android:textSize="12sp"
             tools:text="BackSlasha" />
 
-        <TextView
+        <slasha.lanmu.widget.AutoCopyTextView
             android:id="@+id/tv_bubble_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

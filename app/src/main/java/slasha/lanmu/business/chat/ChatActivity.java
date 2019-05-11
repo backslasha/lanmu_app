@@ -21,10 +21,8 @@ import butterknife.OnClick;
 import slasha.lanmu.R;
 import slasha.lanmu.SameStyleActivity;
 import slasha.lanmu.entity.api.message.CreateMsgModel;
-import slasha.lanmu.entity.api.message.PullMsgModel;
 import slasha.lanmu.entity.card.MessageCard;
 import slasha.lanmu.entity.card.UserCard;
-import slasha.lanmu.entity.db.User;
 import slasha.lanmu.persistence.UserInfo;
 import slasha.lanmu.utils.AppUtils;
 import slasha.lanmu.utils.common.KeyBoardUtils;
@@ -33,7 +31,7 @@ import yhb.chorus.common.adapter.SimpleAdapter;
 import yhb.chorus.common.adapter.base.SimpleHolder;
 
 public class ChatActivity extends SameStyleActivity
-        implements View.OnLongClickListener, ChatContract.View {
+        implements ChatContract.View {
 
     private static final String EXTRA_OTHER_USER = "extra_other_user";
     private static final String TAG = "lanmu.chat";
@@ -154,17 +152,6 @@ public class ChatActivity extends SameStyleActivity
 
 
     @Override
-    public boolean onLongClick(View v) {
-        switch (v.getId()) {
-            case R.id.tv_bubble_content:
-                ToastUtils.showToast("you long click text content.");
-                break;
-        }
-        return true;
-    }
-
-
-    @Override
     public ChatContract.Presenter myPresenter() {
         if (mPresenter == null) {
             mPresenter = new ChatPresenterImpl(this);
@@ -229,7 +216,6 @@ public class ChatActivity extends SameStyleActivity
                         v -> AppUtils.jumpToUserProfile(ChatActivity.this, from.getId()));
             }
             holder.setText(R.id.tv_bubble_content, message.getContent());
-            holder.setOnLongClickListener(R.id.tv_bubble_content, ChatActivity.this);
         }
 
         @Override

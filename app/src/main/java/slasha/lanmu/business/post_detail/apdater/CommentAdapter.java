@@ -3,6 +3,7 @@ package slasha.lanmu.business.post_detail.apdater;
 import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -44,19 +45,14 @@ public class CommentAdapter extends SimpleAdapter<CommentCard> {
     public void bind(SimpleHolder holder, CommentCard comment) {
         holder.setImage(R.id.iv_avatar, comment.getFrom().getAvatarUrl());
         holder.setText(R.id.tv_username, comment.getFrom().getName());
+
+        TextView tvContent = (TextView) holder.getView(R.id.tv_comment_content);
         holder.setText(R.id.tv_comment_content, comment.getContent());
         holder.setOnClickListener(R.id.tv_comment_content, l -> {
             if (mCommentClickListener != null) {
                 mCommentClickListener.onContentClick(comment, holder.getAdapterPosition());
             }
         });
-        holder.setOnLongClickListener(R.id.tv_comment_content, l -> {
-            if (mCommentClickListener != null) {
-                return mCommentClickListener.onContentLongClick(comment, holder.getAdapterPosition());
-            }
-            return false;
-        });
-
         holder.setText(R.id.tv_publish_date, FormatUtils.format1(comment.getTime()));
         holder.setText(R.id.tv_thumb_up_count, String.valueOf(comment.getThumbsUpCount()));
 
@@ -136,7 +132,5 @@ public class CommentAdapter extends SimpleAdapter<CommentCard> {
         void onAvatarClick(UserCard user);
 
         void onThumbsUpClick(CommentCard comment);
-
-        boolean onContentLongClick(CommentCard comment, int position);
     }
 }

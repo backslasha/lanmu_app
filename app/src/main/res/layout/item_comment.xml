@@ -93,7 +93,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView
+        <slasha.lanmu.widget.AutoCopyTextView
             android:id="@+id/tv_comment_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
