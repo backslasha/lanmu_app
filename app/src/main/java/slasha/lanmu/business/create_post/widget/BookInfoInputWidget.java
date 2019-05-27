@@ -152,6 +152,7 @@ public class BookInfoInputWidget extends ScrollView
                 .from((Activity) getContext())
                 .maxCount(1)
                 .rowCount(3)
+                .showCamera(true)
                 .pickMode(SImagePicker.MODE_IMAGE)
                 .forResult(REQUEST_CODE_IMAGE);
     }

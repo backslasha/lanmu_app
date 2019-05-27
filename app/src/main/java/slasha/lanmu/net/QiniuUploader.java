@@ -25,7 +25,7 @@ import slasha.lanmu.utils.common.LogUtil;
 
 public class QiniuUploader implements Uploader {
 
-    private static final String DOWNLOAD_URL = "http://pqk956muf.bkt.clouddn.com/";
+    private static final String DOWNLOAD_URL = "http://haibiao.xuexin-ending.xyz/";
     private static final String ACCESS_KEY = "uepWdXrdCjjG4PiP-4PYhxFKLiyHO2BU2yUkdUhu";
     private static final String SECRET_KEY = "-ZVr-_wGarn7GokML_LM7tDqKvRuXvoMtCFxh-3Y";
     private static final String BUCKET = "lanmu";

@@ -32,9 +32,6 @@ import slasha.lanmu.entity.local.CommentReply;
 
 /**
  * 网络请求的所有的接口
- *
- * @author qiujuer Email:qiujuer@live.cn
- * @version 1.0.0
  */
 public interface RemoteService {
 

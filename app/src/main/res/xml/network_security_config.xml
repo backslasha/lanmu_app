@@ -4,5 +4,6 @@
         <domain includeSubdomains="true">up-z2.qiniu.com</domain>
         <domain includeSubdomains="true">pqk956muf.bkt.clouddn.com</domain>
         <domain includeSubdomains="true">192.168.43.160</domain>
+        <domain includeSubdomains="true">haibiao.xuexin-ending.xyz</domain>
         <domain includeSubdomains="true">123.207.59.126</domain>
     </domain-config></network-security-config>

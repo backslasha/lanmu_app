@@ -43,9 +43,6 @@ import java.util.zip.ZipFile;
 
 /**
  * 表情工具类
- *
- * @author qiujuer Email:qiujuer@live.cn
- * @version 1.0.0
  */
 public class Face {
     // 全局的表情的映射ArrayMap，更加轻量级
